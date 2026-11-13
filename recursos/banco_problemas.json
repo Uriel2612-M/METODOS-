@@ -1,7 +1,7 @@
 {
   "problemas_basicos": [
     {
-      "id": "PB_03",
+      "id": "PB_02",
       "titulo": "Falla de Módulo de Descenso",
       "contexto": "Encontrar la raíz para la función y = x^3 - 4.5x + 1.5",
       "funcion_python": "x**3 - 4.5*x + 1.5",
@@ -9,6 +9,54 @@
       "valores_iniciales": {
         "a": 0.0,
         "b": 1.0
+      },
+      "tolerancia": 0.001
+    },
+    {
+      "id": "PB_03",
+      "titulo": "SOBRECARGA EN CONDENSADOR",
+      "contexto": "El condensador del módulo secundario reporta una sobrecarga cuadrática.\nLa función de carga es f(x) = 2x² - 6x - 3.\nIdentifique la raíz negativa en el intervalo [-1, 0].",
+      "funcion_python": "2*x**2 - 6*x - 3",
+      "metodos_viables": ["BISECTRIZ"],
+      "valores_iniciales": {
+        "a": -1.0,
+        "b": 0.0
+      },
+      "tolerancia": 0.001
+    },
+    {
+      "id": "PB_04",
+      "titulo": "COLAPSO EN SISTEMA DE ENFRIAMIENTO",
+      "contexto": "El sistema de enfriamiento presenta una oscilación crítica descrita por f(x) = cos(x) - x.\nEl punto de equilibrio se encuentra en el intervalo [0, 1].\nEncuentre la temperatura de estabilización.",
+      "funcion_python": "math.cos(x) - x",
+      "metodos_viables": ["BISECTRIZ"],
+      "valores_iniciales": {
+        "a": 0.0,
+        "b": 1.0
+      },
+      "tolerancia": 0.001
+    },
+    {
+      "id": "PB_05",
+      "titulo": "PERDIDA DE SENAL EXPONENCIAL",
+      "contexto": "La señal del transmisor decae según f(x) = eˣ - 3x.\nSe requiere el punto de cruce en el intervalo [0, 1]\npara recalibrar la frecuencia de transmisión.",
+      "funcion_python": "math.exp(x) - 3*x",
+      "metodos_viables": ["BISECTRIZ"],
+      "valores_iniciales": {
+        "a": 0.0,
+        "b": 1.0
+      },
+      "tolerancia": 0.001
+    },
+    {
+      "id": "PB_06",
+      "titulo": "DISTORSION EN OSCILADOR",
+      "contexto": "El oscilador central registra interferencia descrita por f(x) = x·sen(x) - 1.\nLocalice el punto de resonancia en el intervalo [1, 2]\npara neutralizar la distorsión.",
+      "funcion_python": "x * math.sin(x) - 1",
+      "metodos_viables": ["BISECTRIZ"],
+      "valores_iniciales": {
+        "a": 1.0,
+        "b": 2.0
       },
       "tolerancia": 0.001
     }

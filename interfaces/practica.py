@@ -39,10 +39,14 @@ class VistaPractica(ctk.CTkFrame):
         self.limpiar_frame()
         ctk.CTkLabel(self, text="C:\\> DIRECTORIO DE FALLAS", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(40, 30))
 
-        # En lugar de ir directo al juego, ahora va al análisis del problema
-        ctk.CTkButton(self, text="[ PB_03: Falla de Módulo de Descenso ]", font=("Consolas", 25), fg_color="transparent", 
-                      border_width=1, text_color="white", border_color="gray", hover_color="#003300", width=400,
-                      command=lambda: self.mostrar_analisis_problema("PB_03")).pack(pady=10)
+        # Un botón por cada problema del banco (dentro de un panel con scroll)
+        lista = ctk.CTkScrollableFrame(self, fg_color="transparent", height=380)
+        lista.pack(pady=10, padx=50, fill="x")
+
+        for problema in GestorProblemas.obtener_todos():
+            ctk.CTkButton(lista, text=f"[ {problema['id']}: {problema['titulo']} ]", font=("Consolas", 20), fg_color="transparent",
+                          border_width=1, text_color="white", border_color="gray", hover_color="#003300",
+                          command=lambda i=problema["id"]: self.mostrar_analisis_problema(i)).pack(pady=6, fill="x")
 
         ctk.CTkButton(self, text="[ REGRESAR AL MENU ]", font=("Consolas", 20), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=lambda: self.controlador.mostrar_vista("menu")).pack(side="bottom", pady=30)
