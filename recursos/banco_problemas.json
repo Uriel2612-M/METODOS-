@@ -1,0 +1,16 @@
+{
+  "problemas_basicos": [
+    {
+      "id": "PB_03",
+      "titulo": "Falla de Módulo de Descenso",
+      "contexto": "Encontrar la raíz para la función y = x^3 - 4.5x + 1.5",
+      "funcion_python": "x**3 - 4.5*x + 1.5",
+      "metodos_viables": ["BISECTRIZ"],
+      "valores_iniciales": {
+        "a": 0.0,
+        "b": 1.0
+      },
+      "tolerancia": 0.001
+    }
+  ]
+}

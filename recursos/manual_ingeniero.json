@@ -1,0 +1,16 @@
+{
+  "metodos": [
+    {
+      "id": "bisectriz",
+      "nombre": "MÉTODO DE LA BISECTRIZ",
+      "descripcion": "Método numérico cerrado que aproxima la raíz de una ecuación dividiendo iterativamente un intervalo a la mitad.",
+      "objetivo": "Encontrar la raíz real de una función continua f(x) = 0 acotada en un intervalo conocido.",
+      "formula": "x = (a + b) / 2",
+      "variables": "a : Límite inferior del intervalo.\nb : Límite superior del intervalo.\nx : Punto medio (Aproximación de la raíz).",
+      "condiciones": "1. La función f(x) debe ser continua en [a, b].\n2. Debe existir un cambio de signo en los extremos: f(a) * f(b) < 0.",
+      "criterios_paro": "El proceso se detiene cuando el error absoluto |x_actual - x_anterior| es menor o igual a la Tolerancia (ε) deseada, en este caso ε = 0.001.",
+      "ventajas_limitaciones": "VENTAJAS: Es 100% seguro; siempre converge si se cumple el cambio de signo.\nLIMITACIONES: Su velocidad de convergencia es muy lenta en comparación a otros métodos.",
+      "ejemplo": "Función: f(x) = x^2 - 2 en [1, 2]\n\nIteración 1:\n- f(1) = -1 (Negativo) | f(2) = 2 (Positivo)\n- Punto medio: x = (1 + 2) / 2 = 1.5\n- f(1.5) = (1.5)^2 - 2 = 0.25 (Positivo)\n\nComo f(1.5) es positivo, reemplaza al límite con su mismo signo (b). El nuevo intervalo para la Iteración 2 será a=1, b=1.5."
+    }
+  ]
+}
