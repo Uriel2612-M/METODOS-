@@ -1,0 +1,104 @@
+=================================================================
+REPORTE DE VALIDACIÓN MATEMÁTICA - PROYECTO ZERO LIMIT
+Fecha de generación: 2026-11-15 19:30:20
+=================================================================
+
+ID: PB_01 - FALLA EN REACTOR DE ENERGIA
+Función: f(x) = x³ - 6.5x + 2
+Método a evaluar: BISECTRIZ
+Valores Iniciales Generados: a = 2.16, b = 2.85, Tolerancia = 0.001
+
+It   | a          | b          | x_medio    | f(x)       | Error
+----------------------------------------------------------------------
+1    | 2.16       | 2.85       | 2.505      | 1.436438   | ---
+2    | 2.16       | 2.505      | 2.3325     | -0.471153  | 0.1725
+3    | 2.3325     | 2.505      | 2.41875    | 0.428663   | 0.08625
+4    | 2.3325     | 2.41875    | 2.375625   | -0.034499  | 0.043125
+5    | 2.375625   | 2.41875    | 2.397188   | 0.193738   | 0.021562
+6    | 2.375625   | 2.397188   | 2.386406   | 0.078787   | 0.010781
+7    | 2.375625   | 2.386406   | 2.381016   | 0.021937   | 0.005391
+8    | 2.375625   | 2.381016   | 2.37832    | -0.006333  | 0.002695
+9    | 2.37832    | 2.381016   | 2.379668   | 0.007789   | 0.001348
+10   | 2.37832    | 2.379668   | 2.378994   | 0.000725   | 0.000674
+
+>>> ESTADO: MÓDULO ESTABILIZADO (Cálculo Correcto)
+
+=================================================================
+
+ID: PB_07 - RUPTURA EN CIRCUITO DE POTENCIA
+Función: f(x) = 3x³ - 2x - 3
+Método a evaluar: FALSA_POSICION
+[ Motor para FALSA_POSICION no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_08 - SOBRECALENTAMIENTO EN NUCLEO
+Función: f(x) = x³ + 2x² + 10x - 20
+Método a evaluar: NEWTON_RAPHSON
+[ Motor de Newton-Raphson pendiente de integración ]
+
+=================================================================
+
+ID: PB_09 - FALLA EN MODULO DE PRESION
+Función: f(x) = e⁻ˣ - x
+Método a evaluar: PUNTO_FIJO
+[ Motor para PUNTO_FIJO no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_10 - INTERFERENCIA EN RECEPTOR DOBLE
+Función: f(x) = e⁻ˣ - x
+Método a evaluar: SECANTE
+[ Motor para SECANTE no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_11 - DESINCRONIZACION DE MODULOS
+Función: None
+Método a evaluar: GAUSS_SEIDEL
+[ Motor para GAUSS_SEIDEL no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_12 - CONFLICTO EN SUBSISTEMAS PARALELOS
+Función: None
+Método a evaluar: JACOBI
+[ Motor para JACOBI no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_13 - LECTURA ENTRE SENSORES
+Función: None
+Método a evaluar: INTERPOLACION_LINEAL
+[ Motor para INTERPOLACION_LINEAL no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_14 - CALIBRACION DE SENSORES
+Función: None
+Método a evaluar: LAGRANGE
+[ Motor para LAGRANGE no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_15 - ANOMALIA EN TRAYECTORIA
+Función: None
+Método a evaluar: NEWTON_DIVIDIDAS
+[ Motor para NEWTON_DIVIDIDAS no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_16 - PROYECCION DE FRECUENCIA HACIA ADELANTE
+Función: None
+Método a evaluar: NEWTON_ADELANTE
+[ Motor para NEWTON_ADELANTE no implementado en el reporte aún ]
+
+=================================================================
+
+ID: PB_17 - PROYECCION DE FRECUENCIA HACIA ATRAS
+Función: None
+Método a evaluar: NEWTON_ATRAS
+[ Motor para NEWTON_ATRAS no implementado en el reporte aún ]
+
+=================================================================
+

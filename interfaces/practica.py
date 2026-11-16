@@ -35,60 +35,57 @@ class VistaPractica(ctk.CTkFrame):
         ctk.CTkButton(self, text="[ CANCELAR ]", font=("Consolas", 25), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=lambda: self.controlador.mostrar_vista("menu")).pack(pady=10)
 
+# En interfaces/practica.py
     def mostrar_directorio(self):
         self.limpiar_frame()
         ctk.CTkLabel(self, text="C:\\> DIRECTORIO DE FALLAS", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(40, 30))
 
-        # Un botón por cada problema del banco (dentro de un panel con scroll)
         lista = ctk.CTkScrollableFrame(self, fg_color="transparent", height=380)
         lista.pack(pady=10, padx=50, fill="x")
 
-        for problema in GestorProblemas.obtener_todos():
+        # 1. Usamos la nueva función para obtener el catálogo
+        for problema in GestorProblemas.obtener_todos_instanciados():
             ctk.CTkButton(lista, text=f"[ {problema['id']}: {problema['titulo']} ]", font=("Consolas", 20), fg_color="transparent",
                           border_width=1, text_color="white", border_color="gray", hover_color="#003300",
                           command=lambda i=problema["id"]: self.mostrar_analisis_problema(i)).pack(pady=6, fill="x")
 
         ctk.CTkButton(self, text="[ REGRESAR AL MENU ]", font=("Consolas", 20), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=lambda: self.controlador.mostrar_vista("menu")).pack(side="bottom", pady=30)
-
     # --- NUEVA PANTALLA INTERMEDIA ---
     def mostrar_analisis_problema(self, id_problema):
-        problema = GestorProblemas.obtener_problema(id_problema)
-        if not problema: return
+        # 2. Generamos el problema aleatorio UNA SOLA VEZ aquí
+        problema_instanciado = GestorProblemas.obtener_problema_instanciado(id_problema)
+        if not problema_instanciado: return
 
         self.limpiar_frame()
-        ctk.CTkLabel(self, text=f"> EXPEDIENTE: {problema['titulo']}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(30, 10))
+        ctk.CTkLabel(self, text=f"> EXPEDIENTE: {problema_instanciado['titulo']}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(30, 10))
         
         frame_datos = ctk.CTkFrame(self, fg_color="#111111", border_width=1, border_color="#00FF00")
         frame_datos.pack(pady=10, padx=50, fill="x")
-        ctk.CTkLabel(frame_datos, text=problema["contexto"], font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
+        ctk.CTkLabel(frame_datos, text=problema_instanciado["contexto"], font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
 
         ctk.CTkLabel(self, text="ANALISIS: PROTOCOLOS DE RECUPERACION VIABLES DETECTADOS", font=("Consolas", 14, "bold"), text_color="yellow").pack(pady=(20, 10))
 
-        # Genera un botón por cada método viable en el JSON
-        for metodo in problema.get("metodos_viables", []):
+        for metodo in problema_instanciado.get("metodos_viables", []):
+            # 3. Le pasamos todo el "problema_instanciado" (con sus números ya fijos) a la siguiente pantalla
             ctk.CTkButton(self, text=f"[ EJECUTAR PROTOCOLO: {metodo} ]", font=("Consolas", 16), fg_color="transparent", 
                           border_width=1, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", width=350,
-                          command=lambda m=metodo: self.iniciar_diagnostico(id_problema, m)).pack(pady=5)
+                          command=lambda p=problema_instanciado, m=metodo: self.iniciar_diagnostico(p, m)).pack(pady=5)
 
         ctk.CTkButton(self, text="[ VOLVER AL DIRECTORIO ]", font=("Consolas", 16), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=self.mostrar_directorio).pack(side="bottom", pady=30)
 
     # --- INICIO DEL JUEGO ---
-    def iniciar_diagnostico(self, id_problema, metodo_seleccionado):
-        problema = GestorProblemas.obtener_problema(id_problema)
-        
-        # Le pasamos el método seleccionado al gestor
-        if not self.gestor.inicializar_sesion(problema, metodo_seleccionado):
+    def iniciar_diagnostico(self, problema_instanciado, metodo_seleccionado):
+        # 4. Ya no buscamos el problema en el Gestor, usamos el que nos pasaron por parámetro
+        if not self.gestor.inicializar_sesion(problema_instanciado, metodo_seleccionado):
             return 
         
         self.fallas_consecutivas = 0
 
         self.limpiar_frame()
         ctk.CTkLabel(self, text=f"> DIAGNOSTICO EN CURSO: {metodo_seleccionado}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(20, 10))
-        ctk.CTkLabel(self, text=problema["contexto"], font=("Consolas", 16), text_color="white").pack(pady=(0, 15))
-        
-        # 3. La tabla visual
+        ctk.CTkLabel(self, text=problema_instanciado["contexto"], font=("Consolas", 16), text_color="white").pack(pady=(0, 15))
         
         self.frame_tabla = ctk.CTkScrollableFrame(self, fg_color="#050505", border_width=1, border_color="gray", height=150)
         self.frame_tabla.pack(pady=10, padx=50, fill="x")
@@ -109,7 +106,6 @@ class VistaPractica(ctk.CTkFrame):
         self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14))
         self.label_feedback.pack(pady=5)
 
-        # Guardamos el botón en una variable (self.btn_enviar) para poder ocultarlo al ganar
         self.btn_enviar = ctk.CTkButton(self.frame_juego, text="[ ENVIAR DATOS ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
                                         border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
                                         command=self.procesar_respuesta)
@@ -126,7 +122,7 @@ class VistaPractica(ctk.CTkFrame):
                       text_color="gray", hover_color="#333333", command=self.mostrar_directorio).pack(side="left", padx=10)
 
         self.actualizar_paso()
-
+        
     def actualizar_paso(self):
         datos_paso = self.gestor.obtener_datos_paso_actual()
         if not datos_paso:

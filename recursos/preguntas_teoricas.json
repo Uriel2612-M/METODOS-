@@ -1,0 +1,434 @@
+{
+    "nombre": "Banco de preguntas - Nivel 1",
+    "version": "1.0",
+    "descripcion": "Preguntas conceptuales y de reconocimiento para el Modo Desafío de ZERO LIMIT.",
+    "configuracion_partida": {
+        "preguntas_por_partida": 6,
+        "seleccion": "aleatoria_sin_repeticion",
+        "mezclar_orden_preguntas": true,
+        "mezclar_opciones": true,
+        "repetir_preguntas_en_una_misma_partida": false
+    },
+    "preguntas": [
+        {
+            "id": "P001",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método utiliza un intervalo [a,b] y requiere que f(a) y f(b) tengan signos opuestos?",
+            "opciones": [
+                "Bisección",
+                "Newton-Raphson",
+                "Secante",
+                "Jacobi"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Bisección necesita un intervalo que encierre una raíz; normalmente se verifica f(a)·f(b)<0."
+        },
+        {
+            "id": "P002",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método aproxima la raíz usando una recta secante que pasa por dos puntos?",
+            "opciones": [
+                "Punto fijo",
+                "Secante",
+                "Gauss-Seidel",
+                "Lagrange"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "El método de la secante utiliza dos aproximaciones anteriores para estimar la siguiente."
+        },
+        {
+            "id": "P003",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método utiliza la derivada de la función para calcular una nueva aproximación?",
+            "opciones": [
+                "Falsa posición",
+                "Jacobi",
+                "Newton-Raphson",
+                "Interpolación lineal"
+            ],
+            "respuesta_correcta": "C",
+            "explicacion": "Newton-Raphson usa f(x) y f'(x) en la fórmula x siguiente = x - f(x)/f'(x)."
+        },
+        {
+            "id": "P004",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método transforma f(x)=0 en una expresión de la forma x=g(x)?",
+            "opciones": [
+                "Punto fijo",
+                "Bisección",
+                "Gauss-Seidel",
+                "Newton hacia atrás"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "El método de punto fijo busca una solución que cumpla x=g(x)."
+        },
+        {
+            "id": "P005",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método de sistemas actualiza las incógnitas usando inmediatamente los valores recién calculados?",
+            "opciones": [
+                "Jacobi",
+                "Gauss-Seidel",
+                "Bisección",
+                "Secante"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Gauss-Seidel reutiliza cada valor nuevo dentro de la misma iteración."
+        },
+        {
+            "id": "P006",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método de sistemas calcula cada nueva incógnita usando únicamente los valores de la iteración anterior?",
+            "opciones": [
+                "Newton-Raphson",
+                "Gauss-Seidel",
+                "Jacobi",
+                "Falsa posición"
+            ],
+            "respuesta_correcta": "C",
+            "explicacion": "Jacobi calcula todos los nuevos valores a partir del vector anterior."
+        },
+        {
+            "id": "P007",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método construye un polinomio que pasa por todos los puntos de una tabla?",
+            "opciones": [
+                "Lagrange",
+                "Bisección",
+                "Punto fijo",
+                "Jacobi"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La interpolación de Lagrange construye un polinomio interpolante a partir de los puntos dados."
+        },
+        {
+            "id": "P008",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué método de interpolación utiliza una tabla de diferencias divididas?",
+            "opciones": [
+                "Newton hacia adelante",
+                "Newton por diferencias divididas",
+                "Falsa posición",
+                "Gauss-Seidel"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Newton por diferencias divididas organiza los datos mediante diferencias divididas."
+        },
+        {
+            "id": "P009",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué variante de Newton se suele preferir para interpolar cerca del primer valor de una tabla igualmente espaciada?",
+            "opciones": [
+                "Newton hacia adelante",
+                "Newton hacia atrás",
+                "Secante",
+                "Newton-Raphson"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Newton hacia adelante suele ser conveniente cerca del inicio de una tabla con espaciamiento constante."
+        },
+        {
+            "id": "P010",
+            "categoria": "Reconocimiento de métodos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué variante de Newton se suele preferir para interpolar cerca del último valor de una tabla igualmente espaciada?",
+            "opciones": [
+                "Newton hacia adelante",
+                "Newton hacia atrás",
+                "Punto fijo",
+                "Bisección"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Newton hacia atrás suele ser conveniente cerca del final de una tabla con espaciamiento constante."
+        },
+        {
+            "id": "P011",
+            "categoria": "Conceptos",
+            "dificultad": "basica",
+            "pregunta": "En métodos numéricos, ¿qué representa una iteración?",
+            "opciones": [
+                "Una unidad de almacenamiento",
+                "Una repetición del procedimiento para obtener una aproximación",
+                "La respuesta exacta obligatoriamente",
+                "Un tipo de derivada"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Una iteración es una aplicación repetida de los pasos del método para mejorar o actualizar una aproximación."
+        },
+        {
+            "id": "P012",
+            "categoria": "Conceptos",
+            "dificultad": "basica",
+            "pregunta": "¿Para qué se establece una tolerancia en un método iterativo?",
+            "opciones": [
+                "Para definir cuándo detener el proceso según el error permitido",
+                "Para garantizar que siempre exista una raíz",
+                "Para cambiar la función original",
+                "Para aumentar el número de incógnitas"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La tolerancia fija un criterio de precisión para decidir cuándo la aproximación es suficiente."
+        },
+        {
+            "id": "P013",
+            "categoria": "Conceptos",
+            "dificultad": "basica",
+            "pregunta": "¿Qué indica, en general, que el error aproximado entre iteraciones sea menor que la tolerancia?",
+            "opciones": [
+                "Que debe reiniciarse el método",
+                "Que puede cumplirse el criterio de paro",
+                "Que la función no tiene raíces",
+                "Que la matriz es singular"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Si se cumple el criterio de error definido, el algoritmo puede detenerse; también deben revisarse otros criterios si el método los requiere."
+        },
+        {
+            "id": "P014",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Qué significa que una función continua cambie de signo entre a y b?",
+            "opciones": [
+                "Que necesariamente tiene dos raíces",
+                "Que existe al menos una raíz en el intervalo",
+                "Que su derivada es cero en todo el intervalo",
+                "Que no puede aplicarse bisección"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "Por el teorema del valor intermedio, si f es continua y hay cambio de signo, existe al menos una raíz dentro del intervalo."
+        },
+        {
+            "id": "P015",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Cuál es una condición suficiente habitual para favorecer la convergencia de Jacobi o Gauss-Seidel?",
+            "opciones": [
+                "Matriz estrictamente diagonal dominante por filas",
+                "Todos los elementos de la diagonal deben ser cero",
+                "Vector independiente con valores negativos",
+                "Matriz necesariamente triangular superior"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La dominancia diagonal estricta por filas es una condición suficiente común para la convergencia de estos métodos."
+        },
+        {
+            "id": "P016",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "En el método de punto fijo, ¿qué condición sobre g ayuda a garantizar convergencia local o en un intervalo adecuado?",
+            "opciones": [
+                "Que |g'(x)| sea menor que 1 en la región considerada",
+                "Que g'(x) sea siempre mayor que 1",
+                "Que g(x) sea una matriz",
+                "Que x0 sea necesariamente cero"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Una condición de contracción, como |g'(x)|<1 en una región apropiada, favorece la convergencia."
+        },
+        {
+            "id": "P017",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Qué puede ocurrir en Newton-Raphson si la derivada f'(x) es cero o muy cercana a cero en una iteración?",
+            "opciones": [
+                "La división puede ser imposible o producir un paso muy grande",
+                "El método se convierte en Jacobi",
+                "La raíz queda encontrada automáticamente",
+                "La tolerancia deja de existir"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La fórmula divide entre f'(x); una derivada nula impide calcular el paso y una muy pequeña puede generar inestabilidad."
+        },
+        {
+            "id": "P018",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Qué diferencia principal hay entre interpolación y extrapolación?",
+            "opciones": [
+                "Interpolación estima dentro del rango de datos; extrapolación fuera de él",
+                "Interpolación siempre usa derivadas",
+                "Extrapolación solo sirve para matrices",
+                "No existe diferencia"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La interpolación estima valores dentro del intervalo cubierto por los datos; la extrapolación estima fuera de ese intervalo."
+        },
+        {
+            "id": "P019",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Qué representa el residuo de una aproximación x* al resolver f(x)=0?",
+            "opciones": [
+                "El valor f(x*)",
+                "El número de iteraciones",
+                "La derivada segunda",
+                "El intervalo inicial"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "El residuo es la evaluación de la función en la aproximación; para una raíz exacta sería cero."
+        },
+        {
+            "id": "P020",
+            "categoria": "Conceptos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Por qué dos métodos distintos pueden producir aproximaciones diferentes con los mismos datos iniciales?",
+            "opciones": [
+                "Porque usan procedimientos y criterios de actualización diferentes",
+                "Porque todos los métodos deben dar resultados aleatorios",
+                "Porque los datos dejan de ser válidos",
+                "Porque la tolerancia siempre cambia la función"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Cada método sigue una fórmula de actualización distinta y puede converger a ritmos o resultados intermedios diferentes."
+        },
+        {
+            "id": "P021",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "basica",
+            "pregunta": "En bisección, ¿cómo se calcula el punto medio del intervalo?",
+            "opciones": [
+                "(a+b)/2",
+                "a·b",
+                "(b-a)/2",
+                "f(a)+f(b)"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "El punto medio es m=(a+b)/2; después se determina qué mitad conserva el cambio de signo."
+        },
+        {
+            "id": "P022",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "¿Cuál es la fórmula de actualización de Newton-Raphson?",
+            "opciones": [
+                "x siguiente = x - f(x)/f'(x)",
+                "x siguiente = (a+b)/2",
+                "x siguiente = g(x) + x",
+                "x siguiente = f'(x)/f(x)"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Newton-Raphson actualiza x restando el cociente entre la función y su derivada."
+        },
+        {
+            "id": "P023",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "En punto fijo, si la función iterativa es g(x), ¿cómo se obtiene la siguiente aproximación?",
+            "opciones": [
+                "x siguiente = g(x actual)",
+                "x siguiente = f'(x actual)",
+                "x siguiente = a+b",
+                "x siguiente = x actual/g(x actual)"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Se evalúa la función iterativa en la aproximación actual para obtener la siguiente."
+        },
+        {
+            "id": "P024",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "En el método de la secante, ¿cuántas aproximaciones iniciales se necesitan normalmente?",
+            "opciones": [
+                "Una",
+                "Dos",
+                "Tres",
+                "Ninguna"
+            ],
+            "respuesta_correcta": "B",
+            "explicacion": "La secante requiere dos aproximaciones iniciales para construir la recta secante."
+        },
+        {
+            "id": "P025",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "En Gauss-Seidel, al calcular x2 durante una iteración, ¿qué valor se utiliza para x1?",
+            "opciones": [
+                "El x1 recién actualizado en esa misma iteración",
+                "El x1 de hace dos iteraciones obligatoriamente",
+                "Siempre cero",
+                "El valor de x3"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Gauss-Seidel aprovecha inmediatamente los valores actualizados conforme avanza por las incógnitas."
+        },
+        {
+            "id": "P026",
+            "categoria": "Fórmulas y procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "En Jacobi, al calcular las nuevas incógnitas de una iteración, ¿qué valores se utilizan?",
+            "opciones": [
+                "Todos los valores de la iteración anterior",
+                "Los valores nuevos calculados en esa misma iteración",
+                "Solo el primer valor nuevo",
+                "Únicamente el lado derecho"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Jacobi calcula el nuevo vector usando exclusivamente los valores del vector anterior."
+        },
+        {
+            "id": "P027",
+            "categoria": "Análisis de procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "Un problema de bisección tiene f(a) y f(b) con el mismo signo. ¿Qué debe revisarse antes de iniciar?",
+            "opciones": [
+                "Elegir un intervalo válido que encierre una raíz y comprobar continuidad",
+                "Aumentar la cantidad de decimales sin cambiar el intervalo",
+                "Cambiar la función por su derivada",
+                "Usar directamente el punto medio como raíz exacta"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Para aplicar el criterio clásico de bisección se requiere continuidad y cambio de signo en los extremos."
+        },
+        {
+            "id": "P028",
+            "categoria": "Análisis de procedimientos",
+            "dificultad": "intermedia",
+            "pregunta": "En una tabla de interpolación, los valores de x están igualmente espaciados. ¿Qué dato se debe comprobar para usar las fórmulas de Newton hacia adelante o hacia atrás?",
+            "opciones": [
+                "Que la separación entre nodos consecutivos sea constante",
+                "Que todos los valores de y sean iguales",
+                "Que x comience en cero",
+                "Que existan exactamente dos puntos"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Las fórmulas clásicas de Newton hacia adelante y hacia atrás usan nodos igualmente espaciados."
+        },
+        {
+            "id": "P029",
+            "categoria": "Análisis de procedimientos",
+            "dificultad": "avanzada",
+            "pregunta": "Un método iterativo supera el número máximo de iteraciones sin cumplir la tolerancia. ¿Cuál es la interpretación más adecuada?",
+            "opciones": [
+                "No alcanzó el criterio de convergencia establecido; se debe reportar el estado y revisar el caso",
+                "La solución es exacta",
+                "Debe ocultarse el error y mostrar éxito",
+                "La tolerancia se cumple automáticamente"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "Al llegar al máximo sin satisfacer el criterio, el algoritmo debe informar que no convergió dentro del límite."
+        },
+        {
+            "id": "P030",
+            "categoria": "Análisis de procedimientos",
+            "dificultad": "avanzada",
+            "pregunta": "Un problema de interpolación usa nodos repetidos en una fórmula estándar de Lagrange. ¿Qué problema puede presentarse?",
+            "opciones": [
+                "Aparece una división entre cero en los denominadores de las bases",
+                "La función se vuelve necesariamente lineal",
+                "La tabla deja de necesitar valores de y",
+                "El polinomio siempre converge a cero"
+            ],
+            "respuesta_correcta": "A",
+            "explicacion": "La forma estándar de Lagrange requiere nodos x distintos para evitar denominadores nulos."
+        }
+    ]
+}
