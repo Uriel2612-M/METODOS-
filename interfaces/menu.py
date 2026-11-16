@@ -14,15 +14,15 @@ class VistaMenu(ctk.CTkFrame):
 
     def construir_ui(self):
         ctk.CTkLabel(self, text="ZERO LIMIT", font=("Consolas", 80, "bold"), text_color="#00FF00").pack(pady=(40, 5))
-        ctk.CTkLabel(self, text="PROYECTO: METODOS NUMERICOS (MODULO DE DIAGNOSTICO)", font=("Consolas", 14), text_color="#00FF00").pack(pady=(0, 30))
+        ctk.CTkLabel(self, text="PROYECTO: METODOS NUMÉRICOS", font=("Consolas", 14), text_color="#00FF00").pack(pady=(0, 30))
 
-        # El botón ahora usa la nueva función 'ir_a_practica'
         ctk.CTkButton(self, text="[ MODO PRACTICA ]", font=("Consolas", 30, "bold"), fg_color="transparent", 
                       border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
                       command=self.ir_a_practica).pack(pady=10)
 
         ctk.CTkButton(self, text="[ MODO DESAFIO ]", font=("Consolas", 30, "bold"), fg_color="transparent", 
-                      border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300").pack(pady=10)
+                      border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300",
+                      command=lambda: self.controlador.mostrar_vista("desafio")).pack(pady=10)
 
         ctk.CTkButton(self, text="[ MANUAL DEL INGENIERO ]", font=("Consolas", 20, "bold"), fg_color="transparent", 
                       border_width=2, text_color="yellow", border_color="yellow", hover_color="#333300",

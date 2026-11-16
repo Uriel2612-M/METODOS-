@@ -2,6 +2,7 @@ import customtkinter as ctk
 from interfaces.menu import VistaMenu
 from interfaces.practica import VistaPractica
 from interfaces.manual import VistaManual
+from interfaces.desafio import VistaDesafio
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -22,6 +23,7 @@ class ZeroLimitApp(ctk.CTk):
         self.vistas = {}
         self.vistas["menu"] = VistaMenu(self.contenedor_principal, self)
         self.vistas["practica"] = VistaPractica(self.contenedor_principal, self)
+        self.vistas["desafio"] = VistaDesafio(self.contenedor_principal, self)
         self.vistas["manual"] = VistaManual(self.contenedor_principal, self)
         
         self.mostrar_vista("menu")

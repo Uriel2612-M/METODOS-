@@ -26,7 +26,7 @@
     },
     {
      "id": "lagrange",
-      "nombre": "INTERPOLACIÓN DE LAGRANGE",
+      "nombre": "LAGRANGE",
       "descripcion": "Método de interpolación polinomial que construye un único polinomio de grado n-1 que pasa exactamente por n puntos conocidos. Se aplica tanto a intervalos uniformes como no uniformes.",
       "objetivo": "Estimar el valor de una función g(x) en un punto x intermedio a partir de una tabla de datos (xi, yi). Se usa cuando los datos no están espaciados de forma regular y se necesita mayor precisión que con la interpolación lineal.",
       "formula": "g(x) = Σ yi * Li(x),  para i = 1 hasta n\n\nLi(x) = Π (x - xj) / (xi - xj),  para j = 1 hasta n, j ≠ i\n\nEjemplo con 4 puntos:\ng(x) = y1*(x-x2)(x-x3)(x-x4) / [(x1-x2)(x1-x3)(x1-x4)]\n     + y2*(x-x1)(x-x3)(x-x4) / [(x2-x1)(x2-x3)(x2-x4)]\n     + y3*(x-x1)(x-x2)(x-x4) / [(x3-x1)(x3-x2)(x3-x4)]\n     + y4*(x-x1)(x-x2)(x-x3) / [(x4-x1)(x4-x2)(x4-x3)]",
