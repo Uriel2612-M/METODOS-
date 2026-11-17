@@ -37,14 +37,15 @@ class GestorPractica:
         self.resultado_final = None
 
         if metodo_seleccionado == "BISECTRIZ":
-            a = problema["valores_iniciales"]["a"]
-            b = problema["valores_iniciales"]["b"]
-            resultado = calcular_tabla_bisectriz(problema["funcion_python"], a, b, problema["tolerancia"])
+            # Reemplazamos "valores_iniciales" por "parametros_fijos"
+            a = problema["parametros_fijos"]["a"]
+            b = problema["parametros_fijos"]["b"]
+            resultado = calcular_tabla_bisectriz(problema["funcion_python"], a, b, problema.get("tolerancia", 0.001))
 
             if resultado["estado"] == "exito":
                 self.tabla_respuestas = resultado["iteraciones"]
                 for fila in self.tabla_respuestas:
-                    fila["valor"] = fila["x_medio"]   # lo que se le pide al jugador en cada paso
+                    fila["valor"] = fila["x_medio"]   
                 return True
             return False
 
@@ -59,7 +60,9 @@ class GestorPractica:
     def _inicializar_interpolacion(self, problema, metodo):
         xi = problema["datos_base"]["xi"]
         yi = problema["datos_base"]["yi"]
-        x = problema["valores_iniciales"]["x"]
+        
+        # Reemplazamos "valores_iniciales"["x"] por "parametros_fijos"["x_interpolar"]
+        x = problema["parametros_fijos"]["x_interpolar"]
 
         if metodo == "INTERPOLACION_LINEAL":
             res = calcular_tabla_interpolacion_lineal(xi[0], xi[1], yi[0], yi[1], x)

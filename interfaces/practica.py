@@ -42,65 +42,81 @@ class VistaPractica(ctk.CTkFrame):
         lista = ctk.CTkScrollableFrame(self, fg_color="transparent", height=380)
         lista.pack(pady=10, padx=50, fill="x")
 
-        # 1. Usamos la nueva función para obtener el catálogo
-        for problema in GestorProblemas.obtener_todos_instanciados():
+        # Modificación para leer el banco_practica.json
+        for problema in GestorProblemas.obtener_todos_practica():
             ctk.CTkButton(lista, text=f"[ {problema['id']}: {problema['titulo']} ]", font=("Consolas", 20), fg_color="transparent",
                           border_width=1, text_color="white", border_color="gray", hover_color="#003300",
                           command=lambda i=problema["id"]: self.mostrar_analisis_problema(i)).pack(pady=6, fill="x")
 
         ctk.CTkButton(self, text="[ REGRESAR AL MENU ]", font=("Consolas", 20), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=lambda: self.controlador.mostrar_vista("menu")).pack(side="bottom", pady=30)
-    # --- NUEVA PANTALLA INTERMEDIA ---
+
     def mostrar_analisis_problema(self, id_problema):
-        # 2. Generamos el problema aleatorio UNA SOLA VEZ aquí
-        problema_instanciado = GestorProblemas.obtener_problema_instanciado(id_problema)
-        if not problema_instanciado: return
+        # Modificación para utilizar los problemas fijos de práctica
+        problema = GestorProblemas.obtener_problema_practica(id_problema)
+        if not problema: return
 
         self.limpiar_frame()
-        ctk.CTkLabel(self, text=f"> EXPEDIENTE: {problema_instanciado['titulo']}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(30, 10))
+        ctk.CTkLabel(self, text=f"> EXPEDIENTE: {problema['titulo']}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(30, 10))
         
         frame_datos = ctk.CTkFrame(self, fg_color="#111111", border_width=1, border_color="#00FF00")
         frame_datos.pack(pady=10, padx=50, fill="x")
-        ctk.CTkLabel(frame_datos, text=problema_instanciado["contexto"], font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
+        ctk.CTkLabel(frame_datos, text=problema["contexto"], font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
 
         ctk.CTkLabel(self, text="ANALISIS: PROTOCOLOS DE RECUPERACION VIABLES DETECTADOS", font=("Consolas", 14, "bold"), text_color="yellow").pack(pady=(20, 10))
 
-        for metodo in problema_instanciado.get("metodos_viables", []):
-            # 3. Le pasamos todo el "problema_instanciado" (con sus números ya fijos) a la siguiente pantalla
+        for metodo in problema.get("metodos_viables", []):
             ctk.CTkButton(self, text=f"[ EJECUTAR PROTOCOLO: {metodo} ]", font=("Consolas", 16), fg_color="transparent", 
                           border_width=1, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", width=350,
-                          command=lambda p=problema_instanciado, m=metodo: self.iniciar_diagnostico(p, m)).pack(pady=5)
+                          command=lambda p=problema, m=metodo: self.iniciar_diagnostico(p, m)).pack(pady=5)
 
         ctk.CTkButton(self, text="[ VOLVER AL DIRECTORIO ]", font=("Consolas", 16), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=self.mostrar_directorio).pack(side="bottom", pady=30)
 
-    def mostrar_protocolo_no_disponible(self, metodo):
-        self.limpiar_frame()
-        ctk.CTkLabel(self, text="> PROTOCOLO NO DISPONIBLE", font=("Consolas", 24, "bold"), text_color="red").pack(pady=(80, 20))
-        ctk.CTkLabel(self, text=f"El protocolo {metodo} aún no está habilitado en el Modo Práctica\n(o los datos del problema no son válidos para ese método).",
-                     font=("Consolas", 16), text_color="white", justify="center").pack(pady=20)
-        ctk.CTkButton(self, text="[ VOLVER AL DIRECTORIO ]", font=("Consolas", 18), fg_color="transparent", border_width=1,
-                      text_color="yellow", border_color="yellow", hover_color="#333300", command=self.mostrar_directorio).pack(pady=30)
-
-    # --- INICIO DEL JUEGO ---
-    def iniciar_diagnostico(self, problema_instanciado, metodo_seleccionado):
-        # 4. Ya no buscamos el problema en el Gestor, usamos el que nos pasaron por parámetro
-        if not self.gestor.inicializar_sesion(problema_instanciado, metodo_seleccionado):
-            self.mostrar_protocolo_no_disponible(metodo_seleccionado)
-            return
-
+    def iniciar_diagnostico(self, problema, metodo_seleccionado):
+        if not self.gestor.inicializar_sesion(problema, metodo_seleccionado):
+            return 
+        
         self.fallas_consecutivas = 0
-        interpolacion = self.gestor.es_interpolacion()
+        self.metodo_actual = metodo_seleccionado # Guardamos el método actual para usarlo luego
 
         self.limpiar_frame()
-        ctk.CTkLabel(self, text=f"> DIAGNOSTICO EN CURSO: {metodo_seleccionado}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(15, 5))
-        # En interpolación el contexto incluye la tabla de datos, así que se usa letra más pequeña
-        ctk.CTkLabel(self, text=problema_instanciado["contexto"], font=("Consolas", 13 if interpolacion else 16),
-                     text_color="white", justify="left" if interpolacion else "center").pack(pady=(0, 8))
+        ctk.CTkLabel(self, text=f"> DIAGNOSTICO EN CURSO: {metodo_seleccionado}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(20, 10))
+        ctk.CTkLabel(self, text=problema["contexto"], font=("Consolas", 16), text_color="white").pack(pady=(0, 15))
+        
+        self.frame_tabla = ctk.CTkScrollableFrame(self, fg_color="#050505", border_width=1, border_color="gray", height=150)
+        self.frame_tabla.pack(pady=10, padx=50, fill="x")
 
-        # Se empaquetan primero para que siempre queden visibles abajo
+        # --- CABECERA DINÁMICA ---
+        if self.gestor.es_interpolacion():
+            cabecera = f"{'It':<4} | {'Paso / Término':<25} | {'Fórmula':<35} | {'Valor':<10}"
+        elif metodo_seleccionado in ["BISECTRIZ", "FALSA_POSICION"]:
+            cabecera = f"{'It':<4} | {'a':<10} | {'b':<10} | {'x_medio':<10} | {'f(x)':<10} | {'Error':<10}"
+        else: # Newton-Raphson, Secante, Punto Fijo, etc.
+            cabecera = f"{'It':<4} | {'x_actual':<10} | {'x_nueva':<10} | {'f(x_nueva)':<10} | {'Error':<10}"
+
+        ctk.CTkLabel(self.frame_tabla, text=cabecera, font=("Consolas", 14, "bold"), text_color="cyan", anchor="w").pack(fill="x", padx=10)
+        ctk.CTkLabel(self.frame_tabla, text="-"*85, font=("Consolas", 14), text_color="gray", anchor="w").pack(fill="x", padx=10)
+
+        self.frame_juego = ctk.CTkFrame(self, fg_color="#111111", border_width=1, border_color="#00FF00")
+        self.frame_juego.pack(pady=10, padx=50, fill="x")
+
+        self.label_instruccion = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 16), text_color="yellow")
+        self.label_instruccion.pack(pady=15)
+
+        self.entrada_jugador = ctk.CTkEntry(self.frame_juego, font=("Consolas", 18), width=150, justify="center")
+        self.entrada_jugador.pack(pady=5)
+
+        self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14))
+        self.label_feedback.pack(pady=5)
+
+        self.btn_enviar = ctk.CTkButton(self.frame_juego, text="[ ENVIAR DATOS ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
+                                        border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
+                                        command=self.procesar_respuesta)
+        self.btn_enviar.pack(pady=15)
+        
         frame_botones_inferiores = ctk.CTkFrame(self, fg_color="transparent")
-        frame_botones_inferiores.pack(side="bottom", pady=(5, 12))
+        frame_botones_inferiores.pack(side="bottom", pady=20)
 
         ctk.CTkButton(frame_botones_inferiores, text="[ CONSULTAR MANUAL ]", font=("Consolas", 14), fg_color="transparent", 
                       border_width=1, text_color="yellow", border_color="yellow", hover_color="#333300", 
@@ -109,77 +125,38 @@ class VistaPractica(ctk.CTkFrame):
         ctk.CTkButton(frame_botones_inferiores, text="[ ABORTAR DIAGNÓSTICO ]", font=("Consolas", 14), fg_color="transparent", 
                       text_color="gray", hover_color="#333333", command=self.mostrar_directorio).pack(side="left", padx=10)
 
-        self.frame_tabla = ctk.CTkScrollableFrame(self, fg_color="#050505", border_width=1, border_color="gray", height=100 if interpolacion else 130)
-        self.frame_tabla.pack(pady=8, padx=50, fill="x")
-
-        if interpolacion:
-            cabecera = f"{'Paso':<5}| {'Valor':<12}| {'Concepto':<14}"
-        else:
-            cabecera = f"{'It':<4} | {'a':<10} | {'b':<10} | {'x_medio':<10} | {'f(x)':<10} | {'Error':<10}"
-        ctk.CTkLabel(self.frame_tabla, text=cabecera, font=("Consolas", 14, "bold"), text_color="cyan", anchor="w").pack(fill="x", padx=10)
-        ctk.CTkLabel(self.frame_tabla, text="-"*75, font=("Consolas", 14), text_color="gray", anchor="w").pack(fill="x", padx=10)
-
-        self.frame_juego = ctk.CTkFrame(self, fg_color="#111111", border_width=1, border_color="#00FF00")
-        self.frame_juego.pack(pady=10, padx=50, fill="x")
-
-        self.label_instruccion = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 16), text_color="yellow", wraplength=650)
-        self.label_instruccion.pack(pady=10)
-
-        # Entrada y botón en la misma fila para ahorrar espacio vertical
-        self.frame_entrada = ctk.CTkFrame(self.frame_juego, fg_color="transparent")
-        self.frame_entrada.pack(pady=(5, 0))
-
-        self.entrada_jugador = ctk.CTkEntry(self.frame_entrada, font=("Consolas", 18), width=150, justify="center")
-        self.entrada_jugador.pack(side="left", padx=8)
-        self.entrada_jugador.bind("<Return>", lambda evento: self.procesar_respuesta())
-
-        self.btn_enviar = ctk.CTkButton(self.frame_entrada, text="[ ENVIAR DATOS ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
-                                        border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
-                                        command=self.procesar_respuesta)
-        self.btn_enviar.pack(side="left", padx=8)
-
-        self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14), wraplength=650)
-        self.label_feedback.pack(pady=(5, 12))
-        
         self.actualizar_paso()
-        
+
     def actualizar_paso(self):
         datos_paso = self.gestor.obtener_datos_paso_actual()
         if not datos_paso:
-            if self.gestor.es_interpolacion():
-                self.label_instruccion.configure(text=f"¡MÓDULO ESTABILIZADO! Diagnóstico completado.\nValor interpolado: g(x) = {self.gestor.resultado_final}")
-            else:
-                self.label_instruccion.configure(text="¡MÓDULO ESTABILIZADO! Diagnóstico completado.")
-            # 1. Ocultamos la fila de entrada (caja de texto + botón Enviar)
-            self.frame_entrada.pack_forget()
+            self.label_instruccion.configure(text="¡MÓDULO ESTABILIZADO! Diagnóstico completado.")
+            self.entrada_jugador.configure(state="disabled")
+            self.btn_enviar.pack_forget()
             
-            # 2. La graficadora (recompensa) por ahora solo aplica a bisección
-            if not self.gestor.es_interpolacion():
-                ctk.CTkButton(self.frame_juego, text="[ VER TELEMETRÍA GRÁFICA ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
-                              border_width=2, text_color="cyan", border_color="cyan", hover_color="#003333", 
-                              command=self.mostrar_grafica).pack(pady=(10, 5))
+            ctk.CTkButton(self.frame_juego, text="[ VER TELEMETRÍA GRÁFICA ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
+                          border_width=2, text_color="cyan", border_color="cyan", hover_color="#003333", 
+                          command=self.mostrar_grafica).pack(pady=(10, 5))
 
-            # 3. Mostramos el botón para salir
             ctk.CTkButton(self.frame_juego, text="[ REGRESAR AL DIRECTORIO ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
                           border_width=2, text_color="yellow", border_color="yellow", hover_color="#333300", 
                           command=self.mostrar_directorio).pack(pady=(5, 20))
             return
 
+        # --- TEXTO DE INSTRUCCIÓN DINÁMICO ---
         if self.gestor.es_interpolacion():
-            total = len(self.gestor.tabla_respuestas)
-            texto = f"PASO {datos_paso['iteracion']} de {total}: {datos_paso['etiqueta']}"
-            if datos_paso["formula"]:
-                texto += f"\n[ {datos_paso['formula']} ]"
-            texto += "\nIngrese el valor:"
+            texto = f"PASO {datos_paso['iteracion']}: {datos_paso['etiqueta']}\nFórmula sugerida: {datos_paso['formula']}\n\nIngrese el valor de [{datos_paso['corto']}]:"
+        elif self.metodo_actual in ["BISECTRIZ", "FALSA_POSICION"]:
+            texto = f"ITERACIÓN {datos_paso['iteracion']} | Límite a = {datos_paso['a']} | Límite b = {datos_paso['b']}\n\nIngrese el valor del nuevo punto (x_medio):"
         else:
-            texto = f"ITERACIÓN {datos_paso['iteracion']} | a = {datos_paso['a']}, b = {datos_paso['b']}\nIngrese el valor del punto medio (x):"
+            x_act = datos_paso.get("xi", datos_paso.get("x0", "?"))
+            texto = f"ITERACIÓN {datos_paso.get('iteracion', '?')} | Aproximación actual (x) = {x_act}\n\nIngrese la nueva aproximación calculada:"
+            
         self.label_instruccion.configure(text=texto)
         self.entrada_jugador.delete(0, 'end')
         self.label_feedback.configure(text="")
         
     def limpiar_error(self):
-        """Borra el mensaje de error y vacía la caja de texto tras un fallo."""
-        # Validamos que no borre el texto si el jugador justo acaba de acertar en ese instante
         texto_actual = self.label_feedback.cget("text")
         if "Correcto" not in texto_actual and texto_actual != "":
             self.label_feedback.configure(text="")
@@ -190,7 +167,7 @@ class VistaPractica(ctk.CTkFrame):
             valor = float(self.entrada_jugador.get())
         except ValueError:
             self.label_feedback.configure(text="Error: Ingrese un valor numérico válido.", text_color="red")
-            self.after(2000, self.limpiar_error) # <-- Limpia a los 2 segundos
+            self.after(2000, self.limpiar_error)
             return
 
         datos_resueltos = self.gestor.obtener_datos_paso_actual()
@@ -198,28 +175,45 @@ class VistaPractica(ctk.CTkFrame):
         
         if correcto:
             self.fallas_consecutivas = 0 
-            self.label_feedback.configure(text=f"¡Correcto! {'valor' if self.gestor.es_interpolacion() else 'x'} = {valor_real}", text_color="#00FF00")
+            self.label_feedback.configure(text=f"¡Correcto! Valor = {valor_real}", text_color="#00FF00")
+            
+            # --- IMPRESIÓN DE FILA DINÁMICA ---
+            it_str = str(datos_resueltos.get('iteracion', '?'))
             
             if self.gestor.es_interpolacion():
-                fila = f"{datos_resueltos['iteracion']:<5}| {datos_resueltos['valor']:<12}| {datos_resueltos['corto']}"
+                paso_str = str(datos_resueltos.get('corto', '---'))[:25]
+                formula_str = str(datos_resueltos.get('formula', '---'))[:35]
+                valor_str = str(valor_real)
+                fila = f"{it_str:<4} | {paso_str:<25} | {formula_str:<35} | {valor_str:<10}"
+                
+            elif self.metodo_actual in ["BISECTRIZ", "FALSA_POSICION"]:
+                a_str = str(datos_resueltos.get('a', '---'))
+                b_str = str(datos_resueltos.get('b', '---'))
+                x_str = str(valor_real)
+                fx_str = str(datos_resueltos.get('f_x_medio', '---'))
+                error_str = str(datos_resueltos.get('error', '---')) if datos_resueltos.get('error') is not None else "---"
+                fila = f"{it_str:<4} | {a_str:<10} | {b_str:<10} | {x_str:<10} | {fx_str:<10} | {error_str:<10}"
+                
             else:
-                error_str = str(datos_resueltos['error']) if datos_resueltos['error'] is not None else "---"
-                fila = f"{datos_resueltos['iteracion']:<4} | {datos_resueltos['a']:<10} | {datos_resueltos['b']:<10} | {datos_resueltos['x_medio']:<10} | {datos_resueltos['f_x_medio']:<10} | {error_str:<10}"
+                x_actual = str(datos_resueltos.get('xi', datos_resueltos.get('x0', '---')))
+                x_nueva = str(valor_real)
+                fx_nueva = str(datos_resueltos.get('f_xi', datos_resueltos.get('f_x_nueva', '---')))
+                error_str = str(datos_resueltos.get('error', '---')) if datos_resueltos.get('error') is not None else "---"
+                fila = f"{it_str:<4} | {x_actual:<10} | {x_nueva:<10} | {fx_nueva:<10} | {error_str:<10}"
+            
             ctk.CTkLabel(self.frame_tabla, text=fila, font=("Consolas", 14), text_color="white", anchor="w").pack(fill="x", padx=10)
             
             self.frame_tabla._parent_canvas.yview_moveto(1.0)
             self.after(1500, self.actualizar_paso)
         else:
             self.fallas_consecutivas += 1
-            
             if self.fallas_consecutivas == 3:
                 mensaje_advertencia = "⚠️ Has tenido 3 fallas continuas. Se recomienda\nconsultar el manual del ingeniero o escoger otro tema."
                 self.label_feedback.configure(text=mensaje_advertencia, text_color="yellow")
-                self.after(4000, self.limpiar_error) # <-- 4 segundos porque hay mucho que leer
+                self.after(4000, self.limpiar_error)
             else:
                  self.label_feedback.configure(text="Datos incorrectos. Revisa tus cálculos.", text_color="red")
-                 self.after(2000, self.limpiar_error) # <-- 2 segundos para el error normal
-            
+                 self.after(2000, self.limpiar_error)
+                 
     def mostrar_grafica(self):
         print("Iniciando renderizado con matplotlib...")
-        # Aquí irá el código de la ventana emergente CTkToplevel

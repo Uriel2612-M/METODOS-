@@ -95,3 +95,23 @@ class GestorProblemas:
             plantilla = random.choice(candidatos)
             return GestorProblemas.instanciar_problema(plantilla)
         return None
+    
+    @staticmethod
+    def obtener_todos_practica():
+        """Lee el catálogo de problemas fijos para el Modo Práctica."""
+        ruta = os.path.join("recursos", "banco_practica.json")
+        try:
+            with open(ruta, "r", encoding="utf-8") as archivo:
+                datos = json.load(archivo)
+                return datos.get("problemas_practica", [])
+        except FileNotFoundError:
+            print("Error: No se encontró banco_practica.json")
+            return []
+
+    @staticmethod
+    def obtener_problema_practica(id_problema):
+        """Busca un problema específico dentro del banco de práctica."""
+        for p in GestorProblemas.obtener_todos_practica():
+            if p["id"] == id_problema:
+                return p
+        return None
