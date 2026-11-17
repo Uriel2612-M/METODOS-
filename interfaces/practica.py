@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
+from interfaces.graficadora import VentanaGrafica
 
 class VistaPractica(ctk.CTkFrame):
     def __init__(self, parent, controlador):
@@ -52,7 +53,6 @@ class VistaPractica(ctk.CTkFrame):
                       command=lambda: self.controlador.mostrar_vista("menu")).pack(side="bottom", pady=30)
 
     def mostrar_analisis_problema(self, id_problema):
-        # Modificación para utilizar los problemas fijos de práctica
         problema = GestorProblemas.obtener_problema_practica(id_problema)
         if not problema: return
 
@@ -61,7 +61,11 @@ class VistaPractica(ctk.CTkFrame):
         
         frame_datos = ctk.CTkFrame(self, fg_color="#111111", border_width=1, border_color="#00FF00")
         frame_datos.pack(pady=10, padx=50, fill="x")
-        ctk.CTkLabel(frame_datos, text=problema["contexto"], font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
+        
+        # --- CAMBIO AQUI ---
+        texto_dinamico = self.formatear_contexto(problema)
+        ctk.CTkLabel(frame_datos, text=texto_dinamico, font=("Consolas", 16), text_color="white", justify="left").pack(pady=20, padx=20)
+        # ------------------
 
         ctk.CTkLabel(self, text="ANALISIS: PROTOCOLOS DE RECUPERACION VIABLES DETECTADOS", font=("Consolas", 14, "bold"), text_color="yellow").pack(pady=(20, 10))
 
@@ -73,16 +77,21 @@ class VistaPractica(ctk.CTkFrame):
         ctk.CTkButton(self, text="[ VOLVER AL DIRECTORIO ]", font=("Consolas", 16), fg_color="transparent", text_color="gray", hover_color="#333333", 
                       command=self.mostrar_directorio).pack(side="bottom", pady=30)
 
+
     def iniciar_diagnostico(self, problema, metodo_seleccionado):
         if not self.gestor.inicializar_sesion(problema, metodo_seleccionado):
             return 
         
         self.fallas_consecutivas = 0
-        self.metodo_actual = metodo_seleccionado # Guardamos el método actual para usarlo luego
+        self.metodo_actual = metodo_seleccionado
 
         self.limpiar_frame()
         ctk.CTkLabel(self, text=f"> DIAGNOSTICO EN CURSO: {metodo_seleccionado}", font=("Consolas", 20, "bold"), text_color="#00FF00").pack(pady=(20, 10))
-        ctk.CTkLabel(self, text=problema["contexto"], font=("Consolas", 16), text_color="white").pack(pady=(0, 15))
+        
+        # --- CAMBIO AQUI ---
+        texto_dinamico = self.formatear_contexto(problema)
+        ctk.CTkLabel(self, text=texto_dinamico, font=("Consolas", 16), text_color="white").pack(pady=(0, 15))
+        # ------------------
         
         self.frame_tabla = ctk.CTkScrollableFrame(self, fg_color="#050505", border_width=1, border_color="gray", height=150)
         self.frame_tabla.pack(pady=10, padx=50, fill="x")
@@ -214,6 +223,36 @@ class VistaPractica(ctk.CTkFrame):
             else:
                  self.label_feedback.configure(text="Datos incorrectos. Revisa tus cálculos.", text_color="red")
                  self.after(2000, self.limpiar_error)
-                 
+    
+    def formatear_contexto(self, problema):
+        """Extrae las matrices del JSON y las formatea como texto legible para el jugador."""
+        texto = problema["contexto"]
+        
+        # Si el problema tiene tabla de datos (Interpolación, Mínimos cuadrados)
+        if "datos_base" in problema:
+            datos = problema["datos_base"]
+            if "xi" in datos and "yi" in datos:
+                texto += f"\n\n[ LECTURAS X ]: {datos['xi']}\n[ LECTURAS Y ]: {datos['yi']}"
+                
+        # Si el problema es un sistema de ecuaciones matricial
+        elif "sistema" in problema:
+            sis = problema["sistema"]
+            if "coeficientes" in sis and "terminos_independientes" in sis:
+                texto += "\n\n[ MATRIZ DEL SISTEMA ]\n"
+                for fila, b in zip(sis["coeficientes"], sis["terminos_independientes"]):
+                    texto += f"{fila} = {b}\n"
+                    
+        return texto
+    
     def mostrar_grafica(self):
-        print("Iniciando renderizado con matplotlib...")
+        # Si la ventana ya está abierta, solo la traemos al frente para no duplicarla
+        if hasattr(self, "ventana_grafica") and self.ventana_grafica.winfo_exists():
+            self.ventana_grafica.focus()
+            return
+            
+        # Le pasamos el problema actual y toda la tabla resuelta para que extraiga el resultado
+        self.ventana_grafica = VentanaGrafica(
+            self, 
+            self.gestor.problema_actual, 
+            self.gestor.tabla_respuestas
+        )

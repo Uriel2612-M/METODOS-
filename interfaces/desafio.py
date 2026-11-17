@@ -187,6 +187,153 @@ class VistaDesafio(ctk.CTkFrame):
             if not self.gestor.en_juego:
                 self.after(1000, lambda: self.game_over("INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO."))
 
+    
+     # quizz
+        
+        def cargar_quiz_intermedio(self):
+            """Pantalla de minijuego para recuperar escudos o tiempo."""
+            self.quiz_actual = GestorProblemas.obtener_quiz_intermedio()
+            if not self.quiz_actual:
+                self.cargar_etapa_2() # Si no hay archivo, saltar directo a la etapa 2
+                return
+                
+            for widget in self.frame_accion.winfo_children():
+                widget.destroy()
+    
+            ctk.CTkLabel(self.frame_accion, text="⚠️ ALERTA: ANOMALÍA MATRICIAL DETECTADA", font=("Consolas", 22, "bold"), text_color="yellow").pack(pady=(20, 10))
+            ctk.CTkLabel(self.frame_accion, text="Resuelva el protocolo para obtener un bono de integridad.", font=("Consolas", 14), text_color="white").pack(pady=(0, 20))
+    
+            frame_quiz = ctk.CTkFrame(self.frame_accion, fg_color="#111111", border_width=1, border_color="yellow")
+            frame_quiz.pack(pady=10, padx=50, fill="both", expand=True)
+    
+            ctk.CTkLabel(frame_quiz, text=self.quiz_actual["texto_pregunta"], font=("Consolas", 16), text_color="cyan", justify="center").pack(pady=20, padx=20)
+    
+            self.label_feedback_quiz = ctk.CTkLabel(frame_quiz, text="", font=("Consolas", 16))
+            self.label_feedback_quiz.pack(pady=10)
+    
+            # Renderizar opciones según el tipo de input del JSON
+            if self.quiz_actual["tipo_input"] == "botones":
+                opciones = self.quiz_actual["opciones_pantalla"]
+                random.shuffle(opciones)
+                for op in opciones:
+                    ctk.CTkButton(frame_quiz, text=str(op), font=("Consolas", 16), fg_color="transparent", 
+                                  border_width=1, text_color="white", border_color="gray", hover_color="#333300",
+                                  command=lambda r=op: self.verificar_quiz(r)).pack(pady=5)
+                                  
+            elif self.quiz_actual["tipo_input"] == "texto":
+                self.entrada_quiz = ctk.CTkEntry(frame_quiz, font=("Consolas", 18), justify="center")
+                self.entrada_quiz.pack(pady=10)
+                ctk.CTkButton(frame_quiz, text="[ APLICAR TRANSFORMACIÓN ]", font=("Consolas", 16, "bold"), 
+                              fg_color="transparent", border_width=2, text_color="yellow", border_color="yellow", 
+                              command=lambda: self.verificar_quiz(self.entrada_quiz.get().strip())).pack(pady=10)
+    
+            ctk.CTkButton(self.frame_accion, text="[ OMITIR ANOMALÍA ]", font=("Consolas", 14), fg_color="transparent", text_color="gray", 
+                          command=self.cargar_etapa_2).pack(side="bottom", pady=20)
+    
+        def verificar_quiz(self, respuesta_jugador):
+            respuesta_correcta = self.quiz_actual["respuesta_correcta"]
+            
+            # Validar numéricamente si es un texto manual
+            if self.quiz_actual["tipo_input"] == "texto":
+                try:
+                    es_correcta = float(respuesta_jugador) == float(respuesta_correcta)
+                except ValueError:
+                    self.label_feedback_quiz.configure(text="Error de formato.", text_color="red")
+                    return
+            else:
+                es_correcta = str(respuesta_jugador) == str(respuesta_correcta)
+    
+            if es_correcta:
+                # Otorgar bono: Restaurar 1 vida si está dañado
+                if self.gestor.vidas < 3:
+                    self.gestor.vidas += 1
+                    self.actualizar_hud_vidas()
+                    mensaje = "¡CORRECTO! PROTOCOLO RESTAURADO (+1 ESCUDO)"
+                else:
+                    self.gestor.tiempo_restante += 30
+                    mensaje = "¡CORRECTO! EFICIENCIA ÓPTIMA (+30 SEGUNDOS)"
+                    
+                self.label_feedback_quiz.configure(text=mensaje, text_color="#00FF00")
+            else:
+                self.label_feedback_quiz.configure(text=f"INCORRECTO. La respuesta era {respuesta_correcta}.", text_color="red")
+                
+            # Pasar a la etapa 2 después de responder
+            self.after(2000, self.cargar_etapa_2)
+            
+     
+     # quizz
+        
+        def cargar_quiz_intermedio(self):
+            """Pantalla de minijuego para recuperar escudos o tiempo."""
+            self.quiz_actual = GestorProblemas.obtener_quiz_intermedio()
+            if not self.quiz_actual:
+                self.cargar_etapa_2() # Si no hay archivo, saltar directo a la etapa 2
+                return
+                
+            for widget in self.frame_accion.winfo_children():
+                widget.destroy()
+    
+            ctk.CTkLabel(self.frame_accion, text="⚠️ ALERTA: ANOMALÍA MATRICIAL DETECTADA", font=("Consolas", 22, "bold"), text_color="yellow").pack(pady=(20, 10))
+            ctk.CTkLabel(self.frame_accion, text="Resuelva el protocolo para obtener un bono de integridad.", font=("Consolas", 14), text_color="white").pack(pady=(0, 20))
+    
+            frame_quiz = ctk.CTkFrame(self.frame_accion, fg_color="#111111", border_width=1, border_color="yellow")
+            frame_quiz.pack(pady=10, padx=50, fill="both", expand=True)
+    
+            ctk.CTkLabel(frame_quiz, text=self.quiz_actual["texto_pregunta"], font=("Consolas", 16), text_color="cyan", justify="center").pack(pady=20, padx=20)
+    
+            self.label_feedback_quiz = ctk.CTkLabel(frame_quiz, text="", font=("Consolas", 16))
+            self.label_feedback_quiz.pack(pady=10)
+    
+            # Renderizar opciones según el tipo de input del JSON
+            if self.quiz_actual["tipo_input"] == "botones":
+                opciones = self.quiz_actual["opciones_pantalla"]
+                random.shuffle(opciones)
+                for op in opciones:
+                    ctk.CTkButton(frame_quiz, text=str(op), font=("Consolas", 16), fg_color="transparent", 
+                                  border_width=1, text_color="white", border_color="gray", hover_color="#333300",
+                                  command=lambda r=op: self.verificar_quiz(r)).pack(pady=5)
+                                  
+            elif self.quiz_actual["tipo_input"] == "texto":
+                self.entrada_quiz = ctk.CTkEntry(frame_quiz, font=("Consolas", 18), justify="center")
+                self.entrada_quiz.pack(pady=10)
+                ctk.CTkButton(frame_quiz, text="[ APLICAR TRANSFORMACIÓN ]", font=("Consolas", 16, "bold"), 
+                              fg_color="transparent", border_width=2, text_color="yellow", border_color="yellow", 
+                              command=lambda: self.verificar_quiz(self.entrada_quiz.get().strip())).pack(pady=10)
+    
+            ctk.CTkButton(self.frame_accion, text="[ OMITIR ANOMALÍA ]", font=("Consolas", 14), fg_color="transparent", text_color="gray", 
+                          command=self.cargar_etapa_2).pack(side="bottom", pady=20)
+    
+        def verificar_quiz(self, respuesta_jugador):
+            respuesta_correcta = self.quiz_actual["respuesta_correcta"]
+            
+            # Validar numéricamente si es un texto manual
+            if self.quiz_actual["tipo_input"] == "texto":
+                try:
+                    es_correcta = float(respuesta_jugador) == float(respuesta_correcta)
+                except ValueError:
+                    self.label_feedback_quiz.configure(text="Error de formato.", text_color="red")
+                    return
+            else:
+                es_correcta = str(respuesta_jugador) == str(respuesta_correcta)
+    
+            if es_correcta:
+                # Otorgar bono: Restaurar 1 vida si está dañado
+                if self.gestor.vidas < 3:
+                    self.gestor.vidas += 1
+                    self.actualizar_hud_vidas()
+                    mensaje = "¡CORRECTO! PROTOCOLO RESTAURADO (+1 ESCUDO)"
+                else:
+                    self.gestor.tiempo_restante += 30
+                    mensaje = "¡CORRECTO! EFICIENCIA ÓPTIMA (+30 SEGUNDOS)"
+                    
+                self.label_feedback_quiz.configure(text=mensaje, text_color="#00FF00")
+            else:
+                self.label_feedback_quiz.configure(text=f"INCORRECTO. La respuesta era {respuesta_correcta}.", text_color="red")
+                
+            # Pasar a la etapa 2 después de responder
+            self.after(2000, self.cargar_etapa_2)
+            
+            
     def transicion_etapa_2(self):
         for widget in self.frame_accion.winfo_children():
             widget.destroy()
@@ -200,13 +347,158 @@ class VistaDesafio(ctk.CTkFrame):
         ctk.CTkButton(self.frame_accion, text="[ CONTINUAR ]", font=("Consolas", 20, "bold"), fg_color="transparent", 
                       border_width=2, text_color="cyan", border_color="cyan", hover_color="#003333",
                       command=self.cargar_etapa_2).pack(pady=30)
+        
+   
                       
+    # ==========================================
+    # ETAPA 2: ITERACIONES RÁPIDAS
+    # ==========================================
     def cargar_etapa_2(self):
-        # Limpiar frame temporalmente para indicar que la fase 2 está en construcción
+        self.gestor.preparar_etapa_2()
+        problema = self.gestor.problema_actual_n2
+        metodo = self.gestor.metodo_actual_n2
+        
         for widget in self.frame_accion.winfo_children():
             widget.destroy()
-        ctk.CTkLabel(self.frame_accion, text="> FASE 2 EN ESPERA DE INTEGRACIÓN...", font=("Consolas", 18, "bold"), text_color="yellow").pack(pady=50)
 
+        ctk.CTkLabel(self.frame_accion, text=f"> FASE 2: ESTABILIZACIÓN ({metodo})", font=("Consolas", 18, "bold"), text_color="cyan").pack(pady=(5, 10))
+        ctk.CTkLabel(self.frame_accion, text=problema["contexto"], font=("Consolas", 14), text_color="white", wraplength=700).pack(pady=(0, 10))
+
+        # Tabla de resultados
+        self.frame_tabla = ctk.CTkScrollableFrame(self.frame_accion, fg_color="#050505", border_width=1, border_color="gray", height=130)
+        self.frame_tabla.pack(pady=5, padx=20, fill="x")
+
+        # Cabecera Dinámica reutilizada de Práctica
+        # --- CABECERA DINÁMICA SIN AYUDAS ---
+        if self.gestor.motor_matematico.es_interpolacion():
+            # Eliminamos la columna de fórmula y reajustamos los espacios
+            cabecera = f"{'It':<4} | {'Paso / Término':<35} | {'Valor':<15}"
+        elif metodo in ["BISECTRIZ", "FALSA_POSICION"]:
+            cabecera = f"{'It':<4} | {'a':<10} | {'b':<10} | {'x_medio':<10} | {'f(x)':<10} | {'Error':<10}"
+        else:
+            cabecera = f"{'It':<4} | {'x_actual':<10} | {'x_nueva':<10} | {'f(x_nueva)':<10} | {'Error':<10}"
+
+        ctk.CTkLabel(self.frame_tabla, text=cabecera, font=("Consolas", 12, "bold"), text_color="cyan", anchor="w").pack(fill="x", padx=5)
+        ctk.CTkLabel(self.frame_tabla, text="-"*85, font=("Consolas", 12), text_color="gray", anchor="w").pack(fill="x", padx=5)
+
+        # Controles de Entrada
+        self.frame_juego = ctk.CTkFrame(self.frame_accion, fg_color="#111111", border_width=1, border_color="#00FF00")
+        self.frame_juego.pack(pady=10, padx=20, fill="x")
+
+        self.label_instruccion = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 16), text_color="yellow")
+        self.label_instruccion.pack(pady=10)
+
+        self.entrada_jugador = ctk.CTkEntry(self.frame_juego, font=("Consolas", 18), width=150, justify="center")
+        self.entrada_jugador.pack(pady=5)
+
+        self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14))
+        self.label_feedback.pack(pady=5)
+
+        self.btn_enviar = ctk.CTkButton(self.frame_juego, text="[ ENVIAR DATOS ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
+                                        border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
+                                        command=self.procesar_respuesta_etapa_2)
+        self.btn_enviar.pack(pady=10)
+
+        self.actualizar_paso_etapa_2()
+
+    def actualizar_paso_etapa_2(self):
+        datos_paso = self.gestor.motor_matematico.obtener_datos_paso_actual()
+        
+        if not datos_paso:
+            self.label_instruccion.configure(text="¡MÓDULO ESTABILIZADO! FASE 2 COMPLETADA.")
+            self.entrada_jugador.configure(state="disabled")
+            self.btn_enviar.pack_forget()
+            
+            # Pasar a la Etapa 3 en 2 segundos
+            self.after(2000, self.transicion_etapa_3)
+            return
+
+        # Texto de Instrucción Dinámico
+        if self.gestor.motor_matematico.es_interpolacion():
+            texto = f"PASO {datos_paso['iteracion']}: {datos_paso['etiqueta']}\nIngrese el valor de [{datos_paso['corto']}]:"
+        elif self.gestor.metodo_actual_n2 in ["BISECTRIZ", "FALSA_POSICION"]:
+            texto = f"ITERACIÓN {datos_paso['iteracion']} | a = {datos_paso.get('a','?')} | b = {datos_paso.get('b','?')}\nIngrese x_medio:"
+        else:
+            x_act = datos_paso.get("xi", datos_paso.get("x0", "?"))
+            texto = f"ITERACIÓN {datos_paso.get('iteracion', '?')} | Aproximación actual = {x_act}\nIngrese nueva aproximación:"
+
+        self.label_instruccion.configure(text=texto)
+        self.entrada_jugador.delete(0, 'end')
+        self.label_feedback.configure(text="")
+
+    def limpiar_error_e2(self):
+        texto_actual = self.label_feedback.cget("text")
+        if "Correcto" not in texto_actual and texto_actual != "":
+            self.label_feedback.configure(text="")
+            self.entrada_jugador.delete(0, 'end')
+    
+    
+
+    def procesar_respuesta_etapa_2(self):
+        if not self.gestor.en_juego: return
+        
+        try:
+            valor = float(self.entrada_jugador.get())
+        except ValueError:
+            self.label_feedback.configure(text="Error: Ingrese un valor numérico.", text_color="red")
+            self.after(2000, self.limpiar_error_e2)
+            return
+
+        datos_resueltos = self.gestor.motor_matematico.obtener_datos_paso_actual()
+        correcto, valor_real = self.gestor.verificar_respuesta_etapa_2(valor)
+
+        if correcto:
+            self.label_feedback.configure(text=f"¡Correcto! Valor = {valor_real}", text_color="#00FF00")
+
+            it_str = str(datos_resueltos.get('iteracion', '?'))
+            metodo_actual = self.gestor.metodo_actual_n2
+
+            if self.gestor.motor_matematico.es_interpolacion():
+                paso_str = str(datos_resueltos.get('corto', '---'))[:25]
+                formula_str = str(datos_resueltos.get('formula', '---'))[:35]
+                valor_str = str(valor_real)
+                fila = f"{it_str:<4} | {paso_str:<35} | {valor_str:<15}"
+                
+            elif metodo_actual in ["BISECTRIZ", "FALSA_POSICION"]:
+                a_str = str(datos_resueltos.get('a', '---'))
+                b_str = str(datos_resueltos.get('b', '---'))
+                x_str = str(valor_real)
+                fx_str = str(datos_resueltos.get('f_x_medio', '---'))
+                error_str = str(datos_resueltos.get('error', '---')) if datos_resueltos.get('error') is not None else "---"
+                fila = f"{it_str:<4} | {a_str:<10} | {b_str:<10} | {x_str:<10} | {fx_str:<10} | {error_str:<10}"
+                
+            else:
+                x_actual = str(datos_resueltos.get('xi', datos_resueltos.get('x0', '---')))
+                x_nueva = str(valor_real)
+                fx_nueva = str(datos_resueltos.get('f_xi', datos_resueltos.get('f_x_nueva', '---')))
+                error_str = str(datos_resueltos.get('error', '---')) if datos_resueltos.get('error') is not None else "---"
+                fila = f"{it_str:<4} | {x_actual:<10} | {x_nueva:<10} | {fx_nueva:<10} | {error_str:<10}"
+
+            ctk.CTkLabel(self.frame_tabla, text=fila, font=("Consolas", 12), text_color="white", anchor="w").pack(fill="x", padx=5)
+            self.frame_tabla._parent_canvas.yview_moveto(1.0)
+            
+            self.after(1000, self.actualizar_paso_etapa_2)
+        else:
+            # PENALIZACIÓN DE ESCUDOS
+            self.gestor.restar_vida()
+            self.actualizar_hud_vidas()
+            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO.", text_color="red")
+            
+            if not self.gestor.en_juego:
+                self.after(1000, lambda: self.game_over("INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO."))
+            else:
+                self.after(2000, self.limpiar_error_e2)
+
+    def transicion_etapa_3(self):
+        for widget in self.frame_accion.winfo_children():
+            widget.destroy()
+            
+        self.gestor.etapa_actual = 3
+        self.label_etapa.configure(text=f"ETAPA {self.gestor.etapa_actual}")
+        
+        ctk.CTkLabel(self.frame_accion, text="¡FASE 2 COMPLETADA!", font=("Consolas", 30, "bold"), text_color="#00FF00").pack(pady=(50, 20))
+        ctk.CTkLabel(self.frame_accion, text="> FASE 3 EN ESPERA DE INTEGRACIÓN...", font=("Consolas", 18, "bold"), text_color="yellow").pack(pady=20)
+        
     def game_over(self, motivo):
         # Si el tiempo se acaba mientras el jugador está leyendo la advertencia, se cierra la ventana forzosamente
         if hasattr(self, "ventana_advertencia") and self.ventana_advertencia.winfo_exists():

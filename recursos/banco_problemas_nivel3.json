@@ -1,0 +1,196 @@
+{
+  "problemas_nivel_3": [
+    {
+      "id": "N3_01",
+      "titulo": "DEGRADACION DE ESCUDOS",
+      "contexto": "Los escudos deflectores muestran fluctuaciones anómalas por daño estructural.\nAjuste las lecturas de los escudos a un modelo de Línea Recta (y = a0 + a1x) \nusando el método de Mínimos Cuadrados para estimar la tasa de degradación.",
+      "metodos_viables": [
+        "MINIMOS_CUADRADOS_LINEAL"
+      ],
+      "datos_base": {
+        "xi": [
+          1.1,
+          1.9,
+          2.4,
+          4.8,
+          5.1,
+          10.5
+        ]
+      },
+      "aleatorio": {
+        "tipo": "yi_variable",
+        "descripcion": "Los valores yi (intensidad) varían ±0.5 respecto a los valores base para generar diferentes pendientes.",
+        "yi_base": [
+          2.5,
+          2.7,
+          3.7,
+          5.2,
+          6.0,
+          8.3
+        ],
+        "yi_delta": 0.5
+      }
+    },
+    {
+      "id": "N3_02",
+      "titulo": "TRAYECTORIA DE METEORITO",
+      "contexto": "Los radares detectan un fragmento de asteroide acercándose a la nave. \nLos datos presentan ruido por radiación electromagnética.\nAjuste la trayectoria a un modelo Cuadrático (y = a0 + a1x + a2x²) \nmediante Mínimos Cuadrados para predecir el impacto.",
+      "metodos_viables": [
+        "MINIMOS_CUADRADOS_CUADRATICA"
+      ],
+      "datos_base": {
+        "xi": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ]
+      },
+      "aleatorio": {
+        "tipo": "yi_variable",
+        "descripcion": "Los valores yi varían ±1.0, manteniendo siempre una tendencia parabólica convexa o cóncava.",
+        "yi_base": [
+          2.1,
+          5.2,
+          10.3,
+          16.8,
+          26.1
+        ],
+        "yi_delta": 1.0
+      }
+    },
+    {
+      "id": "N3_03",
+      "titulo": "DESCARGA DE NUCLEO DE FUSION",
+      "contexto": "Se requiere calcular la energía total liberada por el reactor de fusión. \nLa curva de descarga sigue la función f(x) = 1 - x².\nAproxime la integral definida en el intervalo dado usando la Regla Trapezoidal.",
+      "funcion_python": "1 - x**2",
+      "funcion_display": "f(x) = 1 - x²",
+      "metodos_viables": [
+        "TRAPECIO"
+      ],
+      "aleatorio": {
+        "tipo": "intervalo_y_n",
+        "descripcion": "El intervalo [a, b] es fijo (0 a 1), pero el número de segmentos (n) se elige aleatoriamente para cambiar el tamaño de paso (h).",
+        "a_fijo": 0.0,
+        "b_fijo": 1.0,
+        "opciones_n": [
+          2,
+          4,
+          8,
+          10
+        ]
+      }
+    },
+    {
+      "id": "N3_04",
+      "titulo": "ACUMULACION DE MATERIA OSCURA",
+      "contexto": "El condensador frontal recoge partículas exóticas según la función f(x) = eˣ - x. \nEstime el volumen total de recolección aplicando la Regla de Simpson 1/3.\nRecuerde que el sistema exige un número par de subintervalos.",
+      "funcion_python": "math.exp(x) - x",
+      "funcion_display": "f(x) = eˣ - x",
+      "metodos_viables": [
+        "SIMPSON_1_3"
+      ],
+      "aleatorio": {
+        "tipo": "intervalo_y_n_par",
+        "descripcion": "El número de intervalos 'n' debe ser forzosamente par.",
+        "opciones_parametros": [
+          {
+            "a": 0.0,
+            "b": 2.0,
+            "n": 4
+          },
+          {
+            "a": 1.0,
+            "b": 3.0,
+            "n": 6
+          },
+          {
+            "a": 0.0,
+            "b": 1.0,
+            "n": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "N3_05",
+      "titulo": "FILTRADO DE FRECUENCIAS DE COMUNICACION",
+      "contexto": "Una señal de auxilio se ve afectada por una onda de interferencia f(x) = x³ - 2x. \nFiltre el ruido calculando el área bajo la curva con la Regla de Simpson 3/8.\nEl número de segmentos (n) debe ser múltiplo de 3.",
+      "funcion_python": "x**3 - 2*x",
+      "funcion_display": "f(x) = x³ - 2x",
+      "metodos_viables": [
+        "SIMPSON_3_8"
+      ],
+      "aleatorio": {
+        "tipo": "intervalo_y_n_multiplo_3",
+        "descripcion": "El número de intervalos 'n' debe ser forzosamente múltiplo de 3.",
+        "opciones_parametros": [
+          {
+            "a": 0.0,
+            "b": 3.0,
+            "n": 3
+          },
+          {
+            "a": -1.0,
+            "b": 2.0,
+            "n": 6
+          },
+          {
+            "a": 0.0,
+            "b": 1.5,
+            "n": 3
+          }
+        ]
+      }
+    },
+    {
+      "id": "N3_06",
+      "titulo": "DRENAJE DE BATERIA DE EMERGENCIA",
+      "contexto": "El soporte vital drena la batería según la Ecuación Diferencial y' = 5yt - 1. \nUsando las condiciones iniciales dadas, proyecte el estado de la batería \nen el siguiente paso de tiempo (t1) usando el Método de Euler Modificado.",
+      "funcion_python": "5*y*t - 1",
+      "funcion_display": "y' = 5yt - 1",
+      "metodos_viables": [
+        "EULER_MODIFICADO"
+      ],
+      "datos_base": {
+        "t0": 0.0,
+        "h": 0.2
+      },
+      "aleatorio": {
+        "tipo": "y0_variable",
+        "descripcion": "La carga inicial y0 varía aleatoriamente para crear escenarios de drenaje distintos.",
+        "opciones_y0": [
+          1.2,
+          2.0,
+          2.5,
+          3.0
+        ]
+      }
+    },
+    {
+      "id": "N3_07",
+      "titulo": "CALCULO DE REINGRESO ATMOSFERICO",
+      "contexto": "El ángulo de reingreso de la cápsula obedece a la EDO y' = 5yt - 1.\nLa más mínima desviación resultará en incineración. \nAplique el Método de Runge-Kutta de 4to Orden Clásico para \ncalcular con máxima precisión el valor en el paso t1.",
+      "funcion_python": "5*y*t - 1",
+      "funcion_display": "y' = 5yt - 1",
+      "metodos_viables": [
+        "RUNGE_KUTTA_4"
+      ],
+      "datos_base": {
+        "t0": 0.0,
+        "h": 0.2
+      },
+      "aleatorio": {
+        "tipo": "y0_variable",
+        "descripcion": "El estado inicial de la cápsula y0 cambia en cada intento.",
+        "opciones_y0": [
+          1.0,
+          2.0,
+          2.2,
+          1.5
+        ]
+      }
+    }
+  ]
+}

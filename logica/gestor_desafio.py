@@ -2,14 +2,18 @@ import json
 import os
 import random
 from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
+from logica.gestor_problemas import GestorProblemas
+from logica.gestor_practica import GestorPractica
 
 class GestorDesafio:
     def __init__(self):
         self.vidas_maximas = 3
-        self.vidas = self.vidas_maximas
-        self.tiempo_restante = 300  
+        self.vidas = self.vidas_maximas 
         self.etapa_actual = 1
         self.en_juego = False
+        self.motor_matematico = GestorPractica()
+        self.problema_actual_n2 = None
+        self.metodo_actual_n2 = None
         
         # Variables de control de progresión
         self.config_partida = {}
@@ -33,7 +37,7 @@ class GestorDesafio:
 
     def iniciar_partida(self):
         self.vidas = self.vidas_maximas
-        self.tiempo_restante = 300
+        self.tiempo_restante = 900
         self.etapa_actual = 1
         self.en_juego = True
         
@@ -104,3 +108,22 @@ class GestorDesafio:
         
     def etapa_1_completada(self):
         return self.preguntas_respondidas >= self.preguntas_totales_etapa_1
+    
+    def preparar_etapa_2(self):
+        """Obtiene un problema aleatorio de Nivel 2 y arranca el motor matemático"""
+        exito = False
+        intentos = 0
+        
+        # Bucle de seguridad: intenta generar problemas hasta que uno se resuelva correctamente
+        while not exito and intentos < 10:
+            self.problema_actual_n2 = GestorProblemas.obtener_problema_aleatorio_nivel_2()
+            if not self.problema_actual_n2: 
+                break
+                
+            self.metodo_actual_n2 = random.choice(self.problema_actual_n2["metodos_viables"])
+            exito = self.motor_matematico.inicializar_sesion(self.problema_actual_n2, self.metodo_actual_n2)
+            intentos += 1
+    def verificar_respuesta_etapa_2(self, valor):
+        # Usamos el motor matemático para validar el número
+        correcto, valor_real = self.motor_matematico.verificar_respuesta(valor)
+        return correcto, valor_real

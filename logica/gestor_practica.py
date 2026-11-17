@@ -36,10 +36,11 @@ class GestorPractica:
         self.tabla_respuestas = []
         self.resultado_final = None
 
+        datos_ini = problema.get("parametros_fijos", problema.get("valores_iniciales", {}))
+
         if metodo_seleccionado == "BISECTRIZ":
-            # Reemplazamos "valores_iniciales" por "parametros_fijos"
-            a = problema["parametros_fijos"]["a"]
-            b = problema["parametros_fijos"]["b"]
+            a = datos_ini.get("a", 0)
+            b = datos_ini.get("b", 1)
             resultado = calcular_tabla_bisectriz(problema["funcion_python"], a, b, problema.get("tolerancia", 0.001))
 
             if resultado["estado"] == "exito":
@@ -61,8 +62,9 @@ class GestorPractica:
         xi = problema["datos_base"]["xi"]
         yi = problema["datos_base"]["yi"]
         
-        # Reemplazamos "valores_iniciales"["x"] por "parametros_fijos"["x_interpolar"]
-        x = problema["parametros_fijos"]["x_interpolar"]
+        datos_ini = problema.get("parametros_fijos", problema.get("valores_iniciales", {}))
+        # Algunos JSON usan "x", otros "x_interpolar"
+        x = datos_ini.get("x_interpolar", datos_ini.get("x", 0))
 
         if metodo == "INTERPOLACION_LINEAL":
             res = calcular_tabla_interpolacion_lineal(xi[0], xi[1], yi[0], yi[1], x)

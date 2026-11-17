@@ -7,9 +7,7 @@ class VistaMenu(ctk.CTkFrame):
         self.construir_ui()
 
     def ir_a_practica(self):
-        # 1. Forzamos a que la vista de práctica se resetee a las instrucciones
         self.controlador.vistas["practica"].mostrar_instrucciones()
-        # 2. Le decimos al controlador que muestre la pantalla
         self.controlador.mostrar_vista("practica")
 
     def construir_ui(self):
@@ -21,11 +19,16 @@ class VistaMenu(ctk.CTkFrame):
                       command=self.ir_a_practica).pack(pady=10)
 
         ctk.CTkButton(self, text="[ MODO DESAFIO ]", font=("Consolas", 30, "bold"), fg_color="transparent", 
-                      border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300",
-                      command=lambda: self.controlador.mostrar_vista("desafio")).pack(pady=10)
+                      border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
+                      command=self.ir_a_desafio).pack(pady=10)
 
         ctk.CTkButton(self, text="[ MANUAL DEL INGENIERO ]", font=("Consolas", 20, "bold"), fg_color="transparent", 
                       border_width=2, text_color="yellow", border_color="yellow", hover_color="#333300",
                       command=lambda: self.controlador.mostrar_vista("manual")).pack(pady=(30, 10))
 
         ctk.CTkLabel(self, text="NOTA: Se requieren conocimientos básicos de álgebra y cálculo para poder participar.", font=("Consolas", 15), text_color="gray").pack(side="bottom", pady=20)
+        
+    def ir_a_desafio(self):
+        self.controlador.vistas["desafio"].mostrar_pantalla_inicio()
+        self.controlador.mostrar_vista("desafio")
+        

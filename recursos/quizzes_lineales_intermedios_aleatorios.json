@@ -1,0 +1,88 @@
+{
+  "quizzes_rapidos": [
+    {
+      "id": "QUIZ_01",
+      "tipo": "PIVOTEO_GAUSSIANO",
+      "titulo": "RECALIBRACION DE PIVOTE PRINCIPAL",
+      "contexto": "El sistema requiere un pivoteo parcial en la iteración actual para evitar errores de redondeo en la Eliminación Gaussiana.",
+      "pregunta": "¿Qué valor de la columna actual debe seleccionarse como pivote?",
+      "aleatorio": {
+        "tipo": "generacion_columna",
+        "descripcion": "El motor de juego generará de 3 a 4 valores aleatorios para mostrarlos como opciones. La respuesta correcta es el número con el MAYOR valor absoluto.",
+        "rango_valores": {
+          "min": -25.0,
+          "max": 25.0
+        },
+        "logica_respuesta": "max(abs(opciones))"
+      }
+    },
+    {
+      "id": "QUIZ_02",
+      "tipo": "CALCULO_MONTANTE",
+      "titulo": "TRANSFORMACION ENTERA",
+      "contexto": "Ejecutando una transformación del Método Montante. Los escáneres indican las siguientes lecturas aleatorias:",
+      "pregunta": "Calcule el Nuevo Elemento de la matriz.",
+      "aleatorio": {
+        "tipo": "variables_montante",
+        "descripcion": "El motor genera 5 variables en los rangos indicados. Debe aplicar un bucle while para re-generar los números si la restricción de divisibilidad no se cumple.",
+        "rangos": {
+          "PivoteAnterior": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "PivoteActual": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "ElementoActual": [
+            -15,
+            15
+          ],
+          "FilaPivote": [
+            -10,
+            10
+          ],
+          "ColumnaPivote": [
+            -10,
+            10
+          ]
+        },
+        "restriccion_motor": "(PivoteActual * ElementoActual - FilaPivote * ColumnaPivote) % PivoteAnterior == 0",
+        "logica_respuesta": "(PivoteActual * ElementoActual - FilaPivote * ColumnaPivote) / PivoteAnterior"
+      }
+    },
+    {
+      "id": "QUIZ_03",
+      "tipo": "RECONOCIMIENTO_ESTRUCTURAL",
+      "titulo": "ESTADO DEL SISTEMA",
+      "contexto": "¿A qué objetivo final de método de eliminación de Ecuaciones Lineales corresponde esta estructura matricial?",
+      "opciones_generales": [
+        "Eliminación Gaussiana",
+        "Gauss-Jordan",
+        "Regla de Cramer",
+        "Descomposición LU"
+      ],
+      "aleatorio": {
+        "tipo": "seleccion_matriz",
+        "descripcion": "El motor elige aleatoriamente uno de los siguientes estados (opcion_a u opcion_b) para renderizar en pantalla.",
+        "pool_opciones": [
+          {
+            "matriz_display": "[1  0  0]\n[0  1  0]\n[0  0  1]",
+            "respuesta_correcta": "Gauss-Jordan",
+            "explicacion": "Gauss-Jordan reduce la matriz completamente a la Matriz Identidad (unos en diagonal, ceros en el resto)."
+          },
+          {
+            "matriz_display": "[1  X  X]\n[0  1  X]\n[0  0  1]",
+            "respuesta_correcta": "Eliminación Gaussiana",
+            "explicacion": "La Eliminación Gaussiana simple busca formar una Matriz Triangular Superior antes de aplicar sustitución hacia atrás."
+          }
+        ]
+      }
+    }
+  ]
+}
