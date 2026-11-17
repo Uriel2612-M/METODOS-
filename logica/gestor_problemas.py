@@ -1,23 +1,25 @@
 import json
 import os
 import random
+import copy
+from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 import math # Necesario para evaluar funciones matemáticas en el solucionario y gestor
 
 class GestorProblemas:
     @staticmethod
     def cargar_datos_crudos():
-        ruta = os.path.join("recursos", "banco_problemas.json")
+        ruta = ruta_recurso("banco_problemas.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 return json.load(archivo)
         except FileNotFoundError:
-            print("Error: No se encontró banco_problemas.json")
+            print(mensaje_no_encontrado("banco_problemas.json"))
             return {"problemas_basicos": []}
 
     @staticmethod
     def instanciar_problema(problema_base):
         """Toma la plantilla del JSON y genera valores concretos según su tipo de aleatoriedad."""
-        p_instanciado = problema_base.copy()
+        p_instanciado = copy.deepcopy(problema_base)
         
         if "aleatorio" not in p_instanciado:
             return p_instanciado
@@ -49,6 +51,22 @@ class GestorProblemas:
             x1 = round(random.uniform(reglas["x1_min"], reglas["x1_max"]), 2)
             p_instanciado["valores_iniciales"] = {"x0": x0, "x1": x1}
             p_instanciado["contexto"] = p_instanciado["contexto"] + f"\n\nValores iniciales asignados: x0 = {x0}, x1 = {x1}"
+
+        elif tipo in ("x_interpolar", "yi_y_x_interpolar"):
+            datos = p_instanciado["datos_base"]
+
+            # Los yi se perturban respecto a los valores base (si el problema lo pide)
+            if tipo == "yi_y_x_interpolar":
+                delta = reglas["yi_delta"]
+                datos["yi"] = [round(y + random.uniform(-delta, delta), 2) for y in reglas["yi_base"]]
+
+            x = round(random.uniform(reglas["x_min"], reglas["x_max"]), 2)
+            p_instanciado["valores_iniciales"] = {"x": x}
+
+            xs = "   ".join(str(v) for v in datos["xi"])
+            ys = "   ".join(str(v) for v in datos["yi"])
+            p_instanciado["contexto"] = (p_instanciado["contexto"]
+                                         + f"\n\nDatos:\n  xi:  {xs}\n  yi:  {ys}\nPunto a estimar: x = {x}")
 
         del p_instanciado["aleatorio"]
         return p_instanciado

@@ -1,6 +1,7 @@
 import json
 import os
 import random
+from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 
 class GestorDesafio:
     def __init__(self):
@@ -11,21 +12,23 @@ class GestorDesafio:
         self.en_juego = False
         
         # Variables de control de progresión
-        self.preguntas_totales_etapa_1 = 7
+        self.config_partida = {}
+        self.preguntas_totales_etapa_1 = 7  # valor por defecto; se sobrescribe con el JSON
         self.preguntas_respondidas = 0
         self.banco_etapa_1 = self.cargar_banco_preguntas()
+        self.preguntas_totales_etapa_1 = self.config_partida.get("preguntas_por_partida", 7)
         self.preguntas_disponibles = []
         self.pregunta_actual = None
 
     def cargar_banco_preguntas(self):
-        ruta = os.path.join("recursos", "preguntas_teoricas.json")
+        ruta = ruta_recurso("preguntas_teoricas.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
-                # Ahora buscamos la clave correcta del JSON de tu compañero
-                return datos.get("preguntas", []) 
+                self.config_partida = datos.get("configuracion_partida", {})
+                return datos.get("preguntas", [])
         except FileNotFoundError:
-            print("Error: No se encontró preguntas_teoricas.json")
+            print(mensaje_no_encontrado("preguntas_teoricas.json"))
             return []
 
     def iniciar_partida(self):
@@ -37,11 +40,12 @@ class GestorDesafio:
         # Reiniciar control de preguntas
         self.preguntas_respondidas = 0
         # Seleccionar 7 preguntas al azar sin repetir
-        if len(self.banco_etapa_1) >= self.preguntas_totales_etapa_1:
-            self.preguntas_disponibles = random.sample(self.banco_etapa_1, self.preguntas_totales_etapa_1)
+        total = min(self.preguntas_totales_etapa_1, len(self.banco_etapa_1))
+        self.preguntas_totales_etapa_1 = total
+        if self.config_partida.get("mezclar_orden_preguntas", True):
+            self.preguntas_disponibles = random.sample(self.banco_etapa_1, total)
         else:
-            self.preguntas_disponibles = self.banco_etapa_1.copy()
-            random.shuffle(self.preguntas_disponibles)
+            self.preguntas_disponibles = self.banco_etapa_1[:total]
 
     def restar_vida(self):
         self.vidas -= 1
@@ -66,9 +70,20 @@ class GestorDesafio:
             return None, None
             
         self.pregunta_actual = self.preguntas_disponibles.pop(0)
-        opciones_mezcladas = self.pregunta_actual["opciones"].copy()
-        random.shuffle(opciones_mezcladas)
-        return self.pregunta_actual["pregunta"], opciones_mezcladas
+        opciones = self.pregunta_actual["opciones"].copy()
+        if self.config_partida.get("mezclar_opciones", True):
+            random.shuffle(opciones)
+        return self.pregunta_actual["pregunta"], opciones
+
+    def obtener_metadatos_pregunta(self):
+        """Categoría, dificultad y explicación de la pregunta en curso."""
+        if not self.pregunta_actual:
+            return {}
+        return {
+            "categoria": self.pregunta_actual.get("categoria", ""),
+            "dificultad": self.pregunta_actual.get("dificultad", ""),
+            "explicacion": self.pregunta_actual.get("explicacion", ""),
+        }
 
     def verificar_respuesta_etapa_1(self, respuesta_jugador):
         if not self.pregunta_actual:

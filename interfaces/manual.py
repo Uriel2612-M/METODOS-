@@ -23,15 +23,21 @@ class VistaManual(ctk.CTkFrame):
         
         ctk.CTkLabel(self.panel_indice, text="> INDICE DE PROTOCOLOS", font=("Consolas", 16, "bold"), text_color="#00FF00").pack(pady=20, padx=10)
 
-        for ficha in self.fichas:
-            ctk.CTkButton(self.panel_indice, text=f"[{ficha['nombre']}]", font=("Consolas", 14), 
-                          fg_color="transparent", border_width=1, text_color="white", border_color="gray",
-                          hover_color="#003300", command=lambda f=ficha: self.mostrar_ficha(f)).pack(pady=5, padx=10, fill="x")
+        # Botón de salida fijo en la parte inferior.
+        # Se empaca ANTES que la lista para que siempre conserve su espacio y nunca desaparezca.
+        ctk.CTkButton(self.panel_indice, text="[ CERRAR MANUAL ]", font=("Consolas", 14, "bold"), fg_color="transparent",
+                      text_color="gray", hover_color="#333333",
+                      command=self.controlador.regresar_vista).pack(side="bottom", pady=20, padx=10)
 
-        ctk.CTkButton(self.panel_indice, text="[ CERRAR MANUAL ]", font=("Consolas", 14, "bold"), fg_color="transparent", 
-                      text_color="gray", hover_color="#333333", 
-                      command=self.controlador.regresar_vista).pack(side="bottom", pady=20, padx=10),
-            
+        # Lista de protocolos con scroll lateral (ocupa el espacio que queda entre el título y el botón de salida)
+        self.lista_indice = ctk.CTkScrollableFrame(self.panel_indice, width=320, fg_color="transparent")
+        self.lista_indice.pack(side="top", expand=True, fill="both", padx=5)
+
+        for ficha in self.fichas:
+            ctk.CTkButton(self.lista_indice, text=f"[{ficha['nombre']}]", font=("Consolas", 14),
+                          fg_color="transparent", border_width=1, text_color="white", border_color="gray",
+                          hover_color="#003300", command=lambda f=ficha: self.mostrar_ficha(f)).pack(pady=5, padx=5, fill="x")
+
 
         # Panel Derecho (Lector Scrolleable)
         self.panel_lector = ctk.CTkScrollableFrame(self.frame_contenido, fg_color="#050505", border_width=1, border_color="#00FF00")
