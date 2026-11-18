@@ -188,7 +188,7 @@ class GestorProblemas:
     @staticmethod
     def obtener_todos_practica():
         """Lee el catálogo de problemas fijos para el Modo Práctica."""
-        ruta = os.path.join("recursos", "banco_practica.json")
+        ruta = ruta_recurso("banco_practica.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
@@ -208,7 +208,7 @@ class GestorProblemas:
     @staticmethod
     def cargar_datos_nivel_2():
         # Actualizado con tu nuevo nombre de archivo
-        ruta = os.path.join("recursos", "banco_problemas_nivel2.json") 
+        ruta = ruta_recurso("banco_problemas_nivel2.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
@@ -227,7 +227,7 @@ class GestorProblemas:
     
     @staticmethod
     def cargar_datos_nivel_3():
-        ruta = os.path.join("recursos", "banco_problemas_nivel3.json")
+        ruta = ruta_recurso("banco_problemas_nivel3.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
@@ -247,7 +247,7 @@ class GestorProblemas:
     @staticmethod
     def obtener_quiz_intermedio():
         """Carga y procesa dinámicamente un quiz de bonificación."""
-        ruta = os.path.join("recursos", "quizzes_lineales_intermedios_aleatorios.json")
+        ruta = ruta_recurso("quizzes_lineales_intermedios_aleatorios.json")
         try:
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)

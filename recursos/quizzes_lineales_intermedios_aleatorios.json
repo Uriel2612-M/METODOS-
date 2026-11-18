@@ -61,6 +61,7 @@
       "tipo": "RECONOCIMIENTO_ESTRUCTURAL",
       "titulo": "ESTADO DEL SISTEMA",
       "contexto": "¿A qué objetivo final de método de eliminación de Ecuaciones Lineales corresponde esta estructura matricial?",
+      "pregunta": "Seleccione el método correspondiente.",
       "opciones_generales": [
         "Eliminación Gaussiana",
         "Gauss-Jordan",

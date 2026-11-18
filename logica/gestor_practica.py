@@ -1,9 +1,14 @@
 from metodos.bisectriz import calcular_tabla_bisectriz
+#from metodos.secante import calcular_tabla_secante
+from logica.gestor_metodos import MOTORES_PASOS, cargar_metodos
 from metodos.interpolacion_lineal import calcular_tabla_interpolacion_lineal
 from metodos.lagrange import calcular_tabla_lagrange
 from metodos.Newton_diferencias_divididas import calcular_tabla_newton_dif_divididas
 from metodos.newton_adelante import calcular_tabla_newton_adelante
 from metodos.newton_atras import calcular_tabla_newton_atras
+
+# Importa los métodos nuevos que se agreguen en /metodos con @registrar_metodo
+cargar_metodos()
 
 # Métodos de interpolación que la práctica sabe resolver
 METODOS_INTERPOLACION = (
@@ -24,10 +29,18 @@ class GestorPractica:
         self.resultado_final = None
 
     def metodo_soportado(self, metodo):
-        return metodo == "BISECTRIZ" or metodo in METODOS_INTERPOLACION
+        return (metodo in ("BISECTRIZ", "SECANTE")
+                or metodo in METODOS_INTERPOLACION
+                or metodo in MOTORES_PASOS)
+
+    def es_paso_a_paso(self):
+        """True si el método se responde paso a paso (interpolación y métodos registrados)."""
+        return self.metodo in METODOS_INTERPOLACION or self.metodo in MOTORES_PASOS
 
     def es_interpolacion(self):
-        return self.metodo in METODOS_INTERPOLACION
+        # Nombre histórico: las pantallas lo usan para elegir la tabla de "Paso / Fórmula / Valor".
+        # Los métodos registrados en gestor_metodos usan esa misma tabla.
+        return self.es_paso_a_paso()
 
     def inicializar_sesion(self, problema, metodo_seleccionado):
         self.problema_actual = problema
@@ -50,10 +63,51 @@ class GestorPractica:
                 return True
             return False
 
+        if metodo_seleccionado == "SECANTE":
+            x0 = datos_ini.get("x0", 0)
+            x1 = datos_ini.get("x1", 1)
+            resultado = calcular_tabla_secante(problema["funcion_python"], x0, x1, problema.get("tolerancia", 0.001))
+
+            if resultado["estado"] == "exito":
+                self.tabla_respuestas = resultado["iteraciones"]
+                for fila in self.tabla_respuestas:
+                    fila["valor"] = fila["x_siguiente"]   # lo que debe responder el jugador: x(i+1)
+                return True
+            return False
+
         if metodo_seleccionado in METODOS_INTERPOLACION:
             return self._inicializar_interpolacion(problema, metodo_seleccionado)
 
+        if metodo_seleccionado in MOTORES_PASOS:
+            return self._inicializar_registrado(problema, metodo_seleccionado)
+
         return False
+
+    # ------------------------------------------------------------------
+    # MÉTODOS REGISTRADOS (ver logica/gestor_metodos.py)
+    # ------------------------------------------------------------------
+    def _inicializar_registrado(self, problema, metodo):
+        try:
+            pasos = MOTORES_PASOS[metodo](problema)
+        except Exception as error:
+            print(f"[GestorPractica] El motor de {metodo} falló: {error!r}")
+            return False
+
+        if not pasos:
+            return False
+
+        for n, paso in enumerate(pasos, start=1):
+            if not isinstance(paso.get("valor"), (int, float)):
+                print(f"[GestorPractica] {metodo}: el paso {n} no tiene un 'valor' numérico.")
+                return False
+            paso["iteracion"] = n
+            paso.setdefault("corto", f"paso {n}")
+            paso.setdefault("etiqueta", paso["corto"])
+            paso.setdefault("formula", "")
+
+        self.tabla_respuestas = pasos
+        self.resultado_final = pasos[-1]["valor"]
+        return True
 
     # ------------------------------------------------------------------
     # INTERPOLACIÓN: se convierte el resultado del motor en una lista de pasos a responder
@@ -168,10 +222,12 @@ class GestorPractica:
         if self.iteracion_actual >= len(self.tabla_respuestas):
             return False, "Completado"
 
+        paso = self.tabla_respuestas[self.iteracion_actual]
         if margen is None:
-            margen = MARGEN_INTERPOLACION if self.es_interpolacion() else MARGEN_BISECTRIZ
+            # Un paso puede traer su propio margen (útil en mínimos cuadrados, Runge-Kutta, etc.)
+            margen = paso.get("margen", MARGEN_INTERPOLACION if self.es_interpolacion() else MARGEN_BISECTRIZ)
 
-        valor_correcto = self.tabla_respuestas[self.iteracion_actual]["valor"]
+        valor_correcto = paso["valor"]
 
         if abs(input_valor - valor_correcto) <= margen:
             self.iteracion_actual += 1
