@@ -1,7 +1,10 @@
+import random
+from logica.gestor_problemas import GestorProblemas
 import customtkinter as ctk
 from logica.gestor_desafio import GestorDesafio
+from interfaces.desafio_etapa3 import EtapaTresDesafio
 
-class VistaDesafio(ctk.CTkFrame):
+class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
     def __init__(self, parent, controlador):
         super().__init__(parent, fg_color="transparent")
         self.controlador = controlador

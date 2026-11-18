@@ -5,6 +5,10 @@ from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
 
+# Cuántos problemas de Nivel 3 debe resolver el jugador para ganar
+PROBLEMAS_TOTALES_ETAPA_3 = 1
+
+
 class GestorDesafio:
     def __init__(self):
         self.vidas_maximas = 3
@@ -14,6 +18,11 @@ class GestorDesafio:
         self.motor_matematico = GestorPractica()
         self.problema_actual_n2 = None
         self.metodo_actual_n2 = None
+        self.problema_actual_n3 = None
+        self.metodo_actual_n3 = None
+        self.problemas_totales_etapa_3 = PROBLEMAS_TOTALES_ETAPA_3
+        self.problemas_resueltos_etapa_3 = 0
+        self.ids_usados_etapa_3 = []
         
         # Variables de control de progresión
         self.config_partida = {}
@@ -43,6 +52,12 @@ class GestorDesafio:
         
         # Reiniciar control de preguntas
         self.preguntas_respondidas = 0
+
+        # Reiniciar control de la etapa 3
+        self.problema_actual_n3 = None
+        self.metodo_actual_n3 = None
+        self.problemas_resueltos_etapa_3 = 0
+        self.ids_usados_etapa_3 = []
         # Seleccionar 7 preguntas al azar sin repetir
         total = min(self.preguntas_totales_etapa_1, len(self.banco_etapa_1))
         self.preguntas_totales_etapa_1 = total
@@ -127,3 +142,74 @@ class GestorDesafio:
         # Usamos el motor matemático para validar el número
         correcto, valor_real = self.motor_matematico.verificar_respuesta(valor)
         return correcto, valor_real
+
+    # ==========================================
+    # ETAPA 3: SOBRECARGA DEL NÚCLEO (Nivel 3)
+    # ==========================================
+    def preparar_etapa_3(self):
+        """
+        Elige un problema de Nivel 3 cuyo método el motor YA sepa resolver y arranca la sesión.
+        Los métodos que todavía no tienen lógica se saltan solos (ver logica/gestor_metodos.py).
+        Devuelve True si hay un problema listo y False si no hay ninguno disponible.
+        """
+        plantillas = GestorProblemas.cargar_datos_nivel_3()
+        random.shuffle(plantillas)
+
+        for plantilla in plantillas:
+            if plantilla.get("id") in self.ids_usados_etapa_3:
+                continue
+            metodos = list(plantilla.get("metodos_viables", []))
+            random.shuffle(metodos)
+
+            for metodo in metodos:
+                if not self.motor_matematico.metodo_soportado(metodo):
+                    continue
+                problema = GestorProblemas.instanciar_problema(plantilla)
+                if self.motor_matematico.inicializar_sesion(problema, metodo):
+                    self.problema_actual_n3 = problema
+                    self.metodo_actual_n3 = metodo
+                    self.ids_usados_etapa_3.append(plantilla.get("id"))
+                    return True
+
+        self.problema_actual_n3 = None
+        self.metodo_actual_n3 = None
+        return False
+
+    def metodos_pendientes_etapa_3(self):
+        """Métodos de Nivel 3 que todavía no tienen motor (para avisar al equipo)."""
+        pendientes = set()
+        for plantilla in GestorProblemas.cargar_datos_nivel_3():
+            for metodo in plantilla.get("metodos_viables", []):
+                if not self.motor_matematico.metodo_soportado(metodo):
+                    pendientes.add(metodo)
+        return sorted(pendientes)
+
+    def texto_problema_etapa_3(self):
+        """Contexto del problema + los datos que el jugador necesita y el JSON no imprime."""
+        problema = self.problema_actual_n3
+        if not problema:
+            return ""
+        texto = problema.get("contexto", "")
+        datos = problema.get("datos_base", {})
+
+        # Mínimos cuadrados: el contexto solo trae las Y, faltan las X
+        if "xi" in datos and "xi:" not in texto:
+            texto += f"\nLecturas (X): {datos['xi']}"
+        # Euler / Runge-Kutta: el paso h y t0 viven en datos_base y no se muestran
+        if "h" in datos:
+            texto += f"\nt0 = {datos.get('t0', 0)}  |  paso h = {datos['h']}"
+        return texto
+
+    def paso_etapa_3_actual(self):
+        return self.motor_matematico.obtener_datos_paso_actual()
+
+    def total_pasos_etapa_3(self):
+        return len(self.motor_matematico.tabla_respuestas)
+
+    def verificar_respuesta_etapa_3(self, valor):
+        return self.motor_matematico.verificar_respuesta(valor)
+
+    def registrar_problema_etapa_3_resuelto(self):
+        """Suma un problema resuelto. Devuelve True si ya se completó la etapa 3 (victoria)."""
+        self.problemas_resueltos_etapa_3 += 1
+        return self.problemas_resueltos_etapa_3 >= self.problemas_totales_etapa_3
