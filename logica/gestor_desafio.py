@@ -5,7 +5,6 @@ from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
 
-# Cuántos problemas de Nivel 3 debe resolver el jugador para ganar
 PROBLEMAS_TOTALES_ETAPA_3 = 1
 
 
@@ -15,6 +14,7 @@ class GestorDesafio:
         self.vidas = self.vidas_maximas 
         self.etapa_actual = 1
         self.en_juego = False
+        self.puntuacion = 0
         self.motor_matematico = GestorPractica()
         self.problema_actual_n2 = None
         self.metodo_actual_n2 = None
@@ -32,6 +32,10 @@ class GestorDesafio:
         self.preguntas_totales_etapa_1 = self.config_partida.get("preguntas_por_partida", 7)
         self.preguntas_disponibles = []
         self.pregunta_actual = None
+        
+    def sumar_puntos(self, cantidad):
+        """Añade puntos al marcador del desafío."""
+        self.puntuacion += cantidad
 
     def cargar_banco_preguntas(self):
         ruta = ruta_recurso("preguntas_teoricas.json")
@@ -52,6 +56,7 @@ class GestorDesafio:
         
         # Reiniciar control de preguntas
         self.preguntas_respondidas = 0
+        self.puntuacion = 0
 
         # Reiniciar control de la etapa 3
         self.problema_actual_n3 = None
