@@ -191,6 +191,124 @@
           1.5
         ]
       }
+    },
+{
+      "id": "N3_08",
+      "titulo": "CAPA DE CONTENCION DE PLASMA",
+      "contexto": "La capa de contención de plasma sigue la función f(x) = 1 - x².\nAproxime la integral definida en el intervalo dado usando las fórmulas cerradas de Newton-Cotes.",
+      "funcion_python": "1 - x**2",
+      "funcion_display": "f(x) = 1 - x²",
+      "metodos_viables": [
+        "NEWTON_COTES_CERRADAS"
+      ],
+      "aleatorio": {
+        "tipo": "intervalo_y_n",
+        "descripcion": "El intervalo [a, b] es fijo (0 a 1) y el número de segmentos n se elige entre 2, 4 y 6.",
+        "a_fijo": 0.0,
+        "b_fijo": 1.0,
+        "opciones_n": [
+          2,
+          4,
+          6
+        ]
+      },
+      "fuente": "Ejemplo de ∫₀¹(1 - x²)dx en TNewtonCotesAyC.pdf y RNewtonC-Cerradas.pdf (OneDrive_1_18-11-2026.zip). Función e intervalo tomados del PDF; los valores de n son elección del banco."
+    },
+{
+      "id": "N3_09",
+      "titulo": "DEFORMACION PARABOLICA DEL CASCO",
+      "contexto": "Los sensores del casco registran lecturas que siguen una tendencia parabólica.\nAjuste las lecturas a un modelo Cuadrático (y = a0 + a1x + a2x²) mediante Mínimos Cuadrados para determinar el coeficiente a2.",
+      "metodos_viables": [
+        "MINIMOS_CUADRADOS_CUADRATICA"
+      ],
+      "datos_base": {
+        "xi": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0
+        ]
+      },
+      "resultado_final": "a2",
+      "aleatorio": {
+        "tipo": "yi_variable",
+        "descripcion": "Los valores yi varían ±0.3 respecto a los valores base.",
+        "yi_base": [
+          5.04,
+          8.12,
+          10.64,
+          13.18,
+          16.2,
+          20.04
+        ],
+        "yi_delta": 0.3
+      },
+      "fuente": "Ejercicio 1 (mínimos cuadrados con función cuadrática, 6 puntos): Virginia Muto Foresi, Introducción a los Métodos Numéricos, UPV/EHU. https://ocw.ehu.eus/file.php/81/prob4.pdf"
+    },
+{
+      "id": "N3_10",
+      "titulo": "TRAYECTORIA RECTILINEA CON ACELERACION",
+      "contexto": "La posición de un móvil con aceleración constante sigue el modelo x(t) = x0 + v0·t + (1/2)·a·t².\nUse Mínimos Cuadrados sobre las mediciones de la tabla para estimar la posición inicial x0.",
+      "metodos_viables": [
+        "MINIMOS_CUADRADOS_CUADRATICA"
+      ],
+      "datos_base": {
+        "xi": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          4.0
+        ]
+      },
+      "resultado_final": "a0",
+      "aleatorio": {
+        "tipo": "yi_variable",
+        "descripcion": "Los valores yi varían ±0.3 respecto a los valores base.",
+        "yi_base": [
+          1.1,
+          0.3,
+          -6.5,
+          -21.0,
+          -39.0
+        ],
+        "yi_delta": 0.3
+      },
+      "fuente": "Problema 9.4, Métodos numéricos: problemas resueltos y prácticas (Isaac Garcia y Susanna Maza), capítulo 9. Libro: x(t) = x0 + v0 t + a t²/2 y mediciones t = 0..4. El libro obtiene (x0, v0, a) = (1,26571; 1,87857; −6,01429) sin perturbar los datos; el banco pide x0 con datos perturbados."
+    },
+{
+      "id": "N3_11",
+      "titulo": "TEJADO ONDULADO DE ALUMINIO",
+      "contexto": "Una máquina transforma la plancha plana en una sección con forma g(x) = sin x. La longitud transversal de la plancha inicial L se aproxima con la integral ∫ √(1 + cos²x) dx sobre el intervalo indicado.\nAproxime L con la regla de Simpson compuesta.",
+      "funcion_python": "math.sqrt(1 + math.cos(x)**2)",
+      "funcion_display": "f(x) = √(1 + cos²x)",
+      "metodos_viables": [
+        "SIMPSON_1_3"
+      ],
+      "aleatorio": {
+        "tipo": "intervalo_y_n_par",
+        "descripcion": "El intervalo es [0, 20] y el número de subintervalos n se elige entre 2, 4 y 6.",
+        "opciones_parametros": [
+          {
+            "a": 0.0,
+            "b": 20.0,
+            "n": 2
+          },
+          {
+            "a": 0.0,
+            "b": 20.0,
+            "n": 4
+          },
+          {
+            "a": 0.0,
+            "b": 20.0,
+            "n": 6
+          }
+        ]
+      },
+      "fuente": "Problema 6.3, Métodos numéricos: problemas resueltos y prácticas (Isaac Garcia y Susanna Maza), capítulo 6. El libro usa la integral de √(1 + cos²x) sobre [0, 20] con Simpson compuesto n = 4 y obtiene 23,8104. El valor n = 4 coincide; los valores n = 2 y 6 son variantes del banco."
     }
   ]
 }
