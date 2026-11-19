@@ -1,28 +1,24 @@
 ============================================================
         ZERO LIMIT - SOLUCIONARIO MODO DESAFÍO
-        Partida iniciada: 2026-11-18 23:08:57
+        Partida iniciada: 2026-11-19 13:25:18
 ============================================================
 
 --- ETAPA 1: RECONOCIMIENTO DE PATRONES (TEORÍA) ---
-1. ¿Por qué dos métodos distintos pueden producir aproximaciones diferentes con los mismos datos iniciales?
-   -> RESPUESTA (A): Porque usan procedimientos y criterios de actualización diferentes
+1. ¿Qué método de sistemas calcula cada nueva incógnita usando únicamente los valores de la iteración anterior?
+   -> RESPUESTA (C): Jacobi
 
-2. ¿Qué variante de Newton se suele preferir para interpolar cerca del primer valor de una tabla igualmente espaciada?
-   -> RESPUESTA (A): Newton hacia adelante
+2. En el método de la secante, ¿cuántas aproximaciones iniciales se necesitan normalmente?
+   -> RESPUESTA (B): Dos
 
-3. ¿Qué indica, en general, que el error aproximado entre iteraciones sea menor que la tolerancia?
-   -> RESPUESTA (B): Que puede cumplirse el criterio de paro
+3. En bisección, ¿cómo se calcula el punto medio del intervalo?
+   -> RESPUESTA (A): (a+b)/2
 
-4. ¿Qué diferencia principal hay entre interpolación y extrapolación?
-   -> RESPUESTA (A): Interpolación estima dentro del rango de datos; extrapolación fuera de él
+4. ¿Qué método construye un polinomio que pasa por todos los puntos de una tabla?
+   -> RESPUESTA (A): Lagrange
 
 5. ¿Qué significa que una función continua cambie de signo entre a y b?
    -> RESPUESTA (B): Que existe al menos una raíz en el intervalo
 
-6. En punto fijo, si la función iterativa es g(x), ¿cómo se obtiene la siguiente aproximación?
-   -> RESPUESTA (A): x siguiente = g(x actual)
+6. ¿Qué método utiliza un intervalo [a,b] y requiere que f(a) y f(b) tengan signos opuestos?
+   -> RESPUESTA (A): Bisección
 
-============================================================
-RESULTADO: GAME OVER - INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO.
-SCORE FINAL: 00500 | ESCUDOS: 0 | TIEMPO: 14:32
-============================================================

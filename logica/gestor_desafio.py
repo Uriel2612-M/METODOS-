@@ -70,7 +70,7 @@ class GestorDesafio:
 
     def iniciar_partida(self):
         self.vidas = self.vidas_maximas
-        self.tiempo_restante = 900
+        self.tiempo_restante = 3600
         self.etapa_actual = 1
         self.en_juego = True
         
