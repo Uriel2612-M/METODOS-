@@ -7,12 +7,22 @@ from interfaces.desafio import VistaDesafio
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
 
+import os
+import sys
+
+def ruta_icono():
+    # Dentro del .exe, PyInstaller descomprime los archivos en sys._MEIPASS
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, "icono.ico")
+    # Ejecutando con python main.py: el icono está en la carpeta extra
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), "extra", "icono.ico")
+
 class ZeroLimitApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("ZERO LIMIT - Terminal de Diagnóstico")
         self.geometry("850x650")
-
+        self.after(200, lambda: self.iconbitmap(ruta_icono()))
         self.contenedor_principal = ctk.CTkFrame(self, fg_color="transparent")
         self.contenedor_principal.pack(expand=True, fill="both")
 
