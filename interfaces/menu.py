@@ -12,7 +12,7 @@ class VistaMenu(ctk.CTkFrame):
 
     def construir_ui(self):
         ctk.CTkLabel(self, text="ZERO LIMIT", font=("Consolas", 80, "bold"), text_color="#00FF00").pack(pady=(40, 5))
-        ctk.CTkLabel(self, text="PROYECTO: METODOS NUMÉRICOS", font=("Consolas", 14), text_color="#00FF00").pack(pady=(0, 30))
+        ctk.CTkLabel(self, text="PROYECTO: MÉTODOS NUMÉRICOS", font=("Consolas", 14), text_color="#00FF00").pack(pady=(0, 30))
 
         ctk.CTkButton(self, text="[ MODO PRACTICA ]", font=("Consolas", 30, "bold"), fg_color="transparent", 
                       border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
