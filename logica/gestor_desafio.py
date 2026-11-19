@@ -5,6 +5,7 @@ from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
 from datetime import datetime
+import sys
 
 PROBLEMAS_TOTALES_ETAPA_2 = 2
 PROBLEMAS_TOTALES_ETAPA_3 = 2
@@ -39,6 +40,14 @@ class GestorDesafio:
         self.preguntas_totales_etapa_1 = self.config_partida.get("preguntas_por_partida", 7)
         self.preguntas_disponibles = []
         self.pregunta_actual = None
+        if getattr(sys, "frozen", False):
+            carpeta_exe = os.path.dirname(sys.executable)
+        else:
+            carpeta_exe = os.getcwd()
+
+        self.ruta_solucionario = os.path.join(carpeta_exe, "solucionario_desafio_actual.txt")
+        
+        
         
     def sumar_puntos(self, cantidad):
         """Añade puntos al marcador del desafío."""

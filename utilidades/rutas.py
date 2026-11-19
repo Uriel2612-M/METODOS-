@@ -1,7 +1,12 @@
 import os
+import sys
 
-# Raíz del proyecto = carpeta que contiene main.py (un nivel arriba de /utilidades)
-RAIZ_PROYECTO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Raíz del proyecto = carpeta temporal del .exe (PyInstaller) o carpeta de main.py
+if getattr(sys, "frozen", False):
+    RAIZ_PROYECTO = sys._MEIPASS
+else:
+    RAIZ_PROYECTO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 CARPETA_RECURSOS = os.path.join(RAIZ_PROYECTO, "recursos")
 
 
