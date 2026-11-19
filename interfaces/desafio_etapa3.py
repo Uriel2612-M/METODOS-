@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from interfaces.graficadora import VentanaGrafica
 
 
 class EtapaTresDesafio:
@@ -43,7 +44,10 @@ class EtapaTresDesafio:
             return
 
         if not self.gestor.preparar_etapa_3():
-            self.mostrar_sin_protocolos_etapa_3()
+            if self.gestor.problemas_resueltos_etapa_3 > 0:
+                self.mostrar_victoria()
+            else:
+                self.mostrar_sin_protocolos_etapa_3()
             return
 
         problema = self.gestor.problema_actual_n3
@@ -81,6 +85,7 @@ class EtapaTresDesafio:
         self.entrada_jugador = ctk.CTkEntry(self.frame_juego, font=("Consolas", 18), width=150, justify="center")
         self.entrada_jugador.pack(pady=5)
         self.entrada_jugador.bind("<Return>", lambda evento: self.procesar_respuesta_etapa_3())
+        self.entrada_jugador.bind("<KP_Enter>", lambda evento: self.procesar_respuesta_etapa_3())
 
         self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14))
         self.label_feedback.pack(pady=5)
@@ -144,13 +149,12 @@ class EtapaTresDesafio:
 
         datos_resueltos = self.gestor.paso_etapa_3_actual()
         correcto, valor_real = self.gestor.verificar_respuesta_etapa_3(valor)
-        
-        self.gestor.sumar_puntos(100)
-        self.actualizar_hud_puntos()
-        
+                
         if correcto:
             self._esperando_e3 = True
             self.btn_enviar.configure(state="disabled")
+            self.gestor.sumar_puntos(100)
+            self.actualizar_hud_puntos()
             self.label_feedback.configure(text=f"¡Correcto! Valor = {valor_real}", text_color="#00FF00")
 
             it_str = str(datos_resueltos.get("iteracion", "?"))
@@ -161,10 +165,12 @@ class EtapaTresDesafio:
 
             self.after(1000, self.actualizar_paso_etapa_3)
         else:
-            # PENALIZACIÓN DE ESCUDOS
+            # PENALIZACIÓN DE ESCUDOS Y PUNTOS
             self.gestor.restar_vida()
+            self.gestor.restar_puntos(75)
             self.actualizar_hud_vidas()
-            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO.", text_color="red")
+            self.actualizar_hud_puntos()
+            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO (-75 PTS).", text_color="red")
 
             if not self.gestor.en_juego:
                 self.after(1000, lambda: self.game_over("INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO."))
@@ -199,23 +205,54 @@ class EtapaTresDesafio:
         if not self.gestor.en_juego:
             return
 
-        self.gestor.en_juego = False   # detiene el reloj y bloquea cualquier respuesta pendiente
+        self.gestor.en_juego = False
+        self.gestor.registrar_solucionario_cierre("MISIÓN CUMPLIDA")
         self.detener_reloj()
         self.limpiar_frame()
 
-        ctk.CTkLabel(self, text="[ MISIÓN CUMPLIDA ]", font=("Consolas", 50, "bold"), text_color="#00FF00").pack(pady=(100, 20))
-        ctk.CTkLabel(self, text="NÚCLEO ESTABILIZADO. EL SISTEMA HA SIDO RECUPERADO.", font=("Consolas", 20),
-                     text_color="white").pack(pady=10)
+        ctk.CTkLabel(self, text="[ MISIÓN CUMPLIDA ]", font=("Consolas", 42, "bold"), text_color="#00FF00").pack(pady=(35, 10))
+        ctk.CTkLabel(self, text="NÚCLEO ESTABILIZADO. EL SISTEMA HA SIDO RECUPERADO.", font=("Consolas", 18),
+                     text_color="white").pack(pady=5)
 
-        
-        self.gestor.registrar_solucionario_cierre("MISIÓN CUMPLIDA")
         resumen = (f"SCORE FINAL: {self.gestor.puntuacion:05d}   |   "
-                 f"ESCUDOS: {'♥ ' * self.gestor.vidas}   |   "
-                 f"TIEMPO: {self.gestor.formatear_tiempo()}")
-        ctk.CTkLabel(self, text=resumen, font=("Consolas", 18, "bold"), text_color="cyan").pack(pady=20)
+                   f"ESCUDOS: {'♥ ' * self.gestor.vidas}   |   "
+                   f"TIEMPO: {self.gestor.formatear_tiempo()}")
+        ctk.CTkLabel(self, text=resumen, font=("Consolas", 16, "bold"), text_color="cyan").pack(pady=15)
 
-        ctk.CTkButton(self, text="[ JUGAR DE NUEVO ]", font=("Consolas", 20), fg_color="transparent", text_color="#00FF00",
-                      border_width=1, border_color="#00FF00", hover_color="#003300",
-                      command=self.mostrar_pantalla_inicio).pack(pady=(30, 10))
-        ctk.CTkButton(self, text="[ VOLVER AL MENÚ ]", font=("Consolas", 16), fg_color="transparent", text_color="gray",
-                      hover_color="#333333", command=lambda: self.controlador.mostrar_vista("menu")).pack(pady=10)
+        # Panel de gráficas de los problemas resueltos en la partida
+        if self.gestor.historial_graficas:
+            ctk.CTkLabel(self, text="> TELEMETRÍA GRÁFICA DE LA MISIÓN:", font=("Consolas", 15, "bold"),
+                         text_color="yellow").pack(pady=(10, 5))
+
+            frame_graficas = ctk.CTkScrollableFrame(self, fg_color="#111111", border_width=1,
+                                                    border_color="cyan", height=180)
+            frame_graficas.pack(pady=5, padx=80, fill="x")
+
+            for i, reg in enumerate(self.gestor.historial_graficas, start=1):
+                titulo_btn = f"[ {i}. {reg['etapa']} | {reg['metodo']} - {reg['problema']['titulo']} ]"
+                ctk.CTkButton(
+                    frame_graficas,
+                    text=titulo_btn,
+                    font=("Consolas", 14),
+                    fg_color="transparent",
+                    border_width=1,
+                    text_color="cyan",
+                    border_color="cyan",
+                    hover_color="#003333",
+                    command=lambda r=reg: self.abrir_grafica_resumen(r),
+                ).pack(pady=5, padx=10, fill="x")
+
+        frame_acciones = ctk.CTkFrame(self, fg_color="transparent")
+        frame_acciones.pack(pady=25)
+
+        ctk.CTkButton(frame_acciones, text="[ JUGAR DE NUEVO ]", font=("Consolas", 18), fg_color="transparent",
+                      text_color="#00FF00", border_width=1, border_color="#00FF00", hover_color="#003300",
+                      command=self.mostrar_pantalla_inicio).pack(side="left", padx=15)
+        ctk.CTkButton(frame_acciones, text="[ VOLVER AL MENÚ ]", font=("Consolas", 16), fg_color="transparent",
+                      text_color="gray", hover_color="#333333",
+                      command=lambda: self.controlador.mostrar_vista("menu")).pack(side="left", padx=15)
+
+    def abrir_grafica_resumen(self, registro):
+        if hasattr(self, "ventana_grafica") and self.ventana_grafica.winfo_exists():
+            self.ventana_grafica.destroy()
+        self.ventana_grafica = VentanaGrafica(self, registro["problema"], registro["tabla"])

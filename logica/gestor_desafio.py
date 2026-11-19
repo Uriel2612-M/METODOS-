@@ -6,7 +6,8 @@ from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
 from datetime import datetime
 
-PROBLEMAS_TOTALES_ETAPA_3 = 1
+PROBLEMAS_TOTALES_ETAPA_2 = 2
+PROBLEMAS_TOTALES_ETAPA_3 = 2
 
 
 class GestorDesafio:
@@ -22,6 +23,10 @@ class GestorDesafio:
         self.metodo_actual_n2 = None
         self.problema_actual_n3 = None
         self.metodo_actual_n3 = None
+        self.problemas_totales_etapa_2 = PROBLEMAS_TOTALES_ETAPA_2
+        self.problemas_resueltos_etapa_2 = 0
+        self.ids_usados_etapa_2 = []
+        self.historial_graficas = []
         self.problemas_totales_etapa_3 = PROBLEMAS_TOTALES_ETAPA_3
         self.problemas_resueltos_etapa_3 = 0
         self.ids_usados_etapa_3 = []
@@ -38,6 +43,10 @@ class GestorDesafio:
     def sumar_puntos(self, cantidad):
         """Añade puntos al marcador del desafío."""
         self.puntuacion += cantidad
+    
+    def restar_puntos(self, cantidad):
+        """Resta puntos al marcador sin permitir valores negativos."""
+        self.puntuacion = max(0, self.puntuacion - cantidad)    
 
     def cargar_banco_preguntas(self):
         ruta = ruta_recurso("preguntas_teoricas.json")
@@ -60,6 +69,11 @@ class GestorDesafio:
         self.preguntas_respondidas = 0
         self.puntuacion = 0
 
+        self.problema_actual_n2 = None
+        self.metodo_actual_n2 = None
+        self.problemas_resueltos_etapa_2 = 0
+        self.ids_usados_etapa_2 = []
+        self.historial_graficas = []
         # Reiniciar control de la etapa 3
         self.problema_actual_n3 = None
         self.metodo_actual_n3 = None
@@ -133,13 +147,16 @@ class GestorDesafio:
         return self.preguntas_respondidas >= self.preguntas_totales_etapa_1
     
     def preparar_etapa_2(self):
-        """Elige un problema aleatorio de Nivel 2 con un método soportado y arranca el motor."""
+        """Elige un problema aleatorio de Nivel 2 sin repetir y con método soportado."""
         plantillas = GestorProblemas.cargar_datos_nivel_2()
         random.shuffle(plantillas)
 
         for plantilla in plantillas:
+            if plantilla.get("id") in self.ids_usados_etapa_2:
+                continue
             metodos = list(plantilla.get("metodos_viables", []))
             random.shuffle(metodos)
+
             for metodo in metodos:
                 if not self.motor_matematico.metodo_soportado(metodo):
                     continue
@@ -147,12 +164,40 @@ class GestorDesafio:
                 if self.motor_matematico.inicializar_sesion(problema, metodo):
                     self.problema_actual_n2 = problema
                     self.metodo_actual_n2 = metodo
-                    self.registrar_solucionario_pasos("ETAPA 2", problema, metodo)
+                    self.ids_usados_etapa_2.append(plantilla.get("id"))
+                    num = self.problemas_resueltos_etapa_2 + 1
+                    self.registrar_solucionario_pasos(
+                        f"ETAPA 2 ({num}/{self.problemas_totales_etapa_2})", problema, metodo
+                    )
                     return True
 
         self.problema_actual_n2 = None
         self.metodo_actual_n2 = None
         return False
+    
+    def registrar_problema_etapa_2_resuelto(self):
+        """Guarda la gráfica del problema y devuelve True si ya se completó la Etapa 2."""
+        if self.problema_actual_n2:
+            self.historial_graficas.append({
+                "etapa": "ETAPA 2",
+                "metodo": self.metodo_actual_n2,
+                "problema": self.problema_actual_n2,
+                "tabla": list(self.motor_matematico.tabla_respuestas),
+            })
+        self.problemas_resueltos_etapa_2 += 1
+        return self.problemas_resueltos_etapa_2 >= self.problemas_totales_etapa_2
+
+    def registrar_problema_etapa_3_resuelto(self):
+        """Guarda la gráfica del problema y devuelve True si ya se completó la Etapa 3."""
+        if self.problema_actual_n3:
+            self.historial_graficas.append({
+                "etapa": "ETAPA 3",
+                "metodo": self.metodo_actual_n3,
+                "problema": self.problema_actual_n3,
+                "tabla": list(self.motor_matematico.tabla_respuestas),
+            })
+        self.problemas_resueltos_etapa_3 += 1
+        return self.problemas_resueltos_etapa_3 >= self.problemas_totales_etapa_3
     
     def verificar_respuesta_etapa_2(self, valor):
         # Usamos el motor matemático para validar el número

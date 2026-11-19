@@ -63,18 +63,6 @@ class GestorPractica:
                 return True
             return False
 
-        if metodo_seleccionado == "SECANTE":
-            x0 = datos_ini.get("x0", 0)
-            x1 = datos_ini.get("x1", 1)
-            resultado = calcular_tabla_secante(problema["funcion_python"], x0, x1, problema.get("tolerancia", 0.001))
-
-            if resultado["estado"] == "exito":
-                self.tabla_respuestas = resultado["iteraciones"]
-                for fila in self.tabla_respuestas:
-                    fila["valor"] = fila["x_siguiente"]   # lo que debe responder el jugador: x(i+1)
-                return True
-            return False
-
         if metodo_seleccionado in METODOS_INTERPOLACION:
             return self._inicializar_interpolacion(problema, metodo_seleccionado)
 

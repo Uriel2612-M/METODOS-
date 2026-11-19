@@ -122,6 +122,8 @@ class VistaPractica(ctk.CTkFrame):
         self.btn_enviar = ctk.CTkButton(self.frame_juego, text="[ ENVIAR DATOS ]", font=("Consolas", 16, "bold"), fg_color="transparent", 
                                         border_width=2, text_color="#00FF00", border_color="#00FF00", hover_color="#003300", 
                                         command=self.procesar_respuesta)
+        self.entrada_jugador.bind("<Return>", lambda event: self.procesar_respuesta())
+        self.entrada_jugador.bind("<KP_Enter>", lambda event: self.procesar_respuesta())
         self.btn_enviar.pack(pady=15)
         
         frame_botones_inferiores = ctk.CTkFrame(self, fg_color="transparent")

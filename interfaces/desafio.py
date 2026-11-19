@@ -191,9 +191,11 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
                 self.after(1000, self.cargar_etapa_1)
         else:
             self.gestor.restar_vida()
+            self.gestor.restar_puntos(50)
             self.actualizar_hud_vidas()
-            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO.", text_color="red")
-            
+            self.actualizar_hud_puntos()
+            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO (-50 PTS).", text_color="red")
+
             if not self.gestor.en_juego:
                 self.after(1000, lambda: self.game_over("INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO."))
     
@@ -234,7 +236,9 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
         elif self.quiz_actual["tipo_input"] == "texto":
             self.entrada_quiz = ctk.CTkEntry(frame_quiz, font=("Consolas", 18), justify="center")
             self.entrada_quiz.pack(pady=10)
-            self.entrada_quiz.bind("<Return>", lambda e: self.verificar_quiz(self.entrada_quiz.get().strip()))
+            self.entrada_quiz.bind("<Return>", lambda event: self.verificar_quiz(self.entrada_quiz.get().strip()))
+            self.entrada_quiz.bind("<KP_Enter>", lambda event: self.verificar_quiz(self.entrada_quiz.get().strip()))
+            self.entrada_quiz.focus()
             ctk.CTkButton(frame_quiz, text="[ APLICAR TRANSFORMACIÓN ]", font=("Consolas", 16, "bold"),
                           fg_color="transparent", border_width=2, text_color="yellow", border_color="yellow",
                           command=lambda: self.verificar_quiz(self.entrada_quiz.get().strip())).pack(pady=10)
@@ -301,14 +305,28 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
     # ETAPA 2: ITERACIONES RÁPIDAS
     # ==========================================
     def cargar_etapa_2(self):
+        if not self.gestor.en_juego: return
+        self.gestor.etapa_actual = 2
+        self.label_etapa.configure(text=f"ETAPA {self.gestor.etapa_actual}")
+
+        if not self.gestor.preparar_etapa_2():
+            self.transicion_etapa_3()
+            return
+        
         self.gestor.preparar_etapa_2()
         problema = self.gestor.problema_actual_n2
         metodo = self.gestor.metodo_actual_n2
         
         for widget in self.frame_accion.winfo_children():
             widget.destroy()
-
-        ctk.CTkLabel(self.frame_accion, text=f"> FASE 2: ESTABILIZACIÓN ({metodo})", font=("Consolas", 18, "bold"), text_color="cyan").pack(pady=(5, 10))
+        numero = self.gestor.problemas_resueltos_etapa_2 + 1
+        total = self.gestor.problemas_totales_etapa_2
+        ctk.CTkLabel(
+            self.frame_accion,
+            text=f"> FASE 2: ESTABILIZACIÓN ({metodo})  [{numero}/{total}]",
+            font=("Consolas", 18, "bold"),
+            text_color="cyan",
+        ).pack(pady=(5, 10))
         ctk.CTkLabel(self.frame_accion, text=problema["contexto"], font=("Consolas", 14), text_color="white", wraplength=700).pack(pady=(0, 10))
 
         # Tabla de resultados
@@ -337,6 +355,8 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
 
         self.entrada_jugador = ctk.CTkEntry(self.frame_juego, font=("Consolas", 18), width=150, justify="center")
         self.entrada_jugador.pack(pady=5)
+        self.entrada_jugador.bind("<Return>", lambda event: self.procesar_respuesta_etapa_2())
+        self.entrada_jugador.bind("<KP_Enter>", lambda event: self.procesar_respuesta_etapa_2())
 
         self.label_feedback = ctk.CTkLabel(self.frame_juego, text="", font=("Consolas", 14))
         self.label_feedback.pack(pady=5)
@@ -352,12 +372,14 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
         datos_paso = self.gestor.motor_matematico.obtener_datos_paso_actual()
         
         if not datos_paso:
-            self.label_instruccion.configure(text="¡MÓDULO ESTABILIZADO! FASE 2 COMPLETADA.")
+            self.label_instruccion.configure(text="¡MÓDULO ESTABILIZADO! PROBLEMA COMPLETADO.")
             self.entrada_jugador.configure(state="disabled")
             self.btn_enviar.pack_forget()
-            
-            # Pasar a la Etapa 3 en 2 segundos
-            self.after(2000, self.transicion_etapa_3)
+
+            if self.gestor.registrar_problema_etapa_2_resuelto():
+                self.after(2000, self.transicion_etapa_3)
+            else:
+                self.after(2000, self.cargar_etapa_2)
             return
 
         # Texto de Instrucción Dinámico
@@ -372,6 +394,7 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
         self.label_instruccion.configure(text=texto)
         self.entrada_jugador.delete(0, 'end')
         self.label_feedback.configure(text="")
+        self.entrada_jugador.focus()
 
     def limpiar_error_e2(self):
         texto_actual = self.label_feedback.cget("text")
@@ -428,11 +451,13 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
             
             self.after(1000, self.actualizar_paso_etapa_2)
         else:
-            # PENALIZACIÓN DE ESCUDOS
+            # PENALIZACIÓN DE ESCUDOS Y PUNTOS
             self.gestor.restar_vida()
+            self.gestor.restar_puntos(50)
             self.actualizar_hud_vidas()
-            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO.", text_color="red")
-            
+            self.actualizar_hud_puntos()
+            self.label_feedback.configure(text="¡FALLA CRÍTICA! ESCUDO DAÑADO (-50 PTS).", text_color="red")
+
             if not self.gestor.en_juego:
                 self.after(1000, lambda: self.game_over("INTEGRIDAD ESTRUCTURAL AL 0%. SISTEMA DESTRUIDO."))
             else:
