@@ -4,12 +4,14 @@ import random
 from utilidades.rutas import ruta_recurso, mensaje_no_encontrado
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
+from datetime import datetime
 
 PROBLEMAS_TOTALES_ETAPA_3 = 1
 
 
 class GestorDesafio:
     def __init__(self):
+        self.ruta_solucionario = "solucionario_desafio_actual.txt"
         self.vidas_maximas = 3
         self.vidas = self.vidas_maximas 
         self.etapa_actual = 1
@@ -70,6 +72,7 @@ class GestorDesafio:
             self.preguntas_disponibles = random.sample(self.banco_etapa_1, total)
         else:
             self.preguntas_disponibles = self.banco_etapa_1[:total]
+        self.registrar_solucionario_inicio()
 
     def restar_vida(self):
         self.vidas -= 1
@@ -130,19 +133,27 @@ class GestorDesafio:
         return self.preguntas_respondidas >= self.preguntas_totales_etapa_1
     
     def preparar_etapa_2(self):
-        """Obtiene un problema aleatorio de Nivel 2 y arranca el motor matemático"""
-        exito = False
-        intentos = 0
-        
-        # Bucle de seguridad: intenta generar problemas hasta que uno se resuelva correctamente
-        while not exito and intentos < 10:
-            self.problema_actual_n2 = GestorProblemas.obtener_problema_aleatorio_nivel_2()
-            if not self.problema_actual_n2: 
-                break
-                
-            self.metodo_actual_n2 = random.choice(self.problema_actual_n2["metodos_viables"])
-            exito = self.motor_matematico.inicializar_sesion(self.problema_actual_n2, self.metodo_actual_n2)
-            intentos += 1
+        """Elige un problema aleatorio de Nivel 2 con un método soportado y arranca el motor."""
+        plantillas = GestorProblemas.cargar_datos_nivel_2()
+        random.shuffle(plantillas)
+
+        for plantilla in plantillas:
+            metodos = list(plantilla.get("metodos_viables", []))
+            random.shuffle(metodos)
+            for metodo in metodos:
+                if not self.motor_matematico.metodo_soportado(metodo):
+                    continue
+                problema = GestorProblemas.instanciar_problema(plantilla)
+                if self.motor_matematico.inicializar_sesion(problema, metodo):
+                    self.problema_actual_n2 = problema
+                    self.metodo_actual_n2 = metodo
+                    self.registrar_solucionario_pasos("ETAPA 2", problema, metodo)
+                    return True
+
+        self.problema_actual_n2 = None
+        self.metodo_actual_n2 = None
+        return False
+    
     def verificar_respuesta_etapa_2(self, valor):
         # Usamos el motor matemático para validar el número
         correcto, valor_real = self.motor_matematico.verificar_respuesta(valor)
@@ -174,10 +185,13 @@ class GestorDesafio:
                     self.problema_actual_n3 = problema
                     self.metodo_actual_n3 = metodo
                     self.ids_usados_etapa_3.append(plantilla.get("id"))
+                    self.ids_usados_etapa_3.append(plantilla.get("id"))
+                    self.registrar_solucionario_pasos("ETAPA 3", problema, metodo)  # <--- NUEVO
                     return True
 
         self.problema_actual_n3 = None
         self.metodo_actual_n3 = None
+        
         return False
 
     def metodos_pendientes_etapa_3(self):
@@ -218,3 +232,69 @@ class GestorDesafio:
         """Suma un problema resuelto. Devuelve True si ya se completó la etapa 3 (victoria)."""
         self.problemas_resueltos_etapa_3 += 1
         return self.problemas_resueltos_etapa_3 >= self.problemas_totales_etapa_3
+    
+    # ==========================================
+    # SOLUCIONARIO EN VIVO (.TXT PARA DEMO)
+    # ==========================================
+    def _escribir_solucionario(self, contenido, modo="a"):
+        try:
+            with open(self.ruta_solucionario, modo, encoding="utf-8") as archivo:
+                archivo.write(contenido)
+        except OSError as error:
+            print(f"[Solucionario] No se pudo escribir el archivo: {error}")
+
+    def registrar_solucionario_inicio(self):
+        fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        mapa_indices = {"A": 0, "B": 1, "C": 2, "D": 3}
+
+        lineas = [
+            "============================================================\n",
+            "        ZERO LIMIT - SOLUCIONARIO MODO DESAFÍO\n",
+            f"        Partida iniciada: {fecha}\n",
+            "============================================================\n\n",
+            "--- ETAPA 1: RECONOCIMIENTO DE PATRONES (TEORÍA) ---\n",
+        ]
+
+        for idx, p in enumerate(self.preguntas_disponibles, start=1):
+            letra = p.get("respuesta_correcta", "A")
+            indice = mapa_indices.get(letra, 0)
+            texto_resp = p["opciones"][indice] if indice < len(p["opciones"]) else "?"
+            lineas.append(f"{idx}. {p['pregunta']}\n")
+            lineas.append(f"   -> RESPUESTA ({letra}): {texto_resp}\n\n")
+
+        self._escribir_solucionario("".join(lineas), modo="w")
+
+    def registrar_solucionario_quiz(self, quiz):
+        lineas = [
+            "------------------------------------------------------------\n",
+            f"--- ANOMALÍA INTERMEDIA: {quiz.get('titulo', 'QUIZ')} ---\n",
+            f"{quiz.get('texto_pregunta', '')}\n",
+            f"   -> RESPUESTA CORRECTA: {quiz.get('respuesta_correcta')}\n\n",
+        ]
+        self._escribir_solucionario("".join(lineas), modo="a")
+
+    def registrar_solucionario_pasos(self, nombre_etapa, problema, metodo):
+        lineas = [
+            "------------------------------------------------------------\n",
+            f"--- {nombre_etapa}: {problema.get('titulo', '')} ({metodo}) ---\n",
+            f"Contexto:\n{problema.get('contexto', '')}\n\n",
+            "Respuestas paso a paso (ingresar en orden):\n",
+        ]
+
+        for paso in self.motor_matematico.tabla_respuestas:
+            it = paso.get("iteracion", "?")
+            nombre = paso.get("corto", paso.get("etiqueta", f"Iteración {it}"))
+            valor = paso.get("valor", "?")
+            lineas.append(f"  Paso {it:<2} | {nombre:<25} -> {valor}\n")
+
+        lineas.append("\n")
+        self._escribir_solucionario("".join(lineas), modo="a")
+
+    def registrar_solucionario_cierre(self, estado):
+        lineas = [
+            "============================================================\n",
+            f"RESULTADO: {estado}\n",
+            f"SCORE FINAL: {self.puntuacion:05d} | ESCUDOS: {self.vidas} | TIEMPO: {self.formatear_tiempo()}\n",
+            "============================================================\n",
+        ]
+        self._escribir_solucionario("".join(lineas), modo="a")

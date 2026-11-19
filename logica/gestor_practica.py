@@ -1,6 +1,6 @@
 from metodos.bisectriz import calcular_tabla_bisectriz
 #from metodos.secante import calcular_tabla_secante
-from logica.gestor_metodos import MOTORES_PASOS, cargar_metodos
+from logica.gestor_metodos import MOTORES_PASOS, cargar_metodos, parametros
 from metodos.interpolacion_lineal import calcular_tabla_interpolacion_lineal
 from metodos.lagrange import calcular_tabla_lagrange
 from metodos.Newton_diferencias_divididas import calcular_tabla_newton_dif_divididas
@@ -29,7 +29,7 @@ class GestorPractica:
         self.resultado_final = None
 
     def metodo_soportado(self, metodo):
-        return (metodo in ("BISECTRIZ", "SECANTE")
+        return (metodo == "BISECTRIZ"
                 or metodo in METODOS_INTERPOLACION
                 or metodo in MOTORES_PASOS)
 
@@ -49,7 +49,7 @@ class GestorPractica:
         self.tabla_respuestas = []
         self.resultado_final = None
 
-        datos_ini = problema.get("parametros_fijos", problema.get("valores_iniciales", {}))
+        datos_ini = parametros(problema)
 
         if metodo_seleccionado == "BISECTRIZ":
             a = datos_ini.get("a", 0)
@@ -116,7 +116,7 @@ class GestorPractica:
         xi = problema["datos_base"]["xi"]
         yi = problema["datos_base"]["yi"]
         
-        datos_ini = problema.get("parametros_fijos", problema.get("valores_iniciales", {}))
+        datos_ini = parametros(problema)
         # Algunos JSON usan "x", otros "x_interpolar"
         x = datos_ini.get("x_interpolar", datos_ini.get("x", 0))
 

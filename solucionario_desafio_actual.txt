@@ -1,0 +1,28 @@
+============================================================
+        ZERO LIMIT - SOLUCIONARIO MODO DESAFÍO
+        Partida iniciada: 2026-11-18 20:59:40
+============================================================
+
+--- ETAPA 1: RECONOCIMIENTO DE PATRONES (TEORÍA) ---
+1. ¿Qué método de sistemas calcula cada nueva incógnita usando únicamente los valores de la iteración anterior?
+   -> RESPUESTA (C): Jacobi
+
+2. ¿Para qué se establece una tolerancia en un método iterativo?
+   -> RESPUESTA (A): Para definir cuándo detener el proceso según el error permitido
+
+3. Un problema de interpolación usa nodos repetidos en una fórmula estándar de Lagrange. ¿Qué problema puede presentarse?
+   -> RESPUESTA (A): Aparece una división entre cero en los denominadores de las bases
+
+4. Un método iterativo supera el número máximo de iteraciones sin cumplir la tolerancia. ¿Cuál es la interpretación más adecuada?
+   -> RESPUESTA (A): No alcanzó el criterio de convergencia establecido; se debe reportar el estado y revisar el caso
+
+5. ¿Cuál es la fórmula de actualización de Newton-Raphson?
+   -> RESPUESTA (A): x siguiente = x - f(x)/f'(x)
+
+6. ¿Qué método utiliza un intervalo [a,b] y requiere que f(a) y f(b) tengan signos opuestos?
+   -> RESPUESTA (A): Bisección
+
+============================================================
+RESULTADO: MISIÓN ABORTADA
+SCORE FINAL: 00000 | ESCUDOS: 3 | TIEMPO: 14:57
+============================================================

@@ -132,7 +132,6 @@ class EtapaTresDesafio:
             self.entrada_jugador.delete(0, "end")
 
     def procesar_respuesta_etapa_3(self):
-        # _esperando_e3 evita que un doble clic/Enter responda el paso siguiente antes de que aparezca
         if not self.gestor.en_juego or self._esperando_e3:
             return
 
@@ -145,7 +144,10 @@ class EtapaTresDesafio:
 
         datos_resueltos = self.gestor.paso_etapa_3_actual()
         correcto, valor_real = self.gestor.verificar_respuesta_etapa_3(valor)
-
+        
+        self.gestor.sumar_puntos(100)
+        self.actualizar_hud_puntos()
+        
         if correcto:
             self._esperando_e3 = True
             self.btn_enviar.configure(state="disabled")
@@ -205,7 +207,11 @@ class EtapaTresDesafio:
         ctk.CTkLabel(self, text="NÚCLEO ESTABILIZADO. EL SISTEMA HA SIDO RECUPERADO.", font=("Consolas", 20),
                      text_color="white").pack(pady=10)
 
-        resumen = f"ESCUDOS RESTANTES: {'♥ ' * self.gestor.vidas}   |   TIEMPO RESTANTE: {self.gestor.formatear_tiempo()}"
+        
+        self.gestor.registrar_solucionario_cierre("MISIÓN CUMPLIDA")
+        resumen = (f"SCORE FINAL: {self.gestor.puntuacion:05d}   |   "
+                 f"ESCUDOS: {'♥ ' * self.gestor.vidas}   |   "
+                 f"TIEMPO: {self.gestor.formatear_tiempo()}")
         ctk.CTkLabel(self, text=resumen, font=("Consolas", 18, "bold"), text_color="cyan").pack(pady=20)
 
         ctk.CTkButton(self, text="[ JUGAR DE NUEVO ]", font=("Consolas", 20), fg_color="transparent", text_color="#00FF00",

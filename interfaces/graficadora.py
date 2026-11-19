@@ -53,8 +53,11 @@ class VentanaGrafica(ctk.CTkToplevel):
     def dibujar_grafica(self, problema, tabla_respuestas):
         # 1. Determinar un rango panorámico (El jugador ahora hará zoom manual)
         x_min, x_max = -8, 8
-        datos_ini = problema.get("parametros_fijos", problema.get("valores_iniciales", {}))
+        datos_ini = {}
+        datos_ini.update(problema.get("valores_iniciales", {}))
+        datos_ini.update(problema.get("parametros_fijos", {}))
         datos_base = problema.get("datos_base", {})
+        
         
         if "a" in datos_ini and "b" in datos_ini:
             centro = (datos_ini["a"] + datos_ini["b"]) / 2
@@ -89,23 +92,38 @@ class VentanaGrafica(ctk.CTkToplevel):
         # 4. Localizar y Dibujar el Resultado Final del Jugador
         if tabla_respuestas:
             ultimo_paso = tabla_respuestas[-1]
-            x_res, y_res = 0, 0
-            
-            if "x_interpolar" in datos_ini:
-                x_res = datos_ini["x_interpolar"]
-                y_res = ultimo_paso.get("valor", 0)
+
+            # Caso A: Integración numérica (tiene intervalo [a, b] y segmentos n)
+            if "a" in datos_ini and "b" in datos_ini and "n" in datos_ini and funcion_str:
+                x_area = np.linspace(datos_ini["a"], datos_ini["b"], 400)
+                try:
+                    y_area = eval(funcion_str.replace("math.", "np."), {"np": np, "x": x_area})
+                    self.ax.fill_between(x_area, 0, y_area, color='#00FF00', alpha=0.25, label='Área Integrada')
+                    area_val = ultimo_paso.get("valor", 0)
+                    self.ax.set_title(f"{problema['titulo']}  |  Integral ≈ {area_val:.6f}", color="#00FF00")
+                except Exception as e:
+                    print(f"Error al sombrear área: {e}")
             else:
-                x_res = ultimo_paso.get("x_medio", ultimo_paso.get("valor", 0))
-                y_res = 0
+                x_interp = datos_ini.get("x_interpolar", datos_ini.get("x"))
+                if x_interp is not None:
+                    x_res = x_interp
+                    y_res = ultimo_paso.get("valor", 0)
+                    etiqueta_pt = "Interpolación"
+                elif "xi" in datos_base and not funcion_str:
+                    # Mínimos cuadrados sin función explícita
+                    x_res, y_res = None, None
+                else:
+                    x_res = ultimo_paso.get("x_medio", ultimo_paso.get("valor", 0))
+                    y_res = 0
+                    etiqueta_pt = "Raíz / Falla"
 
-            self.ax.scatter([x_res], [y_res], color='red', s=150, marker='X', label='Falla', zorder=6)
-
-            # Etiqueta con coordenada
-            texto_coordenada = f"({x_res:.4f}, {y_res:.4f})"
-            self.ax.annotate(texto_coordenada, (x_res, y_res), 
-                             textcoords="offset points", xytext=(10,10), ha='left', 
-                             fontsize=11, color='#00FF00', fontweight='bold',
-                             bbox=dict(boxstyle="round,pad=0.3", fc="#111111", ec="#00FF00", lw=1))
+                if x_res is not None:
+                    self.ax.scatter([x_res], [y_res], color='red', s=150, marker='X', label=etiqueta_pt, zorder=6)
+                    texto_coordenada = f"({x_res:.4f}, {y_res:.4f})"
+                    self.ax.annotate(texto_coordenada, (x_res, y_res),
+                                     textcoords="offset points", xytext=(10, 10), ha='left',
+                                     fontsize=11, color='#00FF00', fontweight='bold',
+                                     bbox=dict(boxstyle="round,pad=0.3", fc="#111111", ec="#00FF00", lw=1))
 
         # Añadir leyenda en la esquina superior derecha
         self.ax.legend(facecolor='#111111', edgecolor='gray', labelcolor='white', loc='upper right')
