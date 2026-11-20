@@ -1,11 +1,13 @@
 import customtkinter as ctk
+from utilidades.fondo import COLOR_FONDO, aplicar_fondo
 from logica.gestor_problemas import GestorProblemas
 from logica.gestor_practica import GestorPractica
 from interfaces.graficadora import VentanaGrafica
 
 class VistaPractica(ctk.CTkFrame):
     def __init__(self, parent, controlador):
-        super().__init__(parent, fg_color="transparent")
+        super().__init__(parent, fg_color=COLOR_FONDO)
+        aplicar_fondo(self)
         self.controlador = controlador
         self.gestor = GestorPractica()
         self.fallas_consecutivas = 0
@@ -13,7 +15,8 @@ class VistaPractica(ctk.CTkFrame):
 
     def limpiar_frame(self):
         for widget in self.winfo_children():
-            widget.destroy()
+            if not getattr(widget, "es_fondo", False):   # el fondo con diseño no se borra
+                widget.destroy()
 
     def mostrar_instrucciones(self):
         self.limpiar_frame()

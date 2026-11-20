@@ -1,8 +1,10 @@
 import customtkinter as ctk
+from utilidades.fondo import COLOR_FONDO, aplicar_fondo
 
 class VistaMenu(ctk.CTkFrame):
     def __init__(self, parent, controlador):
-        super().__init__(parent, fg_color="transparent")
+        super().__init__(parent, fg_color=COLOR_FONDO)
+        aplicar_fondo(self)
         self.controlador = controlador
         self.construir_ui()
 
@@ -31,4 +33,3 @@ class VistaMenu(ctk.CTkFrame):
     def ir_a_desafio(self):
         self.controlador.vistas["desafio"].mostrar_pantalla_inicio()
         self.controlador.mostrar_vista("desafio")
-        

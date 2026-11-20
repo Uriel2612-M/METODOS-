@@ -3,6 +3,7 @@ from interfaces.menu import VistaMenu
 from interfaces.practica import VistaPractica
 from interfaces.manual import VistaManual
 from interfaces.desafio import VistaDesafio
+from utilidades.fondo import COLOR_FONDO
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("green")
@@ -21,9 +22,10 @@ class ZeroLimitApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("ZERO LIMIT - Terminal de Diagnóstico")
+        self.configure(fg_color=COLOR_FONDO)
         self.geometry("850x650")
         self.after(200, lambda: self.iconbitmap(ruta_icono()))
-        self.contenedor_principal = ctk.CTkFrame(self, fg_color="transparent")
+        self.contenedor_principal = ctk.CTkFrame(self, fg_color=COLOR_FONDO, corner_radius=0)
         self.contenedor_principal.pack(expand=True, fill="both")
 
         # Variables para el historial de navegación
