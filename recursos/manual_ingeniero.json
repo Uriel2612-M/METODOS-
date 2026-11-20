@@ -10,7 +10,37 @@
       "condiciones": "1. La función f(x) debe ser continua en [a, b].\n2. Debe existir un cambio de signo en los extremos: f(a) * f(b) < 0.",
       "criterios_paro": "El proceso se detiene cuando el error absoluto |x_actual - x_anterior| es menor o igual a la Tolerancia (ε) deseada, en este caso ε = 0.001.",
       "ventajas_limitaciones": "VENTAJAS: Es 100% seguro; siempre converge si se cumple el cambio de signo.\nLIMITACIONES: Su velocidad de convergencia es muy lenta en comparación a otros métodos.",
-      "ejemplo": "Función: f(x) = x^2 - 2 en [1, 2]\n\nIteración 1:\n- f(1) = -1 (Negativo) | f(2) = 2 (Positivo)\n- Punto medio: x = (1 + 2) / 2 = 1.5\n- f(1.5) = (1.5)^2 - 2 = 0.25 (Positivo)\n\nComo f(1.5) es positivo, reemplaza al límite con su mismo signo (b). El nuevo intervalo para la Iteración 2 será a=1, b=1.5."
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "f(x) = x^2 - 2 en el intervalo [1, 2]"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Iteración 1",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- f(1) = -1 (Negativo) | f(2) = 2 (Positivo)",
+                  "- Punto medio: x = (1 + 2) / 2 = 1.5",
+                  "- f(1.5) = (1.5)^2 - 2 = 0.25 (Positivo)"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Como f(1.5) es positivo, reemplaza al límite con su mismo signo (b). El nuevo intervalo para la Iteración 2 será a = 1, b = 1.5."
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "interpolacion_lineal",
@@ -22,10 +52,54 @@
       "condiciones": "1. Se deben conocer los valores de los puntos extremos del intervalo.\n2. Cuanto menor sea el intervalo entre los datos, mejor será la aproximación, ya que una función continua se aproxima mejor mediante una línea recta.",
       "criterios_paro": "Margen de error ($\\epsilon$) calculado mediante la diferencia absoluta entre el valor real y el valor calculado: $\\epsilon = |f(x) - g(x)| = |{valor real} - {valor calculado}|.",
       "ventajas_limitaciones": "VENTAJAS: Es la base para varios modelos numéricos fundamentales y permite aproximar valores de forma directa uniendo dos puntos.\nLIMITACIONES: Su precisión depende directamente de qué tan pequeño sea el intervalo; intervalos muy amplios reducen la exactitud de la aproximación por línea recta.",
-      "ejemplo": "Estimar el Ln de 3:\n\na) Intervalo entre Ln 2 y Ln 5:\na = 2, b = 5, x = 3\nf(a) = Ln(2) = 0.69314718\nf(b) = Ln(5) = 1.609437912\ng(x) = \\frac{1.609437912 - 0.69314718}{5 - 2}(3 - 2) + 0.69314718 = 0.998577424\nError ($\\epsilon$) = |1.098612289 - 0.998577424| = 0.100034865\n\nb) Intervalo menor entre Ln 2 y Ln 4:\na = 2, b = 4, x = 3\nf(a) = Ln(2) = 0.69314718\nf(b) = Ln(4) = 1.386294361\ng(x) = \\frac{1.386294361 - 0.69314718}{4 - 2}(3 - 2) + 0.69314718 = 1.039720771\nError ($\\epsilon$) = |1.098612289 - 1.039720771| = 0.058891517"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "estimar Ln(3) con interpolación lineal, usando dos intervalos distintos"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Intervalo entre Ln(2) y Ln(5)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 2, b = 5, x = 3",
+                  "- f(a) = Ln(2) = 0.69314718",
+                  "- f(b) = Ln(5) = 1.609437912",
+                  "- g(x) = [(1.609437912 - 0.69314718) / (5 - 2)] * (3 - 2) + 0.69314718",
+                  "- g(3) = 0.998577424",
+                  "- Error: Є = |1.098612289 - 0.998577424| = 0.100034865"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Intervalo menor entre Ln(2) y Ln(4)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 2, b = 4, x = 3",
+                  "- f(a) = Ln(2) = 0.69314718",
+                  "- f(b) = Ln(4) = 1.386294361",
+                  "- g(x) = [(1.386294361 - 0.69314718) / (4 - 2)] * (3 - 2) + 0.69314718",
+                  "- g(3) = 1.039720771",
+                  "- Error: Є = |1.098612289 - 1.039720771| = 0.058891517"
+                ]
+              }
+            ]
+          }
+        ],
+        "comprobacion": "Un intervalo más pequeño reduce el error (0.0589 contra 0.1000)."
+      }
     },
     {
-     "id": "lagrange",
+      "id": "lagrange",
       "nombre": "LAGRANGE",
       "descripcion": "Método de interpolación polinomial que construye un único polinomio de grado n-1 que pasa exactamente por n puntos conocidos. Se aplica tanto a intervalos uniformes como no uniformes.",
       "objetivo": "Estimar el valor de una función g(x) en un punto x intermedio a partir de una tabla de datos (xi, yi). Se usa cuando los datos no están espaciados de forma regular y se necesita mayor precisión que con la interpolación lineal.",
@@ -34,7 +108,80 @@
       "condiciones": "1. Todos los valores xi deben ser distintos entre sí (si no, aparece una división entre cero).\n2. x debe estar dentro del rango de los datos; fuera de él es extrapolación y es poco confiable.\n3. Funciona con intervalos uniformes y no uniformes.\n4. Con muchos puntos el polinomio puede oscilar mucho en los extremos.",
       "criterios_paro": "Es un método directo: se calcula en un solo paso, sin iteraciones ni tolerancia.\nComprobación útil: la suma de todos los Li(x) debe ser igual a 1.\nSi se conoce el valor real, el error se mide así:\n- Error absoluto: |valor real - g(x)|\n- Error relativo: |valor real - g(x)| / |valor real| * 100 %",
       "ventajas_limitaciones": "VENTAJAS: No requiere resolver sistemas de ecuaciones, sirve para datos espaciados de forma irregular y el polinomio pasa exactamente por todos los puntos.\nLIMITACIONES:\n1) La cantidad de cálculos necesarios es grande.\n2) Interpolar en otro valor de x exige repetir todos los cálculos; no se pueden aprovechar partes de la aplicación previa.\n3) Si se agregan o quitan datos, los cálculos anteriores no sirven.\n4) La evaluación del error no es fácil.",
-      "ejemplo": "Problema: obtener g(x) para x = 2.4\n\nTabla de datos:\n- x1 = 2.2 | y1 = 2.54\n- x2 = 2.5 | y2 = 2.82\n- x3 = 2.8 | y3 = 3.21\n- x4 = 3.1 | y4 = 3.32\n- x5 = 3.4 | y5 = 3.41\n\nPaso 1: Calcular cada polinomio base Li(2.4)\n- L1 = (-0.1)(-0.4)(-0.7)(-1.0) / [(-0.3)(-0.6)(-0.9)(-1.2)] = 0.028 / 0.1944 = 0.144033\n- L2 = (0.2)(-0.4)(-0.7)(-1.0) / [(0.3)(-0.3)(-0.6)(-0.9)] = -0.056 / -0.0486 = 1.152263\n- L3 = (0.2)(-0.1)(-0.7)(-1.0) / [(0.6)(0.3)(-0.3)(-0.6)] = -0.014 / 0.0324 = -0.432099\n- L4 = (0.2)(-0.1)(-0.4)(-1.0) / [(0.9)(0.6)(0.3)(-0.3)] = -0.008 / -0.0486 = 0.164609\n- L5 = (0.2)(-0.1)(-0.4)(-0.7) / [(1.2)(0.9)(0.6)(0.3)] = -0.0056 / 0.1944 = -0.028807\n\nComprobación: L1 + L2 + L3 + L4 + L5 = 1.000000\n\nPaso 2: Multiplicar cada Li por su yi\n- 2.54 * 0.144033 = 0.365844\n- 2.82 * 1.152263 = 3.249383\n- 3.21 * (-0.432099) = -1.387037\n- 3.32 * 0.164609 = 0.546502\n- 3.41 * (-0.028807) = -0.098230\n\nPaso 3: Sumar los términos\n- g(2.4) = 0.365844 + 3.249383 - 1.387037 + 0.546502 - 0.098230\n\nResultado: g(2.4) ≈ 2.6765"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "obtener g(x) para x = 2.4"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Tabla de datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 2.2 | y1 = 2.54",
+              "- x2 = 2.5 | y2 = 2.82",
+              "- x3 = 2.8 | y3 = 3.21",
+              "- x4 = 3.1 | y4 = 3.32",
+              "- x5 = 3.4 | y5 = 3.41"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Calcular cada polinomio base Li(2.4)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- L1 = (-0.1)(-0.4)(-0.7)(-1.0) / [(-0.3)(-0.6)(-0.9)(-1.2)] = 0.028 / 0.1944 = 0.144033",
+                  "- L2 = (0.2)(-0.4)(-0.7)(-1.0) / [(0.3)(-0.3)(-0.6)(-0.9)] = -0.056 / -0.0486 = 1.152263",
+                  "- L3 = (0.2)(-0.1)(-0.7)(-1.0) / [(0.6)(0.3)(-0.3)(-0.6)] = -0.014 / 0.0324 = -0.432099",
+                  "- L4 = (0.2)(-0.1)(-0.4)(-1.0) / [(0.9)(0.6)(0.3)(-0.3)] = -0.008 / -0.0486 = 0.164609",
+                  "- L5 = (0.2)(-0.1)(-0.4)(-0.7) / [(1.2)(0.9)(0.6)(0.3)] = -0.0056 / 0.1944 = -0.028807"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Comprobación: L1 + L2 + L3 + L4 + L5 = 1.000000"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Multiplicar cada Li por su yi",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- 2.54 * 0.144033 = 0.365844",
+                  "- 2.82 * 1.152263 = 3.249383",
+                  "- 3.21 * (-0.432099) = -1.387037",
+                  "- 3.32 * 0.164609 = 0.546502",
+                  "- 3.41 * (-0.028807) = -0.098230"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sumar los términos",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(2.4) = 0.365844 + 3.249383 - 1.387037 + 0.546502 - 0.098230"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(2.4) ≈ 2.6765"
+      }
     },
     {
       "id": "newton_diferencias_divididas",
@@ -46,7 +193,89 @@
       "condiciones": "1. Los intervalos son no uniformes: los valores de h no son todos iguales.\n2. Todos los valores xi deben ser distintos.\n3. Para calcular una diferencia de orden i se necesitan i+1 puntos.\n4. Numerador: resta de dos diferencias de orden i-1.\n5. Denominador: resta de los dos valores de x que no son comunes en el numerador (los extremos).",
       "criterios_paro": "Es un método directo: se calcula en un solo paso, sin iteraciones.\nEl margen de error permitido es de 2 diez milésimas (0.0002).\nComprobación: el valor g(x) debe quedar entre los valores de y de los puntos que rodean a x.",
       "ventajas_limitaciones": "VENTAJAS: Sirve para datos con espaciado irregular. Si se agrega un punto nuevo, se reutilizan las diferencias ya calculadas y solo se añade un término.\nLIMITACIONES: Requiere construir la tabla de diferencias, lo que aumenta el trabajo con muchos puntos. Con intervalos no uniformes también se puede resolver con el método de Lagrange.",
-      "ejemplo": "Problema: encontrar g(x) para x = 7\n\nDatos:\n- x1 = 7.3 | y1 = -0.28\n- x2 = 6.5 | y2 = -1.35\n- x3 = 6.1 | y3 = -1.96\n\nPaso 1: Verificar que los intervalos son no uniformes\n- h1 = |x2 - x1| = |6.5 - 7.3| = 0.8\n- h2 = |x3 - x2| = |6.1 - 6.5| = 0.4\n- h1 ≠ h2, por lo tanto se usan diferencias divididas.\n\nPaso 2: Calcular las diferencias divididas\n- D1_1 = (-1.35 - (-0.28)) / (6.5 - 7.3) = -1.07 / -0.8 = 1.3375\n- D1_2 = (-1.96 - (-1.35)) / (6.1 - 6.5) = -0.61 / -0.4 = 1.525\n- D2_1 = (D1_2 - D1_1) / (x3 - x1) = (1.525 - 1.3375) / (6.1 - 7.3) = 0.1875 / -1.2 = -0.15625\n\nPaso 3: Tabla de diferencias divididas\n\n xi  |  yi   |   D1    |    D2\n-----+-------+---------+----------\n 7.3 | -0.28 |         |\n     |       | 1.3375  |\n 6.5 | -1.35 |         | -0.15625\n     |       | 1.525   |\n 6.1 | -1.96 |         |\n\nPaso 4: Sustituir en la fórmula con x = 7\n- g(x) = D0 + D1_1(x - x1) + D2_1(x - x1)(x - x2)\n- g(7) = -0.28 + (1.3375)(7 - 7.3) + (-0.15625)(7 - 7.3)(7 - 6.5)\n- g(7) = -0.28 + (1.3375)(-0.3) + (-0.15625)(-0.3)(0.5)\n- g(7) = -0.28 - 0.40125 + 0.0234375\n\nResultado: g(7) ≈ -0.657813\n\nComprobación: -0.657813 está entre -0.28 y -1.35, como se esperaba."
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "encontrar g(x) para x = 7"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 7.3 | y1 = -0.28",
+              "- x2 = 6.5 | y2 = -1.35",
+              "- x3 = 6.1 | y3 = -1.96"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Verificar que los intervalos son no uniformes",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- h1 = |x2 - x1| = |6.5 - 7.3| = 0.8",
+                  "- h2 = |x3 - x2| = |6.1 - 6.5| = 0.4",
+                  "- h1 ≠ h2, por lo tanto se usan diferencias divididas."
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular las diferencias divididas",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- D1_1 = (-1.35 - (-0.28)) / (6.5 - 7.3) = -1.07 / -0.8 = 1.3375",
+                  "- D1_2 = (-1.96 - (-1.35)) / (6.1 - 6.5) = -0.61 / -0.4 = 1.525",
+                  "- D2_1 = (D1_2 - D1_1) / (x3 - x1) = (1.525 - 1.3375) / (6.1 - 7.3) = 0.1875 / -1.2 = -0.15625"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla de diferencias divididas",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " xi  |  yi   |   D1    |    D2",
+                  "-----+-------+---------+----------",
+                  " 7.3 | -0.28 |         |",
+                  "     |       | 1.3375  |",
+                  " 6.5 | -1.35 |         | -0.15625",
+                  "     |       | 1.525   |",
+                  " 6.1 | -1.96 |         |"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sustituir en la fórmula con x = 7",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(x) = D0 + D1_1(x - x1) + D2_1(x - x1)(x - x2)",
+                  "- g(7) = -0.28 + (1.3375)(7 - 7.3) + (-0.15625)(7 - 7.3)(7 - 6.5)",
+                  "- g(7) = -0.28 + (1.3375)(-0.3) + (-0.15625)(-0.3)(0.5)",
+                  "- g(7) = -0.28 - 0.40125 + 0.0234375"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(7) ≈ -0.657813",
+        "comprobacion": "-0.657813 está entre -0.28 y -1.35, como se esperaba."
+      }
     },
     {
       "id": "newton_adelante",
@@ -58,7 +287,120 @@
       "condiciones": "1. Los intervalos deben ser iguales (uniformes): h = |x(i+1) - xi| igual en toda la tabla.\n2. Se necesitan las tablas de diferencias hacia adelante y los coeficientes binomiales.\n3. El factor s es una coordenada local y siempre debe ser positivo (de izquierda a derecha).\n4. Si s no es positivo, se invierten los valores de x y y (de derecha a izquierda).\n5. Si los intervalos no son uniformes, se debe usar otro método (Newton con diferencias divididas o Lagrange).",
       "criterios_paro": "Es un método directo: se calcula en un solo paso, sin iteraciones.\nPrimero se obtiene h y se verifica que sea uniforme.\nComprobación: el valor g(x) debe quedar entre los valores de y de los puntos que rodean a x.",
       "ventajas_limitaciones": "VENTAJAS: Es más sencillo que Lagrange cuando los datos están igualmente espaciados, porque las diferencias se obtienen solo con restas.\nLIMITACIONES: Solo funciona con intervalos uniformes. Requiere construir la tabla de diferencias y calcular los coeficientes binomiales.",
-      "ejemplo": "Problema: obtener g(x) para x = 5\n\nDatos:\n- x1 = 2 | y1 = 3.1\n- x2 = 4 | y2 = 5.4\n- x3 = 6 | y3 = 9.2\n- x4 = 8 | y4 = 15.5\n\nPaso 1: Verificar que los intervalos son uniformes\n- h1 = |4 - 2| = 2\n- h2 = |6 - 4| = 2\n- h3 = |8 - 6| = 2\n- Todos son iguales (h = 2), por lo tanto se usa Newton hacia adelante.\n\nPaso 2: Calcular las diferencias hacia adelante\n- Δ1_1 = 5.4 - 3.1 = 2.3\n- Δ1_2 = 9.2 - 5.4 = 3.8\n- Δ1_3 = 15.5 - 9.2 = 6.3\n- Δ2_1 = 3.8 - 2.3 = 1.5\n- Δ2_2 = 6.3 - 3.8 = 2.5\n- Δ3_1 = 2.5 - 1.5 = 1.0\n\nPaso 3: Tabla de diferencias\n\n xi  |  yi   |  Δ1  |  Δ2  |  Δ3\n-----+-------+------+------+------\n 2   | 3.1   |      |      |\n     |       | 2.3  |      |\n 4   | 5.4   |      | 1.5  |\n     |       | 3.8  |      | 1.0\n 6   | 9.2   |      | 2.5  |\n     |       | 6.3  |      |\n 8   | 15.5  |      |      |\n\nPaso 4: Calcular el factor s\n- s = (x - x1) / h = (5 - 2) / 2 = 1.5\n\nPaso 5: Calcular los coeficientes binomiales\n- C(s,0) = 1\n- C(s,1) = s = 1.5\n- C(s,2) = s(s-1) / 2! = (1.5)(0.5) / 2 = 0.375\n- C(s,3) = s(s-1)(s-2) / 3! = (1.5)(0.5)(-0.5) / 6 = -0.0625\n\nPaso 6: Sustituir en la fórmula\n- g(5) = y1*C(s,0) + Δ1_1*C(s,1) + Δ2_1*C(s,2) + Δ3_1*C(s,3)\n- g(5) = 3.1(1) + (2.3)(1.5) + (1.5)(0.375) + (1.0)(-0.0625)\n- g(5) = 3.1 + 3.45 + 0.5625 - 0.0625\n\nResultado: g(5) = 7.05\n\nComprobación: 7.05 está entre 5.4 y 9.2, como se esperaba."
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "obtener g(x) para x = 5"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 2 | y1 = 3.1",
+              "- x2 = 4 | y2 = 5.4",
+              "- x3 = 6 | y3 = 9.2",
+              "- x4 = 8 | y4 = 15.5"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Verificar que los intervalos son uniformes",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- h1 = |4 - 2| = 2",
+                  "- h2 = |6 - 4| = 2",
+                  "- h3 = |8 - 6| = 2",
+                  "- Todos son iguales (h = 2), por lo tanto se usa Newton hacia adelante."
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular las diferencias hacia adelante",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Δ1_1 = 5.4 - 3.1 = 2.3",
+                  "- Δ1_2 = 9.2 - 5.4 = 3.8",
+                  "- Δ1_3 = 15.5 - 9.2 = 6.3",
+                  "- Δ2_1 = 3.8 - 2.3 = 1.5",
+                  "- Δ2_2 = 6.3 - 3.8 = 2.5",
+                  "- Δ3_1 = 2.5 - 1.5 = 1.0"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla de diferencias",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " xi  |  yi   |  Δ1  |  Δ2  |  Δ3",
+                  "-----+-------+------+------+------",
+                  " 2   | 3.1   |      |      |",
+                  "     |       | 2.3  |      |",
+                  " 4   | 5.4   |      | 1.5  |",
+                  "     |       | 3.8  |      | 1.0",
+                  " 6   | 9.2   |      | 2.5  |",
+                  "     |       | 6.3  |      |",
+                  " 8   | 15.5  |      |      |"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular el factor s",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- s = (x - x1) / h = (5 - 2) / 2 = 1.5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular los coeficientes binomiales",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- C(s,0) = 1",
+                  "- C(s,1) = s = 1.5",
+                  "- C(s,2) = s(s-1) / 2! = (1.5)(0.5) / 2 = 0.375",
+                  "- C(s,3) = s(s-1)(s-2) / 3! = (1.5)(0.5)(-0.5) / 6 = -0.0625"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sustituir en la fórmula",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(5) = y1*C(s,0) + Δ1_1*C(s,1) + Δ2_1*C(s,2) + Δ3_1*C(s,3)",
+                  "- g(5) = 3.1(1) + (2.3)(1.5) + (1.5)(0.375) + (1.0)(-0.0625)",
+                  "- g(5) = 3.1 + 3.45 + 0.5625 - 0.0625"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(5) = 7.05",
+        "comprobacion": "7.05 está entre 5.4 y 9.2, como se esperaba."
+      }
     },
     {
       "id": "newton_atras",
@@ -70,7 +412,126 @@
       "condiciones": "1. Los intervalos deben ser uniformes para que no exista mucha discrepancia en los valores.\n2. El punto base es el último número de la tabla (xn).\n3. El factor s es una coordenada local y siempre es negativo (x queda a la izquierda de xn).\n4. Cambios respecto a Newton hacia adelante: el punto base es el último y los factores del binomial son (s + j) en lugar de (s - j).",
       "criterios_paro": "Es un método directo: se calcula en un solo paso, sin iteraciones.\nPrimero se obtiene h y se verifica que sea uniforme.\nComprobación: el valor g(x) debe quedar entre los valores de y de los puntos que rodean a x.",
       "ventajas_limitaciones": "VENTAJAS: Es la mejor opción cuando x está cerca del final de la tabla, y las diferencias se obtienen solo con restas.\nLIMITACIONES: Solo funciona con intervalos uniformes. Requiere construir la tabla de diferencias y calcular los coeficientes binomiales. Si los intervalos son uniformes, también se puede resolver con Newton hacia adelante o con Lagrange.",
-      "ejemplo": "Problema: obtener g(x) para x = 5\n\nDatos:\n- x1 = 2 | y1 = 3.1\n- x2 = 4 | y2 = 5.4\n- x3 = 6 | y3 = 9.2\n- x4 = 8 | y4 = 15.5\n\nPaso 1: Verificar que los intervalos son uniformes\n- h1 = |4 - 2| = 2\n- h2 = |6 - 4| = 2\n- h3 = |8 - 6| = 2\n- Todos son iguales (h = 2), por lo tanto se puede usar Newton hacia atrás.\n\nPaso 2: Calcular las diferencias hacia atrás\n- ∇1_2 = 5.4 - 3.1 = 2.3\n- ∇1_3 = 9.2 - 5.4 = 3.8\n- ∇1_4 = 15.5 - 9.2 = 6.3\n- ∇2_3 = 3.8 - 2.3 = 1.5\n- ∇2_4 = 6.3 - 3.8 = 2.5\n- ∇3_4 = 2.5 - 1.5 = 1.0\n\nPaso 3: Tabla de diferencias\n\n xi  |  yi   |  ∇1  |  ∇2  |  ∇3\n-----+-------+------+------+------\n 2   | 3.1   |      |      |\n     |       | 2.3  |      |\n 4   | 5.4   |      | 1.5  |\n     |       | 3.8  |      | 1.0\n 6   | 9.2   |      | 2.5  |\n     |       | 6.3  |      |\n 8   | 15.5  |      |      |\n\nEn este método se usan los valores del último punto de cada columna: y4 = 15.5, ∇1_4 = 6.3, ∇2_4 = 2.5 y ∇3_4 = 1.0.\n\nPaso 4: Calcular el factor s\n- s = (x - xn) / h = (5 - 8) / 2 = -1.5\n\nPaso 5: Calcular los coeficientes binomiales\n- C(s,0) = 1\n- C(s,1) = s = -1.5\n- C(s,2) = s(s+1) / 2! = (-1.5)(-0.5) / 2 = 0.375\n- C(s,3) = s(s+1)(s+2) / 3! = (-1.5)(-0.5)(0.5) / 6 = 0.0625\n\nPaso 6: Sustituir en la fórmula\n- g(5) = y4*C(s,0) + ∇1_4*C(s,1) + ∇2_4*C(s,2) + ∇3_4*C(s,3)\n- g(5) = 15.5(1) + (6.3)(-1.5) + (2.5)(0.375) + (1.0)(0.0625)\n- g(5) = 15.5 - 9.45 + 0.9375 + 0.0625\n\nResultado: g(5) = 7.05\n\nComprobación: 7.05 está entre 5.4 y 9.2, como se esperaba. Es el mismo resultado que con Newton hacia adelante, porque ambos usan los mismos datos."
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "obtener g(x) para x = 5"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 2 | y1 = 3.1",
+              "- x2 = 4 | y2 = 5.4",
+              "- x3 = 6 | y3 = 9.2",
+              "- x4 = 8 | y4 = 15.5"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Verificar que los intervalos son uniformes",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- h1 = |4 - 2| = 2",
+                  "- h2 = |6 - 4| = 2",
+                  "- h3 = |8 - 6| = 2",
+                  "- Todos son iguales (h = 2), por lo tanto se puede usar Newton hacia atrás."
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular las diferencias hacia atrás",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- ∇1_2 = 5.4 - 3.1 = 2.3",
+                  "- ∇1_3 = 9.2 - 5.4 = 3.8",
+                  "- ∇1_4 = 15.5 - 9.2 = 6.3",
+                  "- ∇2_3 = 3.8 - 2.3 = 1.5",
+                  "- ∇2_4 = 6.3 - 3.8 = 2.5",
+                  "- ∇3_4 = 2.5 - 1.5 = 1.0"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla de diferencias",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " xi  |  yi   |  ∇1  |  ∇2  |  ∇3",
+                  "-----+-------+------+------+------",
+                  " 2   | 3.1   |      |      |",
+                  "     |       | 2.3  |      |",
+                  " 4   | 5.4   |      | 1.5  |",
+                  "     |       | 3.8  |      | 1.0",
+                  " 6   | 9.2   |      | 2.5  |",
+                  "     |       | 6.3  |      |",
+                  " 8   | 15.5  |      |      |"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "En este método se usan los valores del último punto de cada columna: y4 = 15.5, ∇1_4 = 6.3, ∇2_4 = 2.5 y ∇3_4 = 1.0."
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular el factor s",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- s = (x - xn) / h = (5 - 8) / 2 = -1.5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular los coeficientes binomiales",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- C(s,0) = 1",
+                  "- C(s,1) = s = -1.5",
+                  "- C(s,2) = s(s+1) / 2! = (-1.5)(-0.5) / 2 = 0.375",
+                  "- C(s,3) = s(s+1)(s+2) / 3! = (-1.5)(-0.5)(0.5) / 6 = 0.0625"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sustituir en la fórmula",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(5) = y4*C(s,0) + ∇1_4*C(s,1) + ∇2_4*C(s,2) + ∇3_4*C(s,3)",
+                  "- g(5) = 15.5(1) + (6.3)(-1.5) + (2.5)(0.375) + (1.0)(0.0625)",
+                  "- g(5) = 15.5 - 9.45 + 0.9375 + 0.0625"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(5) = 7.05",
+        "comprobacion": "7.05 está entre 5.4 y 9.2, como se esperaba. Es el mismo resultado que con Newton hacia adelante, porque ambos usan los mismos datos."
+      }
     },
     {
       "id": "grafico",
@@ -82,7 +543,63 @@
       "condiciones": "1. La función debe ser continua en el intervalo que se grafica.\n2. Se debe tabular con suficientes valores de x para no perder ninguna raíz.\n3. No se debe desechar ningún dato intermedio.",
       "criterios_paro": "Es un método directo: no itera ni usa tolerancia.\nSe termina al identificar el intervalo donde la gráfica cruza el eje x (el cambio de signo indica una raíz). La precisión depende de qué tan pequeño sea el paso entre los valores de x.",
       "ventajas_limitaciones": "VENTAJAS: Es muy sencillo y permite ver cuántas raíces tiene la función y dónde están aproximadamente.\nLIMITACIONES: Es poco preciso; solo da una aproximación inicial que debe refinarse con otro método.",
-      "ejemplo": "Problema: encontrar una aproximación de las raíces de y = x^3 - 3x + 1\n\nPaso 1: Tabular la función (evaluar y para cada x)\n\n   X  |   Y\n------+------\n  -3  |  -17\n  -2  |   -1\n  -1  |    3   <- cambio de signo\n   0  |    1\n   1  |   -1   <- cambio de signo\n   2  |    3   <- cambio de signo\n   3  |   19\n\nPaso 2: Localizar los cambios de signo\n- Entre x = -2 y x = -1: y pasa de -1 a 3\n- Entre x = 0 y x = 1: y pasa de 1 a -1\n- Entre x = 1 y x = 2: y pasa de -1 a 3\n\nPaso 3: Interpretar\n- La función tiene 3 raíces reales, una en cada intervalo: [-2, -1], [0, 1] y [1, 2].\n- Cada intervalo sirve como valor inicial para refinar la raíz con otro método.\n\nEl cambio de signo indica una raíz."
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "encontrar una aproximación de las raíces de y = x^3 - 3x + 1"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabular la función (evaluar y para cada x)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "   X  |   Y",
+                  "------+------",
+                  "  -3  |  -17",
+                  "  -2  |   -1",
+                  "  -1  |    3   <- cambio de signo",
+                  "   0  |    1",
+                  "   1  |   -1   <- cambio de signo",
+                  "   2  |    3   <- cambio de signo",
+                  "   3  |   19"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Localizar los cambios de signo",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Entre x = -2 y x = -1: y pasa de -1 a 3",
+                  "- Entre x = 0 y x = 1: y pasa de 1 a -1",
+                  "- Entre x = 1 y x = 2: y pasa de -1 a 3"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Interpretar",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- La función tiene 3 raíces reales, una en cada intervalo: [-2, -1], [0, 1] y [1, 2].",
+                  "- Cada intervalo sirve como valor inicial para refinar la raíz con otro método."
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "El cambio de signo indica una raíz."
+      }
     },
     {
       "id": "falsa_posicion",
@@ -94,7 +611,77 @@
       "condiciones": "1. La función f(x) debe ser continua en [a, b].\n2. Debe haber un cambio de signo: f(a) * f(b) < 0.\n3. Tiene un punto fijo que es b, por lo tanto f(b) también es constante.\n4. En cada iteración, a toma el valor del x anterior.",
       "criterios_paro": "El proceso se detiene cuando el error Є = |x(i+1) - xi| es menor o igual a 0.001.",
       "ventajas_limitaciones": "VENTAJAS: Siempre converge si hay cambio de signo y suele ser más rápido que la bisectriz.\nLIMITACIONES: Un extremo del intervalo (b) se queda fijo, por lo que la convergencia puede ser lenta si la función es muy curva.",
-      "ejemplo": "Problema: calcular la raíz de f(x) = x^3 - 2x - 5 con Є <= 0.001\n\nPaso 1: Tabular para ubicar el intervalo\n\n   x  |  f(x)\n------+-------\n  0   | -5\n  1   | -6\n  2   | -1   -> f(a)\n  3   | 16   -> f(b)\n\na = 2, b = 3 (hay cambio de signo)\nf(a) = a^3 - 2a - 5\n\nPaso 2: Aplicar x = a - f(a)(b - a) / (f(b) - f(a))\n\n i| b| f(b)| a     | x     | f(a)   | Є     \n--+--+-----+-------+-------+--------+-------\n 0| 3| 16  | 2.0000| -     | -1.0000| -     \n 1| 3| 16  | 2.0000| 2.0588| -1.0000| -     \n 2| 3| 16  | 2.0588| 2.0813| -0.3908| 0.0224\n 3| 3| 16  | 2.0813| 2.0896| -0.1472| 0.0084\n 4| 3| 16  | 2.0896| 2.0927| -0.0547| 0.0031\n 5| 3| 16  | 2.0927| 2.0939| -0.0202| 0.0011\n 6| 3| 16  | 2.0939| 2.0943| -0.0075| 0.0004\n\nEn cada fila, a toma el valor de la x de la fila anterior.\n\nMargen de error:\nЄ = |x6 - x5| = |2.0943 - 2.0939| = 0.0004\n\nResultado: x ≈ 2.0943"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "calcular la raíz de f(x) = x^3 - 2x - 5 con Є <= 0.001"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabular para ubicar el intervalo",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "   x  |  f(x)",
+                  "------+-------",
+                  "  0   | -5",
+                  "  1   | -6",
+                  "  2   | -1   -> f(a)",
+                  "  3   | 16   -> f(b)"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "a = 2, b = 3 (hay cambio de signo)",
+                  "f(a) = a^3 - 2a - 5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Aplicar x = a - f(a)(b - a) / (f(b) - f(a))",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i| b| f(b)| a     | x     | f(a)   | Є     ",
+                  "--+--+-----+-------+-------+--------+-------",
+                  " 0| 3| 16  | 2.0000| -     | -1.0000| -     ",
+                  " 1| 3| 16  | 2.0000| 2.0588| -1.0000| -     ",
+                  " 2| 3| 16  | 2.0588| 2.0813| -0.3908| 0.0224",
+                  " 3| 3| 16  | 2.0813| 2.0896| -0.1472| 0.0084",
+                  " 4| 3| 16  | 2.0896| 2.0927| -0.0547| 0.0031",
+                  " 5| 3| 16  | 2.0927| 2.0939| -0.0202| 0.0011",
+                  " 6| 3| 16  | 2.0939| 2.0943| -0.0075| 0.0004"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "En cada fila, a toma el valor de la x de la fila anterior."
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Margen de error"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Є = |x6 - x5| = |2.0943 - 2.0939| = 0.0004"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x ≈ 2.0943"
+      }
     },
     {
       "id": "punto_fijo",
@@ -106,7 +693,75 @@
       "condiciones": "1. Se debe transformar algebraicamente f(x) = 0 a la forma x = g(x).\n2. Se necesita un valor inicial x0, que se puede encontrar por observación directa de la ecuación.\n3. Un mismo f(x) admite varias formas de x = g(x); no todas convergen, por lo que puede ser necesario probar otra forma.",
       "criterios_paro": "Se evalúa g(x0) = x1, luego g(x1) = x2, y así sucesivamente.\nEl margen de error Є = |x(i+1) - xi| tiende a 0: se detiene cuando las aproximaciones dejan de cambiar de forma apreciable.",
       "ventajas_limitaciones": "VENTAJAS: Es muy sencillo; solo requiere evaluar g(x) repetidamente.\nLIMITACIONES: Puede divergir según la forma de g(x) elegida y necesita un valor inicial razonable.",
-      "ejemplo": "Problema: localizar una raíz de f(x) = x^2 - 3x + 1\n\nPaso 1: Despejar x\n- x^2 - 3x + 1 = 0\n- 3x = x^2 + 1   (despejando el 2° término)\n- x = (x^2 + 1) / 3\n\nFórmula iterativa: x(i+1) = (xi^2 + 1) / 3, con x0 = 0\n\nPaso 2: Iterar\n\n i | (xi²+1)/3         | xi      | Є       \n---+-------------------+---------+---------\n 0 | -                 | 0.000000| -       \n 1 | (0.000000²+1)/3 = | 0.333333| 0.333333\n 2 | (0.333333²+1)/3 = | 0.370370| 0.037037\n 3 | (0.370370²+1)/3 = | 0.379058| 0.008688\n 4 | (0.379058²+1)/3 = | 0.381228| 0.002170\n 5 | (0.381228²+1)/3 = | 0.381778| 0.000550\n 6 | (0.381778²+1)/3 = | 0.381918| 0.000140\n 7 | (0.381918²+1)/3 = | 0.381954| 0.000036\n 8 | (0.381954²+1)/3 = | 0.381963| 0.000009\n\nEn cada fila, la x obtenida se sustituye en la fórmula de la fila siguiente.\n\nMargen de error:\nЄ = |x8 - x7| = |0.381963 - 0.381954| = 0.000009\n\nResultado: x ≈ 0.381963"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "localizar una raíz de f(x) = x^2 - 3x + 1"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar x",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x^2 - 3x + 1 = 0",
+                  "- 3x = x^2 + 1   (despejando el 2° término)",
+                  "- x = (x^2 + 1) / 3"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Fórmula iterativa: x(i+1) = (xi^2 + 1) / 3, con x0 = 0"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iterar",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i | (xi²+1)/3         | xi      | Є       ",
+                  "---+-------------------+---------+---------",
+                  " 0 | -                 | 0.000000| -       ",
+                  " 1 | (0.000000²+1)/3 = | 0.333333| 0.333333",
+                  " 2 | (0.333333²+1)/3 = | 0.370370| 0.037037",
+                  " 3 | (0.370370²+1)/3 = | 0.379058| 0.008688",
+                  " 4 | (0.379058²+1)/3 = | 0.381228| 0.002170",
+                  " 5 | (0.381228²+1)/3 = | 0.381778| 0.000550",
+                  " 6 | (0.381778²+1)/3 = | 0.381918| 0.000140",
+                  " 7 | (0.381918²+1)/3 = | 0.381954| 0.000036",
+                  " 8 | (0.381954²+1)/3 = | 0.381963| 0.000009"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "En cada fila, la x obtenida se sustituye en la fórmula de la fila siguiente."
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Margen de error"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Є = |x8 - x7| = |0.381963 - 0.381954| = 0.000009"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x ≈ 0.381963"
+      }
     },
     {
       "id": "newton_raphson",
@@ -118,7 +773,114 @@
       "condiciones": "1. Se requiere una buena estimación inicial; de lo contrario la solución iterativa puede divergir o converger a una solución irrelevante.\n2. Se debe conocer la derivada f'(x).\n3. f'(xi) debe ser distinta de 0 en cada iteración.\n4. El valor inicial x0 puede ser 0 o un valor cercano a la raíz.",
       "criterios_paro": "El margen de error Є = |x(i+1) - xi| tiende a 0. El proceso termina cuando la diferencia entre dos aproximaciones consecutivas es 0 con la precisión requerida.",
       "ventajas_limitaciones": "VENTAJAS: Convergencia muy rápida cuando funciona.\nLIMITACIONES: Depende de un buen valor inicial, puede divergir y requiere calcular la derivada.",
-      "ejemplo": "Problema: encontrar la raíz real de f(x) = x^3 + 4x^2 - 10\n\nDerivada: f'(x) = 3x^2 + 8x\nValor inicial: x0 = 1\n\nPaso 1: Aplicar x(i+1) = xi - f(xi) / f'(xi) en cada iteración\n\nIteración 1:\n- x1 = x0 - (x0^3 + 4x0^2 - 10) / (3x0^2 + 8x0)\n- x1 = 1 - (1^3 + 4(1)^2 - 10) / (3(1)^2 + 8(1))\n- x1 = 1.454545\n- Є = |x1 - x0| = |1.454545 - 1.000000| = 0.454545\n\nIteración 2:\n- x2 = x1 - (x1^3 + 4x1^2 - 10) / (3x1^2 + 8x1)\n- x2 = 1.454545 - (1.454545^3 + 4(1.454545)^2 - 10) / (3(1.454545)^2 + 8(1.454545))\n- x2 = 1.368900\n- Є = |x2 - x1| = |1.368900 - 1.454545| = 0.085645\n\nIteración 3:\n- x3 = x2 - (x2^3 + 4x2^2 - 10) / (3x2^2 + 8x2)\n- x3 = 1.368900 - (1.368900^3 + 4(1.368900)^2 - 10) / (3(1.368900)^2 + 8(1.368900))\n- x3 = 1.365237\n- Є = |x3 - x2| = |1.365237 - 1.368900| = 0.003664\n\nIteración 4:\n- x4 = x3 - (x3^3 + 4x3^2 - 10) / (3x3^2 + 8x3)\n- x4 = 1.365237 - (1.365237^3 + 4(1.365237)^2 - 10) / (3(1.365237)^2 + 8(1.365237))\n- x4 = 1.365230\n- Є = |x4 - x3| = |1.365230 - 1.365237| = 0.000007\n\nIteración 5:\n- x5 = x4 - (x4^3 + 4x4^2 - 10) / (3x4^2 + 8x4)\n- x5 = 1.365230 - (1.365230^3 + 4(1.365230)^2 - 10) / (3(1.365230)^2 + 8(1.365230))\n- x5 = 1.365230\n- Є = |x5 - x4| = |1.365230 - 1.365230| = 0.000000\n\nPaso 2: Tabla resumen\n\n i |    x(i+1)    |  Є = |x(i+1) - xi|\n---+-------------+-----------------\n 0 | x0 = 1      |\n 1 | 1.454545    | 0.454545\n 2 | 1.368900    | 0.085645\n 3 | 1.365237    | 0.003664\n 4 | 1.365230    | 0.000007\n 5 | 1.365230    | 0.000000\n\nResultado: x ≈ 1.365230"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "encontrar la raíz real de f(x) = x^3 + 4x^2 - 10"
+            ]
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "Derivada: f'(x) = 3x^2 + 8x",
+              "Valor inicial: x0 = 1"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Aplicar x(i+1) = xi - f(xi) / f'(xi) en cada iteración",
+            "bloques": [
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 1"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x1 = x0 - (x0^3 + 4x0^2 - 10) / (3x0^2 + 8x0)",
+                  "- x1 = 1 - (1^3 + 4(1)^2 - 10) / (3(1)^2 + 8(1))",
+                  "- x1 = 1.454545",
+                  "- Є = |x1 - x0| = |1.454545 - 1.000000| = 0.454545"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 2"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x2 = x1 - (x1^3 + 4x1^2 - 10) / (3x1^2 + 8x1)",
+                  "- x2 = 1.454545 - (1.454545^3 + 4(1.454545)^2 - 10) / (3(1.454545)^2 + 8(1.454545))",
+                  "- x2 = 1.368900",
+                  "- Є = |x2 - x1| = |1.368900 - 1.454545| = 0.085645"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 3"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x3 = x2 - (x2^3 + 4x2^2 - 10) / (3x2^2 + 8x2)",
+                  "- x3 = 1.368900 - (1.368900^3 + 4(1.368900)^2 - 10) / (3(1.368900)^2 + 8(1.368900))",
+                  "- x3 = 1.365237",
+                  "- Є = |x3 - x2| = |1.365237 - 1.368900| = 0.003664"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 4"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x4 = x3 - (x3^3 + 4x3^2 - 10) / (3x3^2 + 8x3)",
+                  "- x4 = 1.365237 - (1.365237^3 + 4(1.365237)^2 - 10) / (3(1.365237)^2 + 8(1.365237))",
+                  "- x4 = 1.365230",
+                  "- Є = |x4 - x3| = |1.365230 - 1.365237| = 0.000007"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 5"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x5 = x4 - (x4^3 + 4x4^2 - 10) / (3x4^2 + 8x4)",
+                  "- x5 = 1.365230 - (1.365230^3 + 4(1.365230)^2 - 10) / (3(1.365230)^2 + 8(1.365230))",
+                  "- x5 = 1.365230",
+                  "- Є = |x5 - x4| = |1.365230 - 1.365230| = 0.000000"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla resumen",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i |    x(i+1)    |  Є = |x(i+1) - xi|",
+                  "---+-------------+-----------------",
+                  " 0 | x0 = 1      |",
+                  " 1 | 1.454545    | 0.454545",
+                  " 2 | 1.368900    | 0.085645",
+                  " 3 | 1.365237    | 0.003664",
+                  " 4 | 1.365230    | 0.000007",
+                  " 5 | 1.365230    | 0.000000"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x ≈ 1.365230"
+      }
     },
     {
       "id": "secante",
@@ -130,7 +892,133 @@
       "condiciones": "1. Requiere dos valores iniciales: x0 y x1 (por ejemplo x0 = 0, x1 = 1).\n2. f(xi) debe ser distinta de f(x(i-1)) para evitar una división entre cero.\n3. No es necesario que los valores iniciales encierren la raíz.",
       "criterios_paro": "El proceso se detiene cuando el error Є = |x(i+1) - xi| es menor o igual a 0.001.",
       "ventajas_limitaciones": "VENTAJAS: No requiere la derivada y es más eficiente que Newton.\nLIMITACIONES: Necesita dos valores iniciales y puede divergir si están lejos de la raíz.",
-      "ejemplo": "Problema: calcular la raíz de f(x) = x^3 - x - 1 con Є <= 0.001\n\nValores iniciales: x0 = 1, x1 = 2\n\nPaso 1: Evaluar f en cada aproximación\n\n  xi                 | f(xi)\n---------------------+---------------\n x0 = 1.000000      | f(x0) = -1.000000\n x1 = 2.000000      | f(x1) = 5.000000\n x2 = 1.166667      | f(x2) = -0.578704\n x3 = 1.253112      | f(x3) = -0.285363\n x4 = 1.337206      | f(x4) = 0.053881\n x5 = 1.323850      | f(x5) = -0.003698\n x6 = 1.324708      | f(x6) = -0.000043\n\nPaso 2: Aplicar la fórmula de la secante\n\nIteración 2:\n- x2 = x1 - f(x1)(x1 - x0) / (f(x1) - f(x0))\n- x2 = 2.000000 - (5.000000)(2.000000 - 1.000000) / ((5.000000) - (-1.000000))\n- x2 = 1.166667\n- Є = |x2 - x1| = |1.166667 - 2.000000| = 0.833333\n\nIteración 3:\n- x3 = x2 - f(x2)(x2 - x1) / (f(x2) - f(x1))\n- x3 = 1.166667 - (-0.578704)(1.166667 - 2.000000) / ((-0.578704) - (5.000000))\n- x3 = 1.253112\n- Є = |x3 - x2| = |1.253112 - 1.166667| = 0.086445\n\nIteración 4:\n- x4 = x3 - f(x3)(x3 - x2) / (f(x3) - f(x2))\n- x4 = 1.253112 - (-0.285363)(1.253112 - 1.166667) / ((-0.285363) - (-0.578704))\n- x4 = 1.337206\n- Є = |x4 - x3| = |1.337206 - 1.253112| = 0.084094\n\nIteración 5:\n- x5 = x4 - f(x4)(x4 - x3) / (f(x4) - f(x3))\n- x5 = 1.337206 - (0.053881)(1.337206 - 1.253112) / ((0.053881) - (-0.285363))\n- x5 = 1.323850\n- Є = |x5 - x4| = |1.323850 - 1.337206| = 0.013356\n\nIteración 6:\n- x6 = x5 - f(x5)(x5 - x4) / (f(x5) - f(x4))\n- x6 = 1.323850 - (-0.003698)(1.323850 - 1.337206) / ((-0.003698) - (0.053881))\n- x6 = 1.324708\n- Є = |x6 - x5| = |1.324708 - 1.323850| = 0.000858\n\nPaso 3: Tabla de iteraciones\n\n i |      xi        |  Є = |x(i+1) - xi|\n---+---------------+-----------------\n 0 | x0 = 1.000000 |\n 1 | x1 = 2.000000 | |x1 - x0| = 1.000000\n 2 | x2 = 1.166667 | |x2 - x1| = 0.833333\n 3 | x3 = 1.253112 | |x3 - x2| = 0.086445\n 4 | x4 = 1.337206 | |x4 - x3| = 0.084094\n 5 | x5 = 1.323850 | |x5 - x4| = 0.013356\n 6 | x6 = 1.324708 | |x6 - x5| = 0.000858\n\nResultado: x ≈ 1.324708"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "calcular la raíz de f(x) = x^3 - x - 1 con Є <= 0.001"
+            ]
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "Valores iniciales: x0 = 1, x1 = 2"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Evaluar f en cada aproximación",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  xi                 | f(xi)",
+                  "---------------------+---------------",
+                  " x0 = 1.000000      | f(x0) = -1.000000",
+                  " x1 = 2.000000      | f(x1) = 5.000000",
+                  " x2 = 1.166667      | f(x2) = -0.578704",
+                  " x3 = 1.253112      | f(x3) = -0.285363",
+                  " x4 = 1.337206      | f(x4) = 0.053881",
+                  " x5 = 1.323850      | f(x5) = -0.003698",
+                  " x6 = 1.324708      | f(x6) = -0.000043"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Aplicar la fórmula de la secante",
+            "bloques": [
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 2"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x2 = x1 - f(x1)(x1 - x0) / (f(x1) - f(x0))",
+                  "- x2 = 2.000000 - (5.000000)(2.000000 - 1.000000) / ((5.000000) - (-1.000000))",
+                  "- x2 = 1.166667",
+                  "- Є = |x2 - x1| = |1.166667 - 2.000000| = 0.833333"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 3"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x3 = x2 - f(x2)(x2 - x1) / (f(x2) - f(x1))",
+                  "- x3 = 1.166667 - (-0.578704)(1.166667 - 2.000000) / ((-0.578704) - (5.000000))",
+                  "- x3 = 1.253112",
+                  "- Є = |x3 - x2| = |1.253112 - 1.166667| = 0.086445"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 4"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x4 = x3 - f(x3)(x3 - x2) / (f(x3) - f(x2))",
+                  "- x4 = 1.253112 - (-0.285363)(1.253112 - 1.166667) / ((-0.285363) - (-0.578704))",
+                  "- x4 = 1.337206",
+                  "- Є = |x4 - x3| = |1.337206 - 1.253112| = 0.084094"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 5"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x5 = x4 - f(x4)(x4 - x3) / (f(x4) - f(x3))",
+                  "- x5 = 1.337206 - (0.053881)(1.337206 - 1.253112) / ((0.053881) - (-0.285363))",
+                  "- x5 = 1.323850",
+                  "- Є = |x5 - x4| = |1.323850 - 1.337206| = 0.013356"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 6"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x6 = x5 - f(x5)(x5 - x4) / (f(x5) - f(x4))",
+                  "- x6 = 1.323850 - (-0.003698)(1.323850 - 1.337206) / ((-0.003698) - (0.053881))",
+                  "- x6 = 1.324708",
+                  "- Є = |x6 - x5| = |1.324708 - 1.323850| = 0.000858"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla de iteraciones",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i |      xi        |  Є = |x(i+1) - xi|",
+                  "---+---------------+-----------------",
+                  " 0 | x0 = 1.000000 |",
+                  " 1 | x1 = 2.000000 | |x1 - x0| = 1.000000",
+                  " 2 | x2 = 1.166667 | |x2 - x1| = 0.833333",
+                  " 3 | x3 = 1.253112 | |x3 - x2| = 0.086445",
+                  " 4 | x4 = 1.337206 | |x4 - x3| = 0.084094",
+                  " 5 | x5 = 1.323850 | |x5 - x4| = 0.013356",
+                  " 6 | x6 = 1.324708 | |x6 - x5| = 0.000858"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x ≈ 1.324708"
+      }
     },
     {
       "id": "jacobi",
@@ -142,7 +1030,188 @@
       "condiciones": "1. El sistema debe ser cuadrado (mismo número de ecuaciones que de incógnitas).\n2. Se debe analizar y cumplir la condición de diagonal dominante: el valor absoluto del coeficiente de la diagonal principal debe ser mayor que la suma de los valores absolutos de los demás coeficientes de esa fila (|aii| > Σ |aij| para j ≠ i).\n3. Los elementos de la diagonal principal deben ser distintos de cero (aii ≠ 0).\n4. Se requieren valores iniciales para todas las incógnitas (por ejemplo, todos iguales a 0 o 1).",
       "criterios_paro": "El proceso se detiene cuando el error absoluto de TODAS las variables (Є_a = |a(i+1) - ai|, Є_b = |b(i+1) - bi|, Є_c = |c(i+1) - ci|, ...) es menor o igual a la tolerancia deseada, en este caso Є = 0.001.",
       "ventajas_limitaciones": "VENTAJAS: Es fácil de implementar y permite calcular todas las variables de una iteración de manera independiente (paralelizable).\nLIMITACIONES: Converge más lento que Gauss-Seidel y puede divergir si el sistema no es diagonalmente dominante.",
-      "ejemplo": "Problema: resolver el sistema de ecuaciones lineales con Є <= 0.001\n1) 5a - b + c = 10\n2) 2a + 8b - c = 11\n3) -a + b + 4c = 3\n\nPaso 1: Analizar la diagonal dominante\n- Fila 1: |5| > |-1| + |1|   ->  5 > 2 (Cumple)\n- Fila 2: |8| > |2| + |-1|   ->  8 > 3 (Cumple)\n- Fila 3: |4| > |-1| + |1|   ->  4 > 2 (Cumple)\n\nPaso 2: Despejar cada variable de su ecuación\n4) a = (10 + b - c) / 5\n5) b = (11 - 2a + c) / 8\n6) c = (3 + a - b) / 4\n\nValores iniciales: a0 = 0, b0 = 0, c0 = 0\n\nPaso 3: Iterar usando siempre los valores de la iteración anterior\n\nIteración 1 (con a0 = 0, b0 = 0, c0 = 0):\n- a1 = (10 + 0 - 0) / 5 = 2.000000\n- b1 = (11 - 2(0) + 0) / 8 = 1.375000\n- c1 = (3 + 0 - 0) / 4 = 0.750000\n\nIteración 2 (con a1 = 2.000000, b1 = 1.375000, c1 = 0.750000):\n- a2 = (10 + 1.375000 - 0.750000) / 5 = 2.125000\n- b2 = (11 - 2(2.000000) + 0.750000) / 8 = 0.968750\n- c2 = (3 + 2.000000 - 1.375000) / 4 = 0.906250\n\nIteración 3 (con a2 = 2.125000, b2 = 0.968750, c2 = 0.906250):\n- a3 = (10 + 0.968750 - 0.906250) / 5 = 2.012500\n- b3 = (11 - 2(2.125000) + 0.906250) / 8 = 0.957031\n- c3 = (3 + 2.125000 - 0.968750) / 4 = 1.039063\n\nIteración 4 (con a3 = 2.012500, b3 = 0.957031, c3 = 1.039063):\n- a4 = (10 + 0.957031 - 1.039063) / 5 = 1.983594\n- b4 = (11 - 2(2.012500) + 1.039063) / 8 = 1.001758\n- c4 = (3 + 2.012500 - 0.957031) / 4 = 1.013867\n\nIteración 5 (con a4 = 1.983594, b4 = 1.001758, c4 = 1.013867):\n- a5 = (10 + 1.001758 - 1.013867) / 5 = 1.997578\n- b5 = (11 - 2(1.983594) + 1.013867) / 8 = 1.005835\n- c5 = (3 + 1.983594 - 1.001758) / 4 = 0.995459\n\nIteración 6 (con a5 = 1.997578, b5 = 1.005835, c5 = 0.995459):\n- a6 = (10 + 1.005835 - 0.995459) / 5 = 2.002075\n- b6 = (11 - 2(1.997578) + 0.995459) / 8 = 1.000038\n- c6 = (3 + 1.997578 - 1.005835) / 4 = 0.997936\n\nIteración 7 (con a6 = 2.002075, b6 = 1.000038, c6 = 0.997936):\n- a7 = (10 + 1.000038 - 0.997936) / 5 = 2.000420\n- b7 = (11 - 2(2.002075) + 0.997936) / 8 = 0.999223\n- c7 = (3 + 2.002075 - 1.000038) / 4 = 1.000509\n\nIteración 8 (con a7 = 2.000420, b7 = 0.999223, c7 = 1.000509):\n- a8 = (10 + 0.999223 - 1.000509) / 5 = 1.999743\n- b8 = (11 - 2(2.000420) + 1.000509) / 8 = 0.999959\n- c8 = (3 + 2.000420 - 0.999223) / 4 = 1.000299\n\nPaso 4: Tabla resumen\n\n i |     a    |     b    |     c    \n---+----------+----------+----------\n 0 | 0.000000 | 0.000000 | 0.000000 \n 1 | 2.000000 | 1.375000 | 0.750000 \n 2 | 2.125000 | 0.968750 | 0.906250 \n 3 | 2.012500 | 0.957031 | 1.039063 \n 4 | 1.983594 | 1.001758 | 1.013867 \n 5 | 1.997578 | 1.005835 | 0.995459 \n 6 | 2.002075 | 1.000038 | 0.997936 \n 7 | 2.000420 | 0.999223 | 1.000509 \n 8 | 1.999743 | 0.999959 | 1.000299 \n\nCálculo de errores en la iteración 8:\n- Є_a = |a8 - a7| = |1.999743 - 2.000420| = 0.000677 <= 0.001\n- Є_b = |b8 - b7| = |0.999959 - 0.999223| = 0.000736 <= 0.001\n- Є_c = |c8 - c7| = |1.000299 - 1.000509| = 0.000210 <= 0.001\n\nResultado: a ≈ 2.000, b ≈ 1.000, c ≈ 1.000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver el sistema de ecuaciones lineales con Є <= 0.001",
+              "1) 5a - b + c = 10",
+              "2) 2a + 8b - c = 11",
+              "3) -a + b + 4c = 3"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Analizar la diagonal dominante",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Fila 1: |5| > |-1| + |1|   ->  5 > 2 (Cumple)",
+                  "- Fila 2: |8| > |2| + |-1|   ->  8 > 3 (Cumple)",
+                  "- Fila 3: |4| > |-1| + |1|   ->  4 > 2 (Cumple)"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Despejar cada variable de su ecuación",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "4) a = (10 + b - c) / 5",
+                  "5) b = (11 - 2a + c) / 8",
+                  "6) c = (3 + a - b) / 4"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Valores iniciales: a0 = 0, b0 = 0, c0 = 0"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iterar usando siempre los valores de la iteración anterior",
+            "bloques": [
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 1 (con a0 = 0, b0 = 0, c0 = 0)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a1 = (10 + 0 - 0) / 5 = 2.000000",
+                  "- b1 = (11 - 2(0) + 0) / 8 = 1.375000",
+                  "- c1 = (3 + 0 - 0) / 4 = 0.750000"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 2 (con a1 = 2.000000, b1 = 1.375000, c1 = 0.750000)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a2 = (10 + 1.375000 - 0.750000) / 5 = 2.125000",
+                  "- b2 = (11 - 2(2.000000) + 0.750000) / 8 = 0.968750",
+                  "- c2 = (3 + 2.000000 - 1.375000) / 4 = 0.906250"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 3 (con a2 = 2.125000, b2 = 0.968750, c2 = 0.906250)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a3 = (10 + 0.968750 - 0.906250) / 5 = 2.012500",
+                  "- b3 = (11 - 2(2.125000) + 0.906250) / 8 = 0.957031",
+                  "- c3 = (3 + 2.125000 - 0.968750) / 4 = 1.039063"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 4 (con a3 = 2.012500, b3 = 0.957031, c3 = 1.039063)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a4 = (10 + 0.957031 - 1.039063) / 5 = 1.983594",
+                  "- b4 = (11 - 2(2.012500) + 1.039063) / 8 = 1.001758",
+                  "- c4 = (3 + 2.012500 - 0.957031) / 4 = 1.013867"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 5 (con a4 = 1.983594, b4 = 1.001758, c4 = 1.013867)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a5 = (10 + 1.001758 - 1.013867) / 5 = 1.997578",
+                  "- b5 = (11 - 2(1.983594) + 1.013867) / 8 = 1.005835",
+                  "- c5 = (3 + 1.983594 - 1.001758) / 4 = 0.995459"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 6 (con a5 = 1.997578, b5 = 1.005835, c5 = 0.995459)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a6 = (10 + 1.005835 - 0.995459) / 5 = 2.002075",
+                  "- b6 = (11 - 2(1.997578) + 0.995459) / 8 = 1.000038",
+                  "- c6 = (3 + 1.997578 - 1.005835) / 4 = 0.997936"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 7 (con a6 = 2.002075, b6 = 1.000038, c6 = 0.997936)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a7 = (10 + 1.000038 - 0.997936) / 5 = 2.000420",
+                  "- b7 = (11 - 2(2.002075) + 0.997936) / 8 = 0.999223",
+                  "- c7 = (3 + 2.002075 - 1.000038) / 4 = 1.000509"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 8 (con a7 = 2.000420, b7 = 0.999223, c7 = 1.000509)"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a8 = (10 + 0.999223 - 1.000509) / 5 = 1.999743",
+                  "- b8 = (11 - 2(2.000420) + 1.000509) / 8 = 0.999959",
+                  "- c8 = (3 + 2.000420 - 0.999223) / 4 = 1.000299"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla resumen",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i |     a    |     b    |     c    ",
+                  "---+----------+----------+----------",
+                  " 0 | 0.000000 | 0.000000 | 0.000000 ",
+                  " 1 | 2.000000 | 1.375000 | 0.750000 ",
+                  " 2 | 2.125000 | 0.968750 | 0.906250 ",
+                  " 3 | 2.012500 | 0.957031 | 1.039063 ",
+                  " 4 | 1.983594 | 1.001758 | 1.013867 ",
+                  " 5 | 1.997578 | 1.005835 | 0.995459 ",
+                  " 6 | 2.002075 | 1.000038 | 0.997936 ",
+                  " 7 | 2.000420 | 0.999223 | 1.000509 ",
+                  " 8 | 1.999743 | 0.999959 | 1.000299 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Cálculo de errores en la iteración 8"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Є_a = |a8 - a7| = |1.999743 - 2.000420| = 0.000677 <= 0.001",
+                  "- Є_b = |b8 - b7| = |0.999959 - 0.999223| = 0.000736 <= 0.001",
+                  "- Є_c = |c8 - c7| = |1.000299 - 1.000509| = 0.000210 <= 0.001"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "a ≈ 2.000, b ≈ 1.000, c ≈ 1.000"
+      }
     },
     {
       "id": "gauss_seidel",
@@ -154,7 +1223,180 @@
       "condiciones": "1. El sistema debe ser cuadrado (mismo número de ecuaciones que de incógnitas).\n2. Se debe analizar y cumplir la condición de diagonal dominante: el valor absoluto del coeficiente de la diagonal principal debe ser mayor que la suma de los valores absolutos de los demás coeficientes de esa fila (|aii| > Σ |aij| para j ≠ i).\n3. Los elementos de la diagonal principal deben ser distintos de cero (aii ≠ 0).\n4. Se asignan valores iniciales a todas las variables (por ejemplo, todos iguales a 0).",
       "criterios_paro": "El proceso se detiene cuando el error absoluto de TODAS las variables (Є_a = |a(i+1) - ai|, Є_b = |b(i+1) - bi|, Є_c = |c(i+1) - ci|, ...) es menor o igual a la tolerancia deseada, en este caso Є = 0.001.",
       "ventajas_limitaciones": "VENTAJAS: Converge mucho más rápido que el método de Jacobi y requiere menos memoria, ya que sobrescribe los valores conforme se calculan.\nLIMITACIONES: Es estrictamente secuencial (no se puede paralelizar) y puede divergir si el sistema no es diagonalmente dominante.",
-      "ejemplo": "Problema: resolver el sistema de ecuaciones lineales con Є <= 0.001\n1) 4a - b + c = 7\n2) 4a - 8b + c = -21\n3) -2a + b + 5c = 15\n\nPaso 1: Analizar la diagonal dominante\n- Fila 1: |4| > |-1| + |1|   ->  4 > 2 (Cumple)\n- Fila 2: |-8| > |4| + |1|   ->  8 > 5 (Cumple)\n- Fila 3: |5| > |-2| + |1|   ->  5 > 3 (Cumple)\n\nPaso 2: Despejar cada variable de su ecuación\n4) a = (7 + b - c) / 4\n5) b = (21 + 4a + c) / 8\n6) c = (15 + 2a - b) / 5\n\nValores iniciales: a0 = 0, b0 = 0, c0 = 0\n\nPaso 3: Iterar sustituyendo de inmediato cada valor recién obtenido\n\nIteración 1:\n- Con b0 = 0 y c0 = 0:\n  a1 = (7 + 0 - 0) / 4 = 1.750000\n- Con a1 = 1.750000 y c0 = 0:\n  b1 = (21 + 4(1.750000) + 0) / 8 = 3.500000\n- Con a1 = 1.750000 y b1 = 3.500000:\n  c1 = (15 + 2(1.750000) - 3.500000) / 5 = 3.000000\n\nIteración 2:\n- Con b1 = 3.500000 y c1 = 3.000000:\n  a2 = (7 + 3.500000 - 3.000000) / 4 = 1.875000\n- Con a2 = 1.875000 y c1 = 3.000000:\n  b2 = (21 + 4(1.875000) + 3.000000) / 8 = 3.937500\n- Con a2 = 1.875000 y b2 = 3.937500:\n  c2 = (15 + 2(1.875000) - 3.937500) / 5 = 2.962500\n\nIteración 3:\n- Con b2 = 3.937500 y c2 = 2.962500:\n  a3 = (7 + 3.937500 - 2.962500) / 4 = 1.993750\n- Con a3 = 1.993750 y c2 = 2.962500:\n  b3 = (21 + 4(1.993750) + 2.962500) / 8 = 3.992188\n- Con a3 = 1.993750 y b3 = 3.992188:\n  c3 = (15 + 2(1.993750) - 3.992188) / 5 = 2.999063\n\nIteración 4:\n- Con b3 = 3.992188 y c3 = 2.999063:\n  a4 = (7 + 3.992188 - 2.999063) / 4 = 1.998281\n- Con a4 = 1.998281 y c3 = 2.999063:\n  b4 = (21 + 4(1.998281) + 2.999063) / 8 = 3.999023\n- Con a4 = 1.998281 y b4 = 3.999023:\n  c4 = (15 + 2(1.998281) - 3.999023) / 5 = 2.999508\n\nIteración 5:\n- Con b4 = 3.999023 y c4 = 2.999508:\n  a5 = (7 + 3.999023 - 2.999508) / 4 = 1.999879\n- Con a5 = 1.999879 y c4 = 2.999508:\n  b5 = (21 + 4(1.999879) + 2.999508) / 8 = 3.999878\n- Con a5 = 1.999879 y b5 = 3.999878:\n  c5 = (15 + 2(1.999879) - 3.999878) / 5 = 2.999976\n\nIteración 6:\n- Con b5 = 3.999878 y c5 = 2.999976:\n  a6 = (7 + 3.999878 - 2.999976) / 4 = 1.999976\n- Con a6 = 1.999976 y c5 = 2.999976:\n  b6 = (21 + 4(1.999976) + 2.999976) / 8 = 3.999985\n- Con a6 = 1.999976 y b6 = 3.999985:\n  c6 = (15 + 2(1.999976) - 3.999985) / 5 = 2.999993\n\nPaso 4: Tabla resumen\n\n i |     a    |     b    |     c    \n---+----------+----------+----------\n 0 | 0.000000 | 0.000000 | 0.000000 \n 1 | 1.750000 | 3.500000 | 3.000000 \n 2 | 1.875000 | 3.937500 | 2.962500 \n 3 | 1.993750 | 3.992188 | 2.999063 \n 4 | 1.998281 | 3.999023 | 2.999508 \n 5 | 1.999879 | 3.999878 | 2.999976 \n 6 | 1.999976 | 3.999985 | 2.999993 \n\nCálculo de errores en la iteración 6:\n- Є_a = |a6 - a5| = |1.999976 - 1.999879| = 0.000097 <= 0.001\n- Є_b = |b6 - b5| = |3.999985 - 3.999878| = 0.000107 <= 0.001\n- Є_c = |c6 - c5| = |2.999993 - 2.999976| = 0.000017 <= 0.001\n\nResultado: a ≈ 2.000, b ≈ 4.000, c ≈ 3.000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver el sistema de ecuaciones lineales con Є <= 0.001",
+              "1) 4a - b + c = 7",
+              "2) 4a - 8b + c = -21",
+              "3) -2a + b + 5c = 15"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Analizar la diagonal dominante",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Fila 1: |4| > |-1| + |1|   ->  4 > 2 (Cumple)",
+                  "- Fila 2: |-8| > |4| + |1|   ->  8 > 5 (Cumple)",
+                  "- Fila 3: |5| > |-2| + |1|   ->  5 > 3 (Cumple)"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Despejar cada variable de su ecuación",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "4) a = (7 + b - c) / 4",
+                  "5) b = (21 + 4a + c) / 8",
+                  "6) c = (15 + 2a - b) / 5"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Valores iniciales: a0 = 0, b0 = 0, c0 = 0"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iterar sustituyendo de inmediato cada valor recién obtenido",
+            "bloques": [
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 1"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b0 = 0 y c0 = 0:",
+                  "  a1 = (7 + 0 - 0) / 4 = 1.750000",
+                  "- Con a1 = 1.750000 y c0 = 0:",
+                  "  b1 = (21 + 4(1.750000) + 0) / 8 = 3.500000",
+                  "- Con a1 = 1.750000 y b1 = 3.500000:",
+                  "  c1 = (15 + 2(1.750000) - 3.500000) / 5 = 3.000000"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 2"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b1 = 3.500000 y c1 = 3.000000:",
+                  "  a2 = (7 + 3.500000 - 3.000000) / 4 = 1.875000",
+                  "- Con a2 = 1.875000 y c1 = 3.000000:",
+                  "  b2 = (21 + 4(1.875000) + 3.000000) / 8 = 3.937500",
+                  "- Con a2 = 1.875000 y b2 = 3.937500:",
+                  "  c2 = (15 + 2(1.875000) - 3.937500) / 5 = 2.962500"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 3"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b2 = 3.937500 y c2 = 2.962500:",
+                  "  a3 = (7 + 3.937500 - 2.962500) / 4 = 1.993750",
+                  "- Con a3 = 1.993750 y c2 = 2.962500:",
+                  "  b3 = (21 + 4(1.993750) + 2.962500) / 8 = 3.992188",
+                  "- Con a3 = 1.993750 y b3 = 3.992188:",
+                  "  c3 = (15 + 2(1.993750) - 3.992188) / 5 = 2.999063"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 4"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b3 = 3.992188 y c3 = 2.999063:",
+                  "  a4 = (7 + 3.992188 - 2.999063) / 4 = 1.998281",
+                  "- Con a4 = 1.998281 y c3 = 2.999063:",
+                  "  b4 = (21 + 4(1.998281) + 2.999063) / 8 = 3.999023",
+                  "- Con a4 = 1.998281 y b4 = 3.999023:",
+                  "  c4 = (15 + 2(1.998281) - 3.999023) / 5 = 2.999508"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 5"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b4 = 3.999023 y c4 = 2.999508:",
+                  "  a5 = (7 + 3.999023 - 2.999508) / 4 = 1.999879",
+                  "- Con a5 = 1.999879 y c4 = 2.999508:",
+                  "  b5 = (21 + 4(1.999879) + 2.999508) / 8 = 3.999878",
+                  "- Con a5 = 1.999879 y b5 = 3.999878:",
+                  "  c5 = (15 + 2(1.999879) - 3.999878) / 5 = 2.999976"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Iteración 6"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Con b5 = 3.999878 y c5 = 2.999976:",
+                  "  a6 = (7 + 3.999878 - 2.999976) / 4 = 1.999976",
+                  "- Con a6 = 1.999976 y c5 = 2.999976:",
+                  "  b6 = (21 + 4(1.999976) + 2.999976) / 8 = 3.999985",
+                  "- Con a6 = 1.999976 y b6 = 3.999985:",
+                  "  c6 = (15 + 2(1.999976) - 3.999985) / 5 = 2.999993"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla resumen",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " i |     a    |     b    |     c    ",
+                  "---+----------+----------+----------",
+                  " 0 | 0.000000 | 0.000000 | 0.000000 ",
+                  " 1 | 1.750000 | 3.500000 | 3.000000 ",
+                  " 2 | 1.875000 | 3.937500 | 2.962500 ",
+                  " 3 | 1.993750 | 3.992188 | 2.999063 ",
+                  " 4 | 1.998281 | 3.999023 | 2.999508 ",
+                  " 5 | 1.999879 | 3.999878 | 2.999976 ",
+                  " 6 | 1.999976 | 3.999985 | 2.999993 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Cálculo de errores en la iteración 6"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Є_a = |a6 - a5| = |1.999976 - 1.999879| = 0.000097 <= 0.001",
+                  "- Є_b = |b6 - b5| = |3.999985 - 3.999878| = 0.000107 <= 0.001",
+                  "- Є_c = |c6 - c5| = |2.999993 - 2.999976| = 0.000017 <= 0.001"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "a ≈ 2.000, b ≈ 4.000, c ≈ 3.000"
+      }
     },
     {
       "id": "eliminacion_gaussiana",
@@ -166,7 +1408,87 @@
       "condiciones": "1. El sistema debe ser cuadrado (n ecuaciones con n incógnitas) y tener solución única (determinante distinto de cero).\n2. Los elementos pivote akk deben ser distintos de cero; si un pivote es cero, se deben intercambiar filas (pivoteo).\n3. No requiere que la matriz sea diagonalmente dominante.",
       "criterios_paro": "Es un método directo: no usa tolerancia ni iteraciones. El proceso termina al completar las n - 1 etapas de eliminación hacia adelante y realizar la sustitución hacia atrás para todas las variables.",
       "ventajas_limitaciones": "VENTAJAS: Es un método exacto y sistemático que funciona para cualquier sistema compatible determinado sin importar si es diagonalmente dominante.\nLIMITACIONES: Puede sufrir errores de redondeo en sistemas grandes y requiere intercambio de filas si aparece un cero en la diagonal.",
-      "ejemplo": "Problema: resolver el sistema de ecuaciones lineales\n1) 2x + y - z = 8\n2) -3x - y + 2z = -11\n3) -2x + y + 2z = -3\n\nPaso 1: Formar la matriz aumentada [A | b]\n\n  2   1  -1 |   8\n -3  -1   2 | -11\n -2   1   2 |  -3\n\nPaso 2: Eliminación hacia adelante (Columna 1, pivote a11 = 2)\n- m21 = -3 / 2 = -1.5  ->  F2 <- F2 - (-1.5)*F1\n- m31 = -2 / 2 = -1.0  ->  F3 <- F3 - (-1.0)*F1\n\n  2    1    -1  |   8\n  0   0.5   0.5 |   1\n  0    2     1  |   5\n\nPaso 3: Eliminación hacia adelante (Columna 2, pivote a22 = 0.5)\n- m32 = 2 / 0.5 = 4  ->  F3 <- F3 - 4*F2\n\n  2    1    -1  |  8\n  0   0.5   0.5 |  1\n  0    0    -1  |  1\n\nPaso 4: Sustitución hacia atrás\n- De F3: -1z = 1  ->  z = 1 / -1 = -1\n- De F2: 0.5y + 0.5(-1) = 1  ->  0.5y = 1.5  ->  y = 3\n- De F1: 2x + 1(3) - 1(-1) = 8  ->  2x + 4 = 8  ->  2x = 4  ->  x = 2\n\nResultado: x = 2, y = 3, z = -1"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver el sistema de ecuaciones lineales",
+              "1) 2x + y - z = 8",
+              "2) -3x - y + 2z = -11",
+              "3) -2x + y + 2z = -3"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Formar la matriz aumentada [A | b]",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2   1  -1 |   8",
+                  " -3  -1   2 | -11",
+                  " -2   1   2 |  -3"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Eliminación hacia adelante (Columna 1, pivote a11 = 2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- m21 = -3 / 2 = -1.5  ->  F2 <- F2 - (-1.5)*F1",
+                  "- m31 = -2 / 2 = -1.0  ->  F3 <- F3 - (-1.0)*F1"
+                ]
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2    1    -1  |   8",
+                  "  0   0.5   0.5 |   1",
+                  "  0    2     1  |   5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Eliminación hacia adelante (Columna 2, pivote a22 = 0.5)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- m32 = 2 / 0.5 = 4  ->  F3 <- F3 - 4*F2"
+                ]
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2    1    -1  |  8",
+                  "  0   0.5   0.5 |  1",
+                  "  0    0    -1  |  1"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sustitución hacia atrás",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- De F3: -1z = 1  ->  z = 1 / -1 = -1",
+                  "- De F2: 0.5y + 0.5(-1) = 1  ->  0.5y = 1.5  ->  y = 3",
+                  "- De F1: 2x + 1(3) - 1(-1) = 8  ->  2x + 4 = 8  ->  2x = 4  ->  x = 2"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x = 2, y = 3, z = -1"
+      }
     },
     {
       "id": "gauss_jordan",
@@ -178,7 +1500,110 @@
       "condiciones": "1. El sistema debe tener el mismo número de ecuaciones que de incógnitas y solución única.\n2. Ningún pivote akk puede ser cero durante el proceso (si ocurre, se intercambia con una fila inferior).\n3. Cada pivote se convierte en 1 antes de eliminar los elementos situados por encima y por debajo de él.",
       "criterios_paro": "Es un método directo: finaliza cuando se han procesado las n columnas y el lado izquierdo de la matriz aumentada se ha transformado completamente en la matriz identidad.",
       "ventajas_limitaciones": "VENTAJAS: Entrega el resultado final de forma directa en la última columna sin requerir sustitución hacia atrás y sirve también para calcular la matriz inversa.\nLIMITACIONES: Requiere aproximadamente un 50% más de operaciones aritméticas que la eliminación gaussiana tradicional.",
-      "ejemplo": "Problema: resolver el sistema de ecuaciones lineales\n1) 2x + 4y + 6z = 18\n2) 4x + 5y + 6z = 24\n3) 3x + y - 2z = 4\n\nPaso 1: Escribir la matriz aumentada\n\n  2   4   6 | 18\n  4   5   6 | 24\n  3   1  -2 |  4\n\nPaso 2: Pivote en Columna 1 (F1 <- F1 / 2)\n\n  1   2   3 |  9\n  4   5   6 | 24\n  3   1  -2 |  4\n\nHacer ceros debajo del pivote (F2 <- F2 - 4*F1, F3 <- F3 - 3*F1):\n\n  1   2    3  |   9\n  0  -3   -6  | -12\n  0  -5  -11  | -23\n\nPaso 3: Pivote en Columna 2 (F2 <- F2 / -3)\n\n  1   2    3  |   9\n  0   1    2  |   4\n  0  -5  -11  | -23\n\nHacer ceros arriba y abajo del pivote (F1 <- F1 - 2*F2, F3 <- F3 + 5*F2):\n\n  1   0  -1 |  1\n  0   1   2 |  4\n  0   0  -1 | -3\n\nPaso 4: Pivote en Columna 3 (F3 <- F3 / -1)\n\n  1   0  -1 | 1\n  0   1   2 | 4\n  0   0   1 | 3\n\nHacer ceros arriba del pivote (F1 <- F1 + F3, F2 <- F2 - 2*F3):\n\n  1   0   0 |  4\n  0   1   0 | -2\n  0   0   1 |  3\n\nResultado: x = 4, y = -2, z = 3"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver el sistema de ecuaciones lineales",
+              "1) 2x + 4y + 6z = 18",
+              "2) 4x + 5y + 6z = 24",
+              "3) 3x + y - 2z = 4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Escribir la matriz aumentada",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2   4   6 | 18",
+                  "  4   5   6 | 24",
+                  "  3   1  -2 |  4"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Pivote en Columna 1 (F1 <- F1 / 2)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   2   3 |  9",
+                  "  4   5   6 | 24",
+                  "  3   1  -2 |  4"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Hacer ceros debajo del pivote (F2 <- F2 - 4*F1, F3 <- F3 - 3*F1)"
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   2    3  |   9",
+                  "  0  -3   -6  | -12",
+                  "  0  -5  -11  | -23"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Pivote en Columna 2 (F2 <- F2 / -3)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   2    3  |   9",
+                  "  0   1    2  |   4",
+                  "  0  -5  -11  | -23"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Hacer ceros arriba y abajo del pivote (F1 <- F1 - 2*F2, F3 <- F3 + 5*F2)"
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   0  -1 |  1",
+                  "  0   1   2 |  4",
+                  "  0   0  -1 | -3"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Pivote en Columna 3 (F3 <- F3 / -1)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   0  -1 | 1",
+                  "  0   1   2 | 4",
+                  "  0   0   1 | 3"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Hacer ceros arriba del pivote (F1 <- F1 + F3, F2 <- F2 - 2*F3)"
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  1   0   0 |  4",
+                  "  0   1   0 | -2",
+                  "  0   0   1 |  3"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x = 4, y = -2, z = 3"
+      }
     },
     {
       "id": "montante",
@@ -190,7 +1615,111 @@
       "condiciones": "1. El sistema debe ser cuadrado (n ecuaciones con n incógnitas) y tener solución única (det(A) ≠ 0).\n2. Si los coeficientes iniciales son enteros, todas las divisiones entre P_ant son exactas.\n3. Ningún pivote actual P_act puede ser cero (si es cero, se intercambian filas).\n4. En la primera iteración siempre se toma P_ant = 1.",
       "criterios_paro": "Es un método directo: termina tras exactamente n iteraciones (una por cada fila/columna de la matriz), cuando queda una matriz diagonal con el mismo valor en toda la diagonal principal.",
       "ventajas_limitaciones": "VENTAJAS: Evita por completo el uso de fracciones y errores de redondeo durante el procedimiento si se parte de números enteros, y entrega el determinante de la matriz automáticamente.\nLIMITACIONES: Los números intermedios pueden crecer mucho antes de dividirse entre el pivote anterior si la matriz es grande.",
-      "ejemplo": "Problema: resolver el sistema de ecuaciones lineales\n1) 2x + 3y - z = 5\n2) 4x + y + 2z = 12\n3) 3x - 2y + 4z = 7\n\nPaso 1: Matriz aumentada inicial (P_ant = 1)\n\n  2   3  -1 |  5\n  4   1   2 | 12\n  3  -2   4 |  7\n\nPaso 2: Iteración 1 (Pivote P_act = 2, P_ant = 1)\n- Fila 1 queda igual; columna 1 se hace cero debajo del pivote.\n- F2: a22 = (2*1 - 4*3)/1 = -10 | a23 = (2*2 - 4*(-1))/1 = 8 | b2 = (2*12 - 4*5)/1 = 4\n- F3: a32 = (2*(-2) - 3*3)/1 = -13 | a33 = (2*4 - 3*(-1))/1 = 11 | b3 = (2*7 - 3*5)/1 = -1\n\n  2    3   -1 |  5\n  0  -10    8 |  4\n  0  -13   11 | -1\n\nPaso 3: Iteración 2 (Pivote P_act = -10, P_ant = 2)\n- Fila 2 queda igual; columna 2 se hace cero arriba y abajo.\n- F1: a11 = (-10*2 - 0)/2 = -10 | a13 = (-10*(-1) - 3*8)/2 = -7 | b1 = (-10*5 - 3*4)/2 = -31\n- F3: a33 = (-10*11 - (-13)*8)/2 = -3 | b3 = (-10*(-1) - (-13)*4)/2 = 31\n\n -10    0  -7 | -31\n   0  -10   8 |   4\n   0    0  -3 |  31\n\nPaso 4: Iteración 3 (Pivote P_act = -3, P_ant = -10)\n- Fila 3 queda igual; columna 3 se hace cero arriba.\n- F1: a11 = (-3*(-10) - 0)/(-10) = -3 | b1 = (-3*(-31) - (-7)*31)/(-10) = 310/(-10) = -31\n- F2: a22 = (-3*(-10) - 0)/(-10) = -3 | b2 = (-3*4 - 8*31)/(-10) = -260/(-10) = 26\n\n  -3   0   0 | -31\n   0  -3   0 |  26\n   0   0  -3 |  31\n\nPaso 5: Despejar dividiendo entre el determinante (det(A) = -3)\n- x = -31 / -3 = 31/3 ≈ 10.333333\n- y = 26 / -3 = -26/3 ≈ -8.666667\n- z = 31 / -3 = -31/3 ≈ -10.333333\n\nResultado: x = 31/3, y = -26/3, z = -31/3"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver el sistema de ecuaciones lineales",
+              "1) 2x + 3y - z = 5",
+              "2) 4x + y + 2z = 12",
+              "3) 3x - 2y + 4z = 7"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Matriz aumentada inicial (P_ant = 1)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2   3  -1 |  5",
+                  "  4   1   2 | 12",
+                  "  3  -2   4 |  7"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iteración 1 (Pivote P_act = 2, P_ant = 1)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Fila 1 queda igual; columna 1 se hace cero debajo del pivote.",
+                  "- F2: a22 = (2*1 - 4*3)/1 = -10 | a23 = (2*2 - 4*(-1))/1 = 8 | b2 = (2*12 - 4*5)/1 = 4",
+                  "- F3: a32 = (2*(-2) - 3*3)/1 = -13 | a33 = (2*4 - 3*(-1))/1 = 11 | b3 = (2*7 - 3*5)/1 = -1"
+                ]
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  2    3   -1 |  5",
+                  "  0  -10    8 |  4",
+                  "  0  -13   11 | -1"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iteración 2 (Pivote P_act = -10, P_ant = 2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Fila 2 queda igual; columna 2 se hace cero arriba y abajo.",
+                  "- F1: a11 = (-10*2 - 0)/2 = -10 | a13 = (-10*(-1) - 3*8)/2 = -7 | b1 = (-10*5 - 3*4)/2 = -31",
+                  "- F3: a33 = (-10*11 - (-13)*8)/2 = -3 | b3 = (-10*(-1) - (-13)*4)/2 = 31"
+                ]
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " -10    0  -7 | -31",
+                  "   0  -10   8 |   4",
+                  "   0    0  -3 |  31"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Iteración 3 (Pivote P_act = -3, P_ant = -10)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Fila 3 queda igual; columna 3 se hace cero arriba.",
+                  "- F1: a11 = (-3*(-10) - 0)/(-10) = -3 | b1 = (-3*(-31) - (-7)*31)/(-10) = 310/(-10) = -31",
+                  "- F2: a22 = (-3*(-10) - 0)/(-10) = -3 | b2 = (-3*4 - 8*31)/(-10) = -260/(-10) = 26"
+                ]
+              },
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  -3   0   0 | -31",
+                  "   0  -3   0 |  26",
+                  "   0   0  -3 |  31"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Despejar dividiendo entre el determinante (det(A) = -3)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x = -31 / -3 = 31/3 ≈ 10.333333",
+                  "- y = 26 / -3 = -26/3 ≈ -8.666667",
+                  "- z = 31 / -3 = -31/3 ≈ -10.333333"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "x = 31/3, y = -26/3, z = -31/3"
+      }
     },
     {
       "id": "minimos_cuadrados_linea_recta",
@@ -202,7 +1731,113 @@
       "condiciones": "1. Se deben tener al menos n >= 2 puntos conocidos (preferiblemente n >= 3 para observar tendencia).\n2. Los datos deben mostrar una tendencia lineal general, aunque contengan ruido o error experimental.\n3. El determinante del sistema normal debe ser distinto de cero (los valores de x no pueden ser todos iguales).",
       "criterios_paro": "Es un método directo: se calcula en un solo paso resolviendo un sistema lineal de 2x2.\nComprobación: graficar en el mismo plano los puntos originales [x, y] junto con los puntos ajustados [x, g(x)] para verificar visualmente el ajuste.",
       "ventajas_limitaciones": "VENTAJAS: Filtra el ruido o error experimental de las mediciones, es sencillo de calcular y evita las oscilaciones bruscas de la interpolación exacta.\nLIMITACIONES: No captura curvaturas ni comportamientos no lineales complejos si los datos siguen una parábola u otra función.",
-      "ejemplo": "Problema: ajustar una línea recta a los siguientes datos\n\nDatos:\n- x1 = 1 | y1 = 2.1\n- x2 = 2 | y2 = 3.9\n- x3 = 3 | y3 = 6.2\n- x4 = 4 | y4 = 7.8\n- x5 = 5 | y5 = 10.1\n\nPaso 1: Calcular las sumatorias necesarias (n = 5)\n\n  x |   y  | x^2 |  xy  \n----+------+-----+------\n  1 |  2.1 |   1 |  2.1 \n  2 |  3.9 |   4 |  7.8 \n  3 |  6.2 |   9 | 18.6 \n  4 |  7.8 |  16 | 31.2 \n  5 | 10.1 |  25 | 50.5 \n\nSumatorias:\n- Σx   = 15\n- Σy   = 30.1\n- Σx^2 = 55\n- Σxy  = 110.2\n\nPaso 2: Formar el sistema de ecuaciones normales\n1)  5*a0 + 15*a1 = 30.1\n2) 15*a0 + 55*a1 = 110.2\n\nPaso 3: Resolver el sistema\n- Multiplicar ec. 1 por -3: -15*a0 - 45*a1 = -90.3\n- Sumar con ec. 2:\n  (-15*a0 - 45*a1) + (15*a0 + 55*a1) = -90.3 + 110.2\n  10*a1 = 19.9  ->  a1 = 1.990000\n- Sustituir a1 en ec. 1:\n  5*a0 + 15(1.99) = 30.1\n  5*a0 = 30.1 - 29.85 = 0.25  ->  a0 = 0.050000\n\nEcuación ajustada: g(x) = 0.05 + 1.99x\n\nPaso 4: Evaluar g(x) para comparar [x, y] contra [x, g(x)]\n- x = 1: g(1) = 0.05 + 1.99(1) = 2.04  (y real = 2.1)\n- x = 2: g(2) = 0.05 + 1.99(2) = 4.03  (y real = 3.9)\n- x = 3: g(3) = 0.05 + 1.99(3) = 6.02  (y real = 6.2)\n- x = 4: g(4) = 0.05 + 1.99(4) = 8.01  (y real = 7.8)\n- x = 5: g(5) = 0.05 + 1.99(5) = 10.00 (y real = 10.1)\n\nResultado: g(x) = 0.05 + 1.99x"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "ajustar una línea recta a los siguientes datos"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 1 | y1 = 2.1",
+              "- x2 = 2 | y2 = 3.9",
+              "- x3 = 3 | y3 = 6.2",
+              "- x4 = 4 | y4 = 7.8",
+              "- x5 = 5 | y5 = 10.1"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Calcular las sumatorias necesarias (n = 5)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  x |   y  | x^2 |  xy  ",
+                  "----+------+-----+------",
+                  "  1 |  2.1 |   1 |  2.1 ",
+                  "  2 |  3.9 |   4 |  7.8 ",
+                  "  3 |  6.2 |   9 | 18.6 ",
+                  "  4 |  7.8 |  16 | 31.2 ",
+                  "  5 | 10.1 |  25 | 50.5 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Sumatorias"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Σx   = 15",
+                  "- Σy   = 30.1",
+                  "- Σx^2 = 55",
+                  "- Σxy  = 110.2"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Formar el sistema de ecuaciones normales",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "1)  5*a0 + 15*a1 = 30.1",
+                  "2) 15*a0 + 55*a1 = 110.2"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Resolver el sistema",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Multiplicar ec. 1 por -3: -15*a0 - 45*a1 = -90.3",
+                  "- Sumar con ec. 2:",
+                  "  (-15*a0 - 45*a1) + (15*a0 + 55*a1) = -90.3 + 110.2",
+                  "  10*a1 = 19.9  ->  a1 = 1.990000",
+                  "- Sustituir a1 en ec. 1:",
+                  "  5*a0 + 15(1.99) = 30.1",
+                  "  5*a0 = 30.1 - 29.85 = 0.25  ->  a0 = 0.050000"
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Ecuación ajustada: g(x) = 0.05 + 1.99x"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar g(x) para comparar [x, y] contra [x, g(x)]",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- x = 1: g(1) = 0.05 + 1.99(1) = 2.04  (y real = 2.1)",
+                  "- x = 2: g(2) = 0.05 + 1.99(2) = 4.03  (y real = 3.9)",
+                  "- x = 3: g(3) = 0.05 + 1.99(3) = 6.02  (y real = 6.2)",
+                  "- x = 4: g(4) = 0.05 + 1.99(4) = 8.01  (y real = 7.8)",
+                  "- x = 5: g(5) = 0.05 + 1.99(5) = 10.00 (y real = 10.1)"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(x) = 0.05 + 1.99x"
+      }
     },
     {
       "id": "minimos_cuadrados_cuadratica",
@@ -214,7 +1849,110 @@
       "condiciones": "1. Se requieren al menos n >= 3 puntos con valores de x distintos.\n2. Los datos deben mostrar una tendencia parabólica (una sola curvatura).\n3. Requiere calcular las potencias de x hasta x^4 y los productos cruzados xy y x^2y.",
       "criterios_paro": "Es un método directo: termina al resolver el sistema lineal de 3x3 (mediante Gauss, Gauss-Jordán o Montante) para hallar a0, a1 y a2, y evaluar los puntos ajustados [x, g(x)].",
       "ventajas_limitaciones": "VENTAJAS: Permite modelar relaciones curvas no lineales manteniendo un sistema de ecuaciones lineal respecto a sus coeficientes.\nLIMITACIONES: Exige calcular más sumatorias que el ajuste lineal y puede sobreajustar si se usa con muy pocos puntos.",
-      "ejemplo": "Problema: ajustar una curva cuadrática g(x) = a0 + a1*x + a2*x^2 a los datos\n\nDatos:\n- x1 = 0 | y1 = 1.2\n- x2 = 1 | y2 = 2.8\n- x3 = 2 | y3 = 6.1\n- x4 = 3 | y4 = 10.9\n- x5 = 4 | y5 = 17.5\n\nPaso 1: Tabla de sumatorias (n = 5)\n\n  x |   y  | x^2 | x^3 | x^4 |  xy  | x^2*y \n----+------+-----+-----+-----+------+-------\n  0 |  1.2 |   0 |   0 |   0 |  0.0 |   0.0 \n  1 |  2.8 |   1 |   1 |   1 |  2.8 |   2.8 \n  2 |  6.1 |   4 |   8 |  16 | 12.2 |  24.4 \n  3 | 10.9 |   9 |  27 |  81 | 32.7 |  98.1 \n  4 | 17.5 |  16 |  64 | 256 | 70.0 | 280.0 \n\nSumatorias:\n- Σx     = 10\n- Σy     = 38.5\n- Σx^2   = 30\n- Σx^3   = 100\n- Σx^4   = 354\n- Σxy    = 117.7\n- Σx^2*y = 405.3\n\nPaso 2: Formar el sistema normal de 3x3\n1)  5*a0 +  10*a1 +  30*a2 = 38.5\n2) 10*a0 +  30*a1 + 100*a2 = 117.7\n3) 30*a0 + 100*a1 + 354*a2 = 405.3\n\nPaso 3: Resolver el sistema de ecuaciones\n- Restar 2*(ec. 1) a ec. 2:  10*a1 + 40*a2 = 40.7  ->  a1 + 4*a2 = 4.07\n- Restar 6*(ec. 1) a ec. 3:  40*a1 + 174*a2 = 174.3\n- Restar 40*(a1 + 4*a2 = 4.07) a la anterior:\n  14*a2 = 174.3 - 162.8 = 11.5  ->  a2 = 11.5 / 14 = 0.821429\n- Sustituir a2: a1 = 4.07 - 4(0.821429) = 0.784286\n- Sustituir en ec. 1: 5*a0 = 38.5 - 10(0.784286) - 30(0.821429) = 6.014286  ->  a0 = 1.202857\n\nPaso 4: Evaluar el polinomio ajustado g(x) = 1.202857 + 0.784286x + 0.821429x^2\n- g(0) = 1.202857\n- g(1) = 2.808571\n- g(2) = 6.057143\n- g(3) = 10.948571\n- g(4) = 17.482857\n\nResultado: g(x) = 1.202857 + 0.784286x + 0.821429x^2"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "ajustar una curva cuadrática g(x) = a0 + a1*x + a2*x^2 a los datos"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 0 | y1 = 1.2",
+              "- x2 = 1 | y2 = 2.8",
+              "- x3 = 2 | y3 = 6.1",
+              "- x4 = 3 | y4 = 10.9",
+              "- x5 = 4 | y5 = 17.5"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabla de sumatorias (n = 5)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  x |   y  | x^2 | x^3 | x^4 |  xy  | x^2*y ",
+                  "----+------+-----+-----+-----+------+-------",
+                  "  0 |  1.2 |   0 |   0 |   0 |  0.0 |   0.0 ",
+                  "  1 |  2.8 |   1 |   1 |   1 |  2.8 |   2.8 ",
+                  "  2 |  6.1 |   4 |   8 |  16 | 12.2 |  24.4 ",
+                  "  3 | 10.9 |   9 |  27 |  81 | 32.7 |  98.1 ",
+                  "  4 | 17.5 |  16 |  64 | 256 | 70.0 | 280.0 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Sumatorias"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Σx     = 10",
+                  "- Σy     = 38.5",
+                  "- Σx^2   = 30",
+                  "- Σx^3   = 100",
+                  "- Σx^4   = 354",
+                  "- Σxy    = 117.7",
+                  "- Σx^2*y = 405.3"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Formar el sistema normal de 3x3",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "1)  5*a0 +  10*a1 +  30*a2 = 38.5",
+                  "2) 10*a0 +  30*a1 + 100*a2 = 117.7",
+                  "3) 30*a0 + 100*a1 + 354*a2 = 405.3"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Resolver el sistema de ecuaciones",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Restar 2*(ec. 1) a ec. 2:  10*a1 + 40*a2 = 40.7  ->  a1 + 4*a2 = 4.07",
+                  "- Restar 6*(ec. 1) a ec. 3:  40*a1 + 174*a2 = 174.3",
+                  "- Restar 40*(a1 + 4*a2 = 4.07) a la anterior:",
+                  "  14*a2 = 174.3 - 162.8 = 11.5  ->  a2 = 11.5 / 14 = 0.821429",
+                  "- Sustituir a2: a1 = 4.07 - 4(0.821429) = 0.784286",
+                  "- Sustituir en ec. 1: 5*a0 = 38.5 - 10(0.784286) - 30(0.821429) = 6.014286  ->  a0 = 1.202857"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar el polinomio ajustado g(x) = 1.202857 + 0.784286x + 0.821429x^2",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(0) = 1.202857",
+                  "- g(1) = 2.808571",
+                  "- g(2) = 6.057143",
+                  "- g(3) = 10.948571",
+                  "- g(4) = 17.482857"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(x) = 1.202857 + 0.784286x + 0.821429x^2"
+      }
     },
     {
       "id": "minimos_cuadrados_cubica",
@@ -226,7 +1964,106 @@
       "condiciones": "1. Se necesitan al menos n >= 4 puntos con valores de x distintos.\n2. Se recomienda que n sea mayor que 4 para que el ajuste filtre errores experimentales en lugar de interpolar exactamente.\n3. Requiere calcular potencias de x hasta x^6 y productos hasta x^3*y.",
       "criterios_paro": "Es un método directo: finaliza al resolver el sistema lineal de 4x4 para encontrar a0, a1, a2, a3 y evaluar [x, g(x)].",
       "ventajas_limitaciones": "VENTAJAS: Permite ajustar curvas complejas con puntos de inflexión.\nLIMITACIONES: Genera sistemas mal condicionados (números muy grandes en Σx^5 y Σx^6) y puede oscilar fuera del rango de los datos (extrapolación).",
-      "ejemplo": "Problema: ajustar un polinomio cúbico g(x) = a0 + a1*x + a2*x^2 + a3*x^3 a los datos\n\nDatos:\n- x1 = -2 | y1 = -5.1\n- x2 = -1 | y2 = 0.2\n- x3 =  0 | y3 = 1.0\n- x4 =  1 | y4 = 1.9\n- x5 =  2 | y5 = 7.2\n\nPaso 1: Tabla de sumatorias (n = 5)\n\n  x |   y  | x^2 | x^3 | x^4 | x^5 | x^6 |  xy  | x^2*y | x^3*y \n----+------+-----+-----+-----+-----+-----+------+-------+-------\n -2 | -5.1 |   4 |  -8 |  16 | -32 |  64 | 10.2 | -20.4 |  40.8 \n -1 |  0.2 |   1 |  -1 |   1 |  -1 |   1 | -0.2 |   0.2 |  -0.2 \n  0 |  1.0 |   0 |   0 |   0 |   0 |   0 |  0.0 |   0.0 |   0.0 \n  1 |  1.9 |   1 |   1 |   1 |   1 |   1 |  1.9 |   1.9 |   1.9 \n  2 |  7.2 |   4 |   8 |  16 |  32 |  64 | 14.4 |  28.8 |  57.6 \n\nSumatorias:\n- Σx = 0, Σx^2 = 10, Σx^3 = 0, Σx^4 = 34, Σx^5 = 0, Σx^6 = 130\n- Σy = 5.2, Σxy = 26.3, Σx^2*y = 10.5, Σx^3*y = 100.1\n\nPaso 2: Formar el sistema normal de 4x4\n1)  5*a0 +  0*a1 + 10*a2 +  0*a3 = 5.2\n2)  0*a0 + 10*a1 +  0*a2 + 34*a3 = 26.3\n3) 10*a0 +  0*a1 + 34*a2 +  0*a3 = 10.5\n4)  0*a0 + 34*a1 +  0*a2 + 130*a3 = 100.1\n\nPaso 3: Resolver los dos subsistemas desacoplados\n- De (1) y (3): 5*a0 + 10*a2 = 5.2 y 10*a0 + 34*a2 = 10.5\n  14*a2 = 0.1  ->  a2 = 0.007143\n  a0 = (5.2 - 10(0.007143)) / 5 = 1.025714\n- De (2) y (4): 10*a1 + 34*a3 = 26.3 y 34*a1 + 130*a3 = 100.1\n  144*a3 = 1001 - 894.2 = 106.8  ->  a3 = 0.741667\n  a1 = (26.3 - 34(0.741667)) / 10 = 0.108333\n\nPaso 4: Evaluar g(x) = 1.025714 + 0.108333x + 0.007143x^2 + 0.741667x^3\n- g(-2) = -5.095714\n- g(-1) =  0.182857\n- g(0)  =  1.025714\n- g(1)  =  1.882857\n- g(2)  =  7.204286\n\nResultado: g(x) = 1.025714 + 0.108333x + 0.007143x^2 + 0.741667x^3"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "ajustar un polinomio cúbico g(x) = a0 + a1*x + a2*x^2 + a3*x^3 a los datos"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = -2 | y1 = -5.1",
+              "- x2 = -1 | y2 = 0.2",
+              "- x3 =  0 | y3 = 1.0",
+              "- x4 =  1 | y4 = 1.9",
+              "- x5 =  2 | y5 = 7.2"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabla de sumatorias (n = 5)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  x |   y  | x^2 | x^3 | x^4 | x^5 | x^6 |  xy  | x^2*y | x^3*y ",
+                  "----+------+-----+-----+-----+-----+-----+------+-------+-------",
+                  " -2 | -5.1 |   4 |  -8 |  16 | -32 |  64 | 10.2 | -20.4 |  40.8 ",
+                  " -1 |  0.2 |   1 |  -1 |   1 |  -1 |   1 | -0.2 |   0.2 |  -0.2 ",
+                  "  0 |  1.0 |   0 |   0 |   0 |   0 |   0 |  0.0 |   0.0 |   0.0 ",
+                  "  1 |  1.9 |   1 |   1 |   1 |   1 |   1 |  1.9 |   1.9 |   1.9 ",
+                  "  2 |  7.2 |   4 |   8 |  16 |  32 |  64 | 14.4 |  28.8 |  57.6 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Sumatorias"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Σx = 0, Σx^2 = 10, Σx^3 = 0, Σx^4 = 34, Σx^5 = 0, Σx^6 = 130",
+                  "- Σy = 5.2, Σxy = 26.3, Σx^2*y = 10.5, Σx^3*y = 100.1"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Formar el sistema normal de 4x4",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "1)  5*a0 +  0*a1 + 10*a2 +  0*a3 = 5.2",
+                  "2)  0*a0 + 10*a1 +  0*a2 + 34*a3 = 26.3",
+                  "3) 10*a0 +  0*a1 + 34*a2 +  0*a3 = 10.5",
+                  "4)  0*a0 + 34*a1 +  0*a2 + 130*a3 = 100.1"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Resolver los dos subsistemas desacoplados",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- De (1) y (3): 5*a0 + 10*a2 = 5.2 y 10*a0 + 34*a2 = 10.5",
+                  "  14*a2 = 0.1  ->  a2 = 0.007143",
+                  "  a0 = (5.2 - 10(0.007143)) / 5 = 1.025714",
+                  "- De (2) y (4): 10*a1 + 34*a3 = 26.3 y 34*a1 + 130*a3 = 100.1",
+                  "  144*a3 = 1001 - 894.2 = 106.8  ->  a3 = 0.741667",
+                  "  a1 = (26.3 - 34(0.741667)) / 10 = 0.108333"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar g(x) = 1.025714 + 0.108333x + 0.007143x^2 + 0.741667x^3",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(-2) = -5.095714",
+                  "- g(-1) =  0.182857",
+                  "- g(0)  =  1.025714",
+                  "- g(1)  =  1.882857",
+                  "- g(2)  =  7.204286"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(x) = 1.025714 + 0.108333x + 0.007143x^2 + 0.741667x^3"
+      }
     },
     {
       "id": "minimos_cuadrados_lineal_funcion",
@@ -238,7 +2075,100 @@
       "condiciones": "1. Se debe elegir previamente la función base f(x) adecuada según el fenómeno físico o comportamiento de los datos.\n2. Todos los valores de x deben pertenecer al dominio de f(x) (por ejemplo, x > 0 si f(x) = Ln(x)).\n3. Se requieren al menos n >= 3 puntos independientes.",
       "criterios_paro": "Es un método directo: termina al calcular las sumatorias con f(x), resolver el sistema lineal de 3x3 para a0, a1, a2 y evaluar [x, g(x)].",
       "ventajas_limitaciones": "VENTAJAS: Permite ajustar funciones trascendentes (trigonométricas, exponenciales o logarítmicas) resolviendo únicamente un sistema de ecuaciones lineales.\nLIMITACIONES: Requiere conocer de antemano qué función f(x) describe mejor la componente no lineal de los datos.",
-      "ejemplo": "Problema: ajustar g(x) = a0 + a1*x + a2*sen(x) a los datos (x en radianes)\n\nDatos:\n- x1 = 0.5 | y1 = 2.45\n- x2 = 1.0 | y2 = 3.85\n- x3 = 1.5 | y3 = 5.00\n- x4 = 2.0 | y4 = 5.90\n\nPaso 1: Tabla de sumatorias con f(x) = sen(x) (n = 4)\n\n   x  |   y  |  x^2 |  sen(x)  | x*sen(x) | sen^2(x) |   xy   | y*sen(x) \n------+------+------+----------+----------+----------+--------+----------\n  0.5 | 2.45 | 0.25 | 0.479426 | 0.239713 | 0.229849 |  1.225 | 1.174593 \n  1.0 | 3.85 | 1.00 | 0.841471 | 0.841471 | 0.708073 |  3.850 | 3.239663 \n  1.5 | 5.00 | 2.25 | 0.997495 | 1.496242 | 0.994996 |  7.500 | 4.987475 \n  2.0 | 5.90 | 4.00 | 0.909297 | 1.818595 | 0.826822 | 11.800 | 5.364855 \n\nSumatorias:\n- Σx = 5.000000, Σx^2 = 7.500000, Σsen(x) = 3.227689\n- Σx*sen(x) = 4.396021, Σsen^2(x) = 2.759740\n- Σy = 17.200000, Σxy = 24.375000, Σy*sen(x) = 14.766586\n\nPaso 2: Sistema normal de 3x3\n1) 4.000000*a0 + 5.000000*a1 + 3.227689*a2 = 17.200000\n2) 5.000000*a0 + 7.500000*a1 + 4.396021*a2 = 24.375000\n3) 3.227689*a0 + 4.396021*a1 + 2.759740*a2 = 14.766586\n\nPaso 3: Resolver el sistema de ecuaciones\n- a0 = 0.511234\n- a1 = 1.988412\n- a2 = 1.004891\n\nPaso 4: Evaluar g(x) = 0.511234 + 1.988412x + 1.004891*sen(x)\n- g(0.5) = 2.487211\n- g(1.0) = 3.845233\n- g(1.5) = 4.996230\n- g(2.0) = 5.901802\n\nResultado: g(x) = 0.511234 + 1.988412x + 1.004891*sen(x)"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "ajustar g(x) = a0 + a1*x + a2*sen(x) a los datos (x en radianes)"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 0.5 | y1 = 2.45",
+              "- x2 = 1.0 | y2 = 3.85",
+              "- x3 = 1.5 | y3 = 5.00",
+              "- x4 = 2.0 | y4 = 5.90"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabla de sumatorias con f(x) = sen(x) (n = 4)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "   x  |   y  |  x^2 |  sen(x)  | x*sen(x) | sen^2(x) |   xy   | y*sen(x) ",
+                  "------+------+------+----------+----------+----------+--------+----------",
+                  "  0.5 | 2.45 | 0.25 | 0.479426 | 0.239713 | 0.229849 |  1.225 | 1.174593 ",
+                  "  1.0 | 3.85 | 1.00 | 0.841471 | 0.841471 | 0.708073 |  3.850 | 3.239663 ",
+                  "  1.5 | 5.00 | 2.25 | 0.997495 | 1.496242 | 0.994996 |  7.500 | 4.987475 ",
+                  "  2.0 | 5.90 | 4.00 | 0.909297 | 1.818595 | 0.826822 | 11.800 | 5.364855 "
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Sumatorias"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Σx = 5.000000, Σx^2 = 7.500000, Σsen(x) = 3.227689",
+                  "- Σx*sen(x) = 4.396021, Σsen^2(x) = 2.759740",
+                  "- Σy = 17.200000, Σxy = 24.375000, Σy*sen(x) = 14.766586"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sistema normal de 3x3",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "1) 4.000000*a0 + 5.000000*a1 + 3.227689*a2 = 17.200000",
+                  "2) 5.000000*a0 + 7.500000*a1 + 4.396021*a2 = 24.375000",
+                  "3) 3.227689*a0 + 4.396021*a1 + 2.759740*a2 = 14.766586"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Resolver el sistema de ecuaciones",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a0 = 0.511234",
+                  "- a1 = 1.988412",
+                  "- a2 = 1.004891"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar g(x) = 0.511234 + 1.988412x + 1.004891*sen(x)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(0.5) = 2.487211",
+                  "- g(1.0) = 3.845233",
+                  "- g(1.5) = 4.996230",
+                  "- g(2.0) = 5.901802"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(x) = 0.511234 + 1.988412x + 1.004891*sen(x)"
+      }
     },
     {
       "id": "minimos_cuadrados_cuadratica_funcion",
@@ -250,7 +2180,105 @@
       "condiciones": "1. Se requieren al menos n >= 4 puntos distintos dentro del dominio válido de f(x).\n2. Las funciones base {1, x, x^2, f(x)} deben ser linealmente independientes en los puntos dados.\n3. Se deben calcular todas las sumatorias de potencias hasta x^4 y sus productos con f(x) y y.",
       "criterios_paro": "Es un método directo: finaliza al resolver el sistema lineal de 4x4 para determinar a0, a1, a2, a3 y evaluar los valores ajustados [x, g(x)].",
       "ventajas_limitaciones": "VENTAJAS: Ofrece gran flexibilidad para modelar fenómenos híbridos (polinomiales + exponenciales/trigonométricos/logarítmicos) mediante álgebra lineal.\nLIMITACIONES: Requiere construir y resolver un sistema de 4x4 con numerosas sumatorias, por lo que es propenso a errores manuales si no se organiza en tabla.",
-      "ejemplo": "Problema: ajustar g(x) = a0 + a1*x + a2*x^2 + a3*Ln(x) a los datos\n\nDatos:\n- x1 = 1 | y1 = 3.10\n- x2 = 2 | y2 = 6.40\n- x3 = 3 | y3 = 11.20\n- x4 = 4 | y4 = 17.80\n- x5 = 5 | y5 = 26.30\n\nPaso 1: Tabla de sumatorias con f(x) = Ln(x) (n = 5)\n\n  x |   y  | x^2 | x^3 | x^4 |   Ln(x)  | x*Ln(x)  | x^2*Ln(x) | Ln^2(x)  |   xy  | x^2*y | y*Ln(x)  \n----+------+-----+-----+-----+----------+----------+-----------+----------+-------+-------+----------\n  1 |  3.1 |   1 |   1 |   1 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |   3.1 |   3.1 | 0.000000 \n  2 |  6.4 |   4 |   8 |  16 | 0.693147 | 1.386294 |  2.772589 | 0.480453 |  12.8 |  25.6 | 4.436142 \n  3 | 11.2 |   9 |  27 |  81 | 1.098612 | 3.295837 |  9.887511 | 1.206949 |  33.6 | 100.8 | 12.304458\n  4 | 17.8 |  16 |  64 | 256 | 1.386294 | 5.545177 | 22.180710 | 1.921812 |  71.2 | 284.8 | 24.676039\n  5 | 26.3 |  25 | 125 | 625 | 1.609438 | 8.047190 | 40.235948 | 2.590290 | 131.5 | 657.5 | 42.328217\n\nSumatorias:\n- Σx = 15, Σx^2 = 55, Σx^3 = 225, Σx^4 = 979\n- ΣLn(x) = 4.787492, Σx*Ln(x) = 18.274498, Σx^2*Ln(x) = 75.076758, ΣLn^2(x) = 6.199504\n- Σy = 64.80, Σxy = 252.20, Σx^2*y = 1071.80, Σy*Ln(x) = 83.744856\n\nPaso 2: Formar el sistema normal de 4x4\n1)  5.000000*a0 + 15.000000*a1 +  55.000000*a2 +  4.787492*a3 =  64.800000\n2) 15.000000*a0 + 55.000000*a1 + 225.000000*a2 + 18.274498*a3 = 252.200000\n3) 55.000000*a0 + 225.000000*a1 + 979.000000*a2 + 75.076758*a3 = 1071.800000\n4)  4.787492*a0 + 18.274498*a1 +  75.076758*a2 +  6.199504*a3 =  83.744856\n\nPaso 3: Resolver el sistema de ecuaciones\n- a0 = 1.981420\n- a1 = 0.214580\n- a2 = 0.903110\n- a3 = 0.142650\n\nPaso 4: Evaluar g(x) = 1.981420 + 0.214580x + 0.903110x^2 + 0.142650*Ln(x)\n- g(1) =  3.099110\n- g(2) =  6.121902\n- g(3) = 10.909868\n- g(4) = 17.487255\n- g(5) = 25.861681\n\nResultado: g(x) = 1.981420 + 0.214580x + 0.903110x^2 + 0.142650*Ln(x)"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "ajustar g(x) = a0 + a1*x + a2*x^2 + a3*Ln(x) a los datos"
+            ]
+          },
+          {
+            "tipo": "subtitulo",
+            "texto": "Datos"
+          },
+          {
+            "tipo": "texto",
+            "lineas": [
+              "- x1 = 1 | y1 = 3.10",
+              "- x2 = 2 | y2 = 6.40",
+              "- x3 = 3 | y3 = 11.20",
+              "- x4 = 4 | y4 = 17.80",
+              "- x5 = 5 | y5 = 26.30"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Tabla de sumatorias con f(x) = Ln(x) (n = 5)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  x |   y  | x^2 | x^3 | x^4 |   Ln(x)  | x*Ln(x)  | x^2*Ln(x) | Ln^2(x)  |   xy  | x^2*y | y*Ln(x)  ",
+                  "----+------+-----+-----+-----+----------+----------+-----------+----------+-------+-------+----------",
+                  "  1 |  3.1 |   1 |   1 |   1 | 0.000000 | 0.000000 |  0.000000 | 0.000000 |   3.1 |   3.1 | 0.000000 ",
+                  "  2 |  6.4 |   4 |   8 |  16 | 0.693147 | 1.386294 |  2.772589 | 0.480453 |  12.8 |  25.6 | 4.436142 ",
+                  "  3 | 11.2 |   9 |  27 |  81 | 1.098612 | 3.295837 |  9.887511 | 1.206949 |  33.6 | 100.8 | 12.304458",
+                  "  4 | 17.8 |  16 |  64 | 256 | 1.386294 | 5.545177 | 22.180710 | 1.921812 |  71.2 | 284.8 | 24.676039",
+                  "  5 | 26.3 |  25 | 125 | 625 | 1.609438 | 8.047190 | 40.235948 | 2.590290 | 131.5 | 657.5 | 42.328217"
+                ]
+              },
+              {
+                "tipo": "subtitulo",
+                "texto": "Sumatorias"
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Σx = 15, Σx^2 = 55, Σx^3 = 225, Σx^4 = 979",
+                  "- ΣLn(x) = 4.787492, Σx*Ln(x) = 18.274498, Σx^2*Ln(x) = 75.076758, ΣLn^2(x) = 6.199504",
+                  "- Σy = 64.80, Σxy = 252.20, Σx^2*y = 1071.80, Σy*Ln(x) = 83.744856"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Formar el sistema normal de 4x4",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "1)  5.000000*a0 + 15.000000*a1 +  55.000000*a2 +  4.787492*a3 =  64.800000",
+                  "2) 15.000000*a0 + 55.000000*a1 + 225.000000*a2 + 18.274498*a3 = 252.200000",
+                  "3) 55.000000*a0 + 225.000000*a1 + 979.000000*a2 + 75.076758*a3 = 1071.800000",
+                  "4)  4.787492*a0 + 18.274498*a1 +  75.076758*a2 +  6.199504*a3 =  83.744856"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Resolver el sistema de ecuaciones",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a0 = 1.981420",
+                  "- a1 = 0.214580",
+                  "- a2 = 0.903110",
+                  "- a3 = 0.142650"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar g(x) = 1.981420 + 0.214580x + 0.903110x^2 + 0.142650*Ln(x)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- g(1) =  3.099110",
+                  "- g(2) =  6.121902",
+                  "- g(3) = 10.909868",
+                  "- g(4) = 17.487255",
+                  "- g(5) = 25.861681"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "g(x) = 1.981420 + 0.214580x + 0.903110x^2 + 0.142650*Ln(x)"
+      }
     },
     {
       "id": "regla_trapezoidal",
@@ -262,7 +2290,62 @@
       "condiciones": "1. La función f(x) debe ser continua e integrable en el intervalo cerrado [a, b].\n2. Los subintervalos deben tener el mismo ancho h (espaciado uniforme)[cite: 20].\n3. El número de subintervalos n puede ser cualquier entero positivo (par o impar), aunque a mayor n, mayor precisión[cite: 20].",
       "criterios_paro": "Es un método directo: se calcula en un solo paso evaluando la función en los n + 1 nodos desde x0 = a hasta xn = b[cite: 20].\nSi se conoce el valor exacto de la integral, el error absoluto se calcula como |I_real - I|.",
       "ventajas_limitaciones": "VENTAJAS: Es muy sencilla de aplicar, funciona para cualquier número de subintervalos n y resulta óptima para integrales impropias o funciones con comportamiento suave[cite: 20].\nLIMITACIONES: Al aproximar la curva con segmentos rectos (polinomio de grado 1), requiere un número grande de subintervalos para alcanzar alta precisión en funciones muy curvas[cite: 20].",
-      "ejemplo": "Problema: aproximar la integral ∫[1, 3] (x^2 + 1) dx con n = 4\n\nPaso 1: Calcular el ancho del intervalo h\n- a = 1, b = 3, n = 4\n- h = (3 - 1) / 4 = 2 / 4 = 0.5\n\nPaso 2: Tabular los nodos xi = a + i*h y evaluar f(x) = x^2 + 1\n\n  i |  xi  | f(xi) = xi^2 + 1 | Multiplicador \n----+------+------------------+---------------\n  0 | 1.0  |       2.00       |       1       \n  1 | 1.5  |       3.25       |       2       \n  2 | 2.0  |       5.00       |       2       \n  3 | 2.5  |       7.25       |       2       \n  4 | 3.0  |      10.00       |       1       \n\nPaso 3: Aplicar la fórmula trapezoidal\n- I = (0.5 / 2) * [ 2.00 + 2*(3.25 + 5.00 + 7.25) + 10.00 ]\n- I = 0.25 * [ 2.00 + 2*(15.50) + 10.00 ]\n- I = 0.25 * [ 2.00 + 31.00 + 10.00 ]\n- I = 0.25 * 43.00\n\nResultado: I = 10.750000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "aproximar la integral ∫[1, 3] (x^2 + 1) dx con n = 4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Calcular el ancho del intervalo h",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 1, b = 3, n = 4",
+                  "- h = (3 - 1) / 4 = 2 / 4 = 0.5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabular los nodos xi = a + i*h y evaluar f(x) = x^2 + 1",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  i |  xi  | f(xi) = xi^2 + 1 | Multiplicador ",
+                  "----+------+------------------+---------------",
+                  "  0 | 1.0  |       2.00       |       1       ",
+                  "  1 | 1.5  |       3.25       |       2       ",
+                  "  2 | 2.0  |       5.00       |       2       ",
+                  "  3 | 2.5  |       7.25       |       2       ",
+                  "  4 | 3.0  |      10.00       |       1       "
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Aplicar la fórmula trapezoidal",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- I = (0.5 / 2) * [ 2.00 + 2*(3.25 + 5.00 + 7.25) + 10.00 ]",
+                  "- I = 0.25 * [ 2.00 + 2*(15.50) + 10.00 ]",
+                  "- I = 0.25 * [ 2.00 + 31.00 + 10.00 ]",
+                  "- I = 0.25 * 43.00"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "I = 10.750000"
+      }
     },
     {
       "id": "regla_simpson_1/3",
@@ -274,7 +2357,62 @@
       "condiciones": "1. El número de subintervalos n debe ser estrictamente PAR (n = 2, 4, 6, ...)[cite: 15].\n2. Los puntos deben estar igualmente espaciados con paso h = (b - a) / n[cite: 15].\n3. La función f(x) debe ser continua en el intervalo cerrado [a, b].",
       "criterios_paro": "Es un método directo: se resuelve en una sola evaluación sumando los términos ponderados de los n + 1 nodos (coeficientes 1, 4, 2, 4, ..., 2, 4, 1)[cite: 15].",
       "ventajas_limitaciones": "VENTAJAS: Ofrece alta exactitud (es exacta para polinomios de hasta tercer grado) con un cálculo sencillo[cite: 15].\nLIMITACIONES: No se puede aplicar directamente cuando el número de subintervalos n es impar[cite: 15].",
-      "ejemplo": "Problema: aproximar la integral ∫[0, 2] e^x dx con n = 4\n\nPaso 1: Calcular el tamaño de paso h\n- a = 0, b = 2, n = 4 (par)\n- h = (2 - 0) / 4 = 0.5\n\nPaso 2: Evaluar f(x) = e^x en cada nodo xi = a + i*h\n\n  i |  xi  |  f(xi) = e^xi | Peso \n----+------+---------------+------\n  0 | 0.0  |   1.000000    |  1   \n  1 | 0.5  |   1.648721    |  4   \n  2 | 1.0  |   2.718282    |  2   \n  3 | 1.5  |   4.481689    |  4   \n  4 | 2.0  |   7.389056    |  1   \n\nPaso 3: Sustituir en la fórmula de 1/3 de Simpson\n- I = (0.5 / 3) * [ 1.000000 + 4*(1.648721 + 4.481689) + 2*(2.718282) + 7.389056 ]\n- I = (1 / 6) * [ 1.000000 + 4*(6.130410) + 5.436564 + 7.389056 ]\n- I = (1 / 6) * [ 1.000000 + 24.521640 + 5.436564 + 7.389056 ]\n- I = (1 / 6) * 38.347260\n\nResultado: I ≈ 6.391210"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "aproximar la integral ∫[0, 2] e^x dx con n = 4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Calcular el tamaño de paso h",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 0, b = 2, n = 4 (par)",
+                  "- h = (2 - 0) / 4 = 0.5"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar f(x) = e^x en cada nodo xi = a + i*h",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  i |  xi  |  f(xi) = e^xi | Peso ",
+                  "----+------+---------------+------",
+                  "  0 | 0.0  |   1.000000    |  1   ",
+                  "  1 | 0.5  |   1.648721    |  4   ",
+                  "  2 | 1.0  |   2.718282    |  2   ",
+                  "  3 | 1.5  |   4.481689    |  4   ",
+                  "  4 | 2.0  |   7.389056    |  1   "
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Sustituir en la fórmula de 1/3 de Simpson",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- I = (0.5 / 3) * [ 1.000000 + 4*(1.648721 + 4.481689) + 2*(2.718282) + 7.389056 ]",
+                  "- I = (1 / 6) * [ 1.000000 + 4*(6.130410) + 5.436564 + 7.389056 ]",
+                  "- I = (1 / 6) * [ 1.000000 + 24.521640 + 5.436564 + 7.389056 ]",
+                  "- I = (1 / 6) * 38.347260"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "I ≈ 6.391210"
+      }
     },
     {
       "id": "regla_simpson_3/8",
@@ -286,7 +2424,60 @@
       "condiciones": "1. El número de subintervalos n debe ser un múltiplo de 3 (n = 3, 6, 9, ...); es ideal cuando n es impar[cite: 17].\n2. Los puntos deben estar igualmente espaciados con paso h = (b - a) / n[cite: 17].\n3. La función f(x) debe ser continua en el intervalo cerrado [a, b].",
       "criterios_paro": "Es un método directo: termina en una sola evaluación tras ponderar cada nodo con los pesos correspondientes (1, 3, 3, 1 para n = 3, o 1, 3, 3, 2, 3, 3, ..., 1 para n compuesto)[cite: 17].",
       "ventajas_limitaciones": "VENTAJAS: Es más exacta que la regla de 1/3 de Simpson en un intervalo simple y permite integrar con un número impar de segmentos (múltiplos de 3)[cite: 17].\nLIMITACIONES: Exige que el número de subintervalos sea divisible entre 3[cite: 17].",
-      "ejemplo": "Problema: aproximar la integral ∫[0, 3] (x^3 + 2x) dx usando n = 3\n\nPaso 1: Verificar n y calcular el ancho de paso h\n- a = 0, b = 3, n = 3 (impar y múltiplo de 3)\n- h = (3 - 0) / 3 = 1\n\nPaso 2: Evaluar f(x) = x^3 + 2x en los 4 nodos xi = a + i*h\n\n  i | xi | f(xi) = xi^3 + 2xi | Peso \n----+----+--------------------+------\n  0 |  0 |         0          |  1   \n  1 |  1 |         3          |  3   \n  2 |  2 |        12          |  3   \n  3 |  3 |        33          |  1   \n\nPaso 3: Aplicar la fórmula de 3/8 de Simpson\n- I = (3 * 1 / 8) * [ 0 + 3*(3) + 3*(12) + 33 ]\n- I = (3 / 8) * [ 0 + 9 + 36 + 33 ]\n- I = (3 / 8) * 78 = 234 / 8\n\nResultado: I = 29.250000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "aproximar la integral ∫[0, 3] (x^3 + 2x) dx usando n = 3"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Verificar n y calcular el ancho de paso h",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 0, b = 3, n = 3 (impar y múltiplo de 3)",
+                  "- h = (3 - 0) / 3 = 1"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar f(x) = x^3 + 2x en los 4 nodos xi = a + i*h",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  i | xi | f(xi) = xi^3 + 2xi | Peso ",
+                  "----+----+--------------------+------",
+                  "  0 |  0 |         0          |  1   ",
+                  "  1 |  1 |         3          |  3   ",
+                  "  2 |  2 |        12          |  3   ",
+                  "  3 |  3 |        33          |  1   "
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Aplicar la fórmula de 3/8 de Simpson",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- I = (3 * 1 / 8) * [ 0 + 3*(3) + 3*(12) + 33 ]",
+                  "- I = (3 / 8) * [ 0 + 9 + 36 + 33 ]",
+                  "- I = (3 / 8) * 78 = 234 / 8"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "I = 29.250000"
+      }
     },
     {
       "id": "newton_cotes_cerradas",
@@ -298,7 +2489,66 @@
       "condiciones": "1. La función f(x) debe poder evaluarse en ambos extremos a y b (dominio cerrado)[cite: 22].\n2. Los puntos deben estar igualmente espaciados con h = (b - a) / n[cite: 19, 22].\n3. Se deben tomar exactamente n + 1 puntos (desde i = 0 hasta i = n) y sus respectivos pesos wi de la tabla de Newton-Cotes cerradas[cite: 13, 19].",
       "criterios_paro": "Es un método directo: termina tras evaluar los n + 1 nodos, multiplicar cada resultado por su peso wi, sumar y multiplicar por el factor α * h[cite: 19].",
       "ventajas_limitaciones": "VENTAJAS: Generaliza la regla trapezoidal (n=1) y las reglas de Simpson (n=2, n=3) permitiendo alcanzar órdenes superiores con puntos igualmente espaciados[cite: 13, 22].\nLIMITACIONES: Las fórmulas de orden muy alto (n >= 8) introducen pesos negativos y no garantizan mayor precisión debido a oscilaciones polinomiales[cite: 13, 22].",
-      "ejemplo": "Problema: aproximar ∫[0, 4] (x^4 + 1) dx usando Newton-Cotes Cerradas con n = 4\n\nPaso 1: Obtener el paso h y las constantes de tabla para n = 4\n- a = 0, b = 4, n = 4\n- h = (4 - 0) / 4 = 1\n- De la tabla para n = 4: α = 2/45 y pesos wi = [7, 32, 12, 32, 7]\n\nPaso 2: Evaluar f(x) = x^4 + 1 en los nodos xi = a + i*h (i = 0..4)\n\n  i | xi | f(xi) = xi^4 + 1 | wi | wi * f(xi) \n----+----+------------------+----+------------\n  0 |  0 |        1         |  7 |     7      \n  1 |  1 |        2         | 32 |    64      \n  2 |  2 |       17         | 12 |   204      \n  3 |  3 |       82         | 32 |  2624      \n  4 |  4 |      257         |  7 |  1799      \n\nSuma: Σ wi * f(xi) = 7 + 64 + 204 + 2624 + 1799 = 4698\n\nPaso 3: Multiplicar por α * h\n- I = (2 / 45) * (1) * 4698 = 9396 / 45\n\nResultado: I = 208.800000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "aproximar ∫[0, 4] (x^4 + 1) dx usando Newton-Cotes Cerradas con n = 4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Obtener el paso h y las constantes de tabla para n = 4",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 0, b = 4, n = 4",
+                  "- h = (4 - 0) / 4 = 1",
+                  "- De la tabla para n = 4: α = 2/45 y pesos wi = [7, 32, 12, 32, 7]"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar f(x) = x^4 + 1 en los nodos xi = a + i*h (i = 0..4)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  i | xi | f(xi) = xi^4 + 1 | wi | wi * f(xi) ",
+                  "----+----+------------------+----+------------",
+                  "  0 |  0 |        1         |  7 |     7      ",
+                  "  1 |  1 |        2         | 32 |    64      ",
+                  "  2 |  2 |       17         | 12 |   204      ",
+                  "  3 |  3 |       82         | 32 |  2624      ",
+                  "  4 |  4 |      257         |  7 |  1799      "
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Suma: Σ wi * f(xi) = 7 + 64 + 204 + 2624 + 1799 = 4698"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Multiplicar por α * h",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- I = (2 / 45) * (1) * 4698 = 9396 / 45"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "I = 208.800000"
+      }
     },
     {
       "id": "newton_cotes_abiertas",
@@ -310,7 +2560,67 @@
       "condiciones": "1. El intervalo [a, b] se divide en n + 2 subintervalos de ancho h = (b - a) / (n + 2)[cite: 22].\n2. Los extremos a (i = 0) y b (i = n + 2) tienen peso wi = 0, por lo que no se evalúa f(a) ni f(b)[cite: 13, 22].\n3. Los nodos interiores x1, x2, ..., x(n+1) deben estar igualmente espaciados[cite: 22].",
       "criterios_paro": "Es un método directo: finaliza al evaluar f(x) únicamente en los nodos interiores (i = 1 hasta n + 1), multiplicar por sus pesos wi y escalar por α * h[cite: 13, 22].",
       "ventajas_limitaciones": "VENTAJAS: Permite integrar funciones que tienen divisiones entre cero o asíntotas en los límites a o b, ya que nunca evalúa los extremos[cite: 13, 22].\nLIMITACIONES: Es menos precisa que las fórmulas cerradas del mismo orden y presenta pesos negativos alternados incluso desde n = 2[cite: 13, 22].",
-      "ejemplo": "Problema: aproximar ∫[0, 1] (1 / √x) dx usando Newton-Cotes Abiertas con n = 2\n(Nota: en x = 0 la función tiende a infinito, pero el método abierto no evalúa los extremos)\n\nPaso 1: Calcular el paso h y tomar constantes para n = 2\n- a = 0, b = 1, n = 2\n- h = (1 - 0) / (2 + 2) = 1 / 4 = 0.25\n- De la tabla abierta para n = 2: α = 4/3 y pesos wi = [0, 2, -1, 2, 0]\n\nPaso 2: Evaluar f(x) = 1 / √x solo en los nodos interiores (i = 1, 2, 3)\n\n  i |  xi  | f(xi) = 1 / √xi | wi |  wi * f(xi) \n----+------+-----------------+----+-------------\n  0 | 0.00 |   no se evalúa  |  0 |   0.000000  \n  1 | 0.25 |    2.000000     |  2 |   4.000000  \n  2 | 0.50 |    1.414214     | -1 |  -1.414214  \n  3 | 0.75 |    1.154701     |  2 |   2.309401  \n  4 | 1.00 |   no se evalúa  |  0 |   0.000000  \n\nSuma: Σ wi * f(xi) = 4.000000 - 1.414214 + 2.309401 = 4.895187\n\nPaso 3: Multiplicar por α * h\n- I = (4 / 3) * (0.25) * 4.895187 = (1 / 3) * 4.895187\n\nResultado: I ≈ 1.631729"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "aproximar ∫[0, 1] (1 / √x) dx usando Newton-Cotes Abiertas con n = 2",
+              "(Nota: en x = 0 la función tiende a infinito, pero el método abierto no evalúa los extremos)"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Calcular el paso h y tomar constantes para n = 2",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- a = 0, b = 1, n = 2",
+                  "- h = (1 - 0) / (2 + 2) = 1 / 4 = 0.25",
+                  "- De la tabla abierta para n = 2: α = 4/3 y pesos wi = [0, 2, -1, 2, 0]"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Evaluar f(x) = 1 / √x solo en los nodos interiores (i = 1, 2, 3)",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  "  i |  xi  | f(xi) = 1 / √xi | wi |  wi * f(xi) ",
+                  "----+------+-----------------+----+-------------",
+                  "  0 | 0.00 |   no se evalúa  |  0 |   0.000000  ",
+                  "  1 | 0.25 |    2.000000     |  2 |   4.000000  ",
+                  "  2 | 0.50 |    1.414214     | -1 |  -1.414214  ",
+                  "  3 | 0.75 |    1.154701     |  2 |   2.309401  ",
+                  "  4 | 1.00 |   no se evalúa  |  0 |   0.000000  "
+                ]
+              },
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "Suma: Σ wi * f(xi) = 4.000000 - 1.414214 + 2.309401 = 4.895187"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Multiplicar por α * h",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- I = (4 / 3) * (0.25) * 4.895187 = (1 / 3) * 4.895187"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "I ≈ 1.631729"
+      }
     },
     {
       "id": "euler_modificado",
@@ -322,7 +2632,77 @@
       "condiciones": "1. La ecuación diferencial debe despejarse en la forma y' = f(y, t).\n2. Se debe conocer una condición inicial y(t0) = y0 y el tamaño de paso h.\n3. La función f(y, t) debe ser continua en el intervalo de integración.",
       "criterios_paro": "Es un método paso a paso: se avanza desde t0 hasta el valor final t_final realizando N = (t_final - t0) / h pasos de tamaño h. Si se aplica de forma implícita/iterativa en un mismo paso, se detiene cuando |y(n+1)_actual - y(n+1)_anterior| <= ε.",
       "ventajas_limitaciones": "VENTAJAS: Es mucho más exacto que el método de Euler hacia adelante y posee una excelente estabilidad numérica.\nLIMITACIONES: Requiere evaluar la función derivada dos veces por cada paso (en el inicio y en el extremo del intervalo) y necesita una predicción inicial para y(n+1).",
-      "ejemplo": "Problema: resolver la EDO 2y' - 4y + 2t = 0 con y(0) = 1, h = 0.1 hasta t = 0.2\n\nPaso 1: Despejar y'\n- 2y' = 4y - 2t  ->  y' = 2y - t  ->  f(y, t) = 2y - t\n\nPaso 2: Calcular y1 en t1 = t0 + h = 0 + 0.1 = 0.1 (con y0 = 1, t0 = 0)\n- Pendiente inicial: f(y0, t0) = 2(1) - 0 = 2.0000\n- Predicción inicial: y1* = y0 + h * f(y0, t0) = 1 + 0.1(2.0000) = 1.2000\n- Pendiente en el extremo: f(y1*, t1) = 2(1.2000) - 0.1 = 2.3000\n- Aplicar fórmula de Euler Modificado:\n  y1 = y0 + (h / 2) * [ f(y0, t0) + f(y1*, t1) ]\n  y1 = 1 + (0.1 / 2) * [ 2.0000 + 2.3000 ] = 1 + 0.05(4.3000) = 1.2150\n\nPaso 3: Calcular y2 en t2 = t1 + h = 0.1 + 0.1 = 0.2 (con y1 = 1.2150, t1 = 0.1)\n- Pendiente en t1: f(y1, t1) = 2(1.2150) - 0.1 = 2.3300\n- Predicción inicial: y2* = y1 + h * f(y1, t1) = 1.2150 + 0.1(2.3300) = 1.4480\n- Pendiente en t2: f(y2*, t2) = 2(1.4480) - 0.2 = 2.6960\n- Aplicar fórmula de Euler Modificado:\n  y2 = y1 + (h / 2) * [ f(y1, t1) + f(y2*, t2) ]\n  y2 = 1.2150 + (0.1 / 2) * [ 2.3300 + 2.6960 ] = 1.2150 + 0.05(5.0260) = 1.4663\n\nPaso 4: Tabla de resultados\n\n Paso (n) |  tn  |   yn   \n----------+------+--------\n    0     | 0.0  | 1.0000 \n    1     | 0.1  | 1.2150 \n    2     | 0.2  | 1.4663 \n\nResultado: y(0.1) = 1.2150, y(0.2) = 1.4663"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver la EDO 2y' - 4y + 2t = 0 con y(0) = 1, h = 0.1 hasta t = 0.2"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- 2y' = 4y - 2t  ->  y' = 2y - t  ->  f(y, t) = 2y - t"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y1 en t1 = t0 + h = 0 + 0.1 = 0.1 (con y0 = 1, t0 = 0)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Pendiente inicial: f(y0, t0) = 2(1) - 0 = 2.0000",
+                  "- Predicción inicial: y1* = y0 + h * f(y0, t0) = 1 + 0.1(2.0000) = 1.2000",
+                  "- Pendiente en el extremo: f(y1*, t1) = 2(1.2000) - 0.1 = 2.3000",
+                  "- Aplicar fórmula de Euler Modificado:",
+                  "  y1 = y0 + (h / 2) * [ f(y0, t0) + f(y1*, t1) ]",
+                  "  y1 = 1 + (0.1 / 2) * [ 2.0000 + 2.3000 ] = 1 + 0.05(4.3000) = 1.2150"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y2 en t2 = t1 + h = 0.1 + 0.1 = 0.2 (con y1 = 1.2150, t1 = 0.1)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- Pendiente en t1: f(y1, t1) = 2(1.2150) - 0.1 = 2.3300",
+                  "- Predicción inicial: y2* = y1 + h * f(y1, t1) = 1.2150 + 0.1(2.3300) = 1.4480",
+                  "- Pendiente en t2: f(y2*, t2) = 2(1.4480) - 0.2 = 2.6960",
+                  "- Aplicar fórmula de Euler Modificado:",
+                  "  y2 = y1 + (h / 2) * [ f(y1, t1) + f(y2*, t2) ]",
+                  "  y2 = 1.2150 + (0.1 / 2) * [ 2.3300 + 2.6960 ] = 1.2150 + 0.05(5.0260) = 1.4663"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla de resultados",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " Paso (n) |  tn  |   yn   ",
+                  "----------+------+--------",
+                  "    0     | 0.0  | 1.0000 ",
+                  "    1     | 0.1  | 1.2150 ",
+                  "    2     | 0.2  | 1.4663 "
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.1) = 1.2150, y(0.2) = 1.4663"
+      }
     },
     {
       "id": "runge_kutta_2",
@@ -334,7 +2714,62 @@
       "condiciones": "1. La ecuación diferencial debe expresarse de forma explícita como y' = f(y, t).\n2. Se requiere conocer la condición inicial y(t0) = y0 y definir el paso h.\n3. Cada constante k depende recursivamente de la anterior (k1 aparece dentro de k2).",
       "criterios_paro": "Es un método directo paso a paso: en cada paso se calculan secuencialmente k1, k2 y y(n+1) hasta alcanzar el valor objetivo de t.",
       "ventajas_limitaciones": "VENTAJAS: Alcanza la misma exactitud que una serie de Taylor de 2° orden sin requerir el cálculo de derivadas parciales de f(y, t).\nLIMITACIONES: Es menos preciso que los métodos de Runge-Kutta de 3° y 4° orden para pasos grandes.",
-      "ejemplo": "Problema: resolver y' + 2y - 4t = 0 con y(0) = 3, h = 0.1 hasta t = 0.2\n\nPaso 1: Despejar y'\n- y' = 4t - 2y  ->  f(y, t) = 4t - 2y\n\nPaso 2: Primera iteración (t0 = 0, y0 = 3 -> t1 = 0.1)\n- k1 = h * f(y0, t0) = 0.1 * [ 4(0) - 2(3) ] = 0.1 * (-6) = -0.6000\n- k2 = h * f(y0 + k1, t0 + h)\n  k2 = 0.1 * [ 4(0 + 0.1) - 2(3 + (-0.6000)) ]\n  k2 = 0.1 * [ 0.4 - 2(2.4000) ] = 0.1 * (-4.4000) = -0.4400\n- y1 = y0 + (1 / 2) * (k1 + k2)\n  y1 = 3 + 0.5 * (-0.6000 + (-0.4400)) = 3 - 0.5200 = 2.4800\n\nPaso 3: Segunda iteración (t1 = 0.1, y1 = 2.4800 -> t2 = 0.2)\n- k1 = h * f(y1, t1) = 0.1 * [ 4(0.1) - 2(2.4800) ] = 0.1 * (-4.5600) = -0.4560\n- k2 = h * f(y1 + k1, t1 + h)\n  k2 = 0.1 * [ 4(0.1 + 0.1) - 2(2.4800 - 0.4560) ]\n  k2 = 0.1 * [ 0.8 - 2(2.0240) ] = 0.1 * (-3.2480) = -0.3248\n- y2 = y1 + (1 / 2) * (k1 + k2)\n  y2 = 2.4800 + 0.5 * (-0.4560 - 0.3248) = 2.4800 - 0.3904 = 2.0896\n\nResultado: y(0.1) = 2.4800, y(0.2) = 2.0896"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver y' + 2y - 4t = 0 con y(0) = 3, h = 0.1 hasta t = 0.2"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- y' = 4t - 2y  ->  f(y, t) = 4t - 2y"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Primera iteración (t0 = 0, y0 = 3 -> t1 = 0.1)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = h * f(y0, t0) = 0.1 * [ 4(0) - 2(3) ] = 0.1 * (-6) = -0.6000",
+                  "- k2 = h * f(y0 + k1, t0 + h)",
+                  "  k2 = 0.1 * [ 4(0 + 0.1) - 2(3 + (-0.6000)) ]",
+                  "  k2 = 0.1 * [ 0.4 - 2(2.4000) ] = 0.1 * (-4.4000) = -0.4400",
+                  "- y1 = y0 + (1 / 2) * (k1 + k2)",
+                  "  y1 = 3 + 0.5 * (-0.6000 + (-0.4400)) = 3 - 0.5200 = 2.4800"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Segunda iteración (t1 = 0.1, y1 = 2.4800 -> t2 = 0.2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = h * f(y1, t1) = 0.1 * [ 4(0.1) - 2(2.4800) ] = 0.1 * (-4.5600) = -0.4560",
+                  "- k2 = h * f(y1 + k1, t1 + h)",
+                  "  k2 = 0.1 * [ 4(0.1 + 0.1) - 2(2.4800 - 0.4560) ]",
+                  "  k2 = 0.1 * [ 0.8 - 2(2.0240) ] = 0.1 * (-3.2480) = -0.3248",
+                  "- y2 = y1 + (1 / 2) * (k1 + k2)",
+                  "  y2 = 2.4800 + 0.5 * (-0.4560 - 0.3248) = 2.4800 - 0.3904 = 2.0896"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.1) = 2.4800, y(0.2) = 2.0896"
+      }
     },
     {
       "id": "runge_kutta_3",
@@ -346,7 +2781,60 @@
       "condiciones": "1. La ecuación diferencial debe despejarse como y' = f(y, t).\n2. Se requiere conocer el punto inicial (t0, y0) y el incremento h.\n3. Las constantes k1, k2 y k3 deben calcularse estrictamente en orden secuencial.",
       "criterios_paro": "Es un método directo paso a paso: en cada intervalo se evalúan k1, k2, k3 y se actualiza y(n+1) hasta cubrir el rango de integración deseado.",
       "ventajas_limitaciones": "VENTAJAS: Proporciona una exactitud superior al método de 2° orden utilizando solo tres evaluaciones funcionales por paso.\nLIMITACIONES: Con solo una evaluación adicional (4 en total) se puede alcanzar el método de 4° orden, que es el estándar por su mayor precisión.",
-      "ejemplo": "Problema: resolver y' - y - t = 0 con y(0) = 1, h = 0.2 hasta t = 0.4\n\nPaso 1: Despejar y'\n- y' = y + t  ->  f(y, t) = y + t\n\nPaso 2: Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.2)\n- k1 = 0.2 * f(1, 0) = 0.2 * (1 + 0) = 0.200000\n- k2 = 0.2 * f(1 + 0.200000/2, 0 + 0.2/2) = 0.2 * f(1.100000, 0.1) = 0.2 * (1.200000) = 0.240000\n- k3 = 0.2 * f(1 - 0.200000 + 2(0.240000), 0 + 0.2) = 0.2 * f(1.280000, 0.2) = 0.2 * (1.480000) = 0.296000\n- y1 = 1 + (1 / 6) * [ 0.200000 + 4(0.240000) + 0.296000 ]\n  y1 = 1 + (1 / 6) * (1.456000) = 1.242667\n\nPaso 3: Calcular y2 (t1 = 0.2, y1 = 1.242667 -> t2 = 0.4)\n- k1 = 0.2 * f(1.242667, 0.2) = 0.2 * (1.442667) = 0.288533\n- k2 = 0.2 * f(1.242667 + 0.288533/2, 0.2 + 0.1) = 0.2 * f(1.386933, 0.3) = 0.2 * (1.686933) = 0.337387\n- k3 = 0.2 * f(1.242667 - 0.288533 + 2(0.337387), 0.2 + 0.2) = 0.2 * f(1.628907, 0.4) = 0.2 * (2.028907) = 0.405781\n- y2 = 1.242667 + (1 / 6) * [ 0.288533 + 4(0.337387) + 0.405781 ]\n  y2 = 1.242667 + (1 / 6) * (2.043861) = 1.583310\n\nResultado: y(0.2) = 1.242667, y(0.4) = 1.583310"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver y' - y - t = 0 con y(0) = 1, h = 0.2 hasta t = 0.4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- y' = y + t  ->  f(y, t) = y + t"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.2 * f(1, 0) = 0.2 * (1 + 0) = 0.200000",
+                  "- k2 = 0.2 * f(1 + 0.200000/2, 0 + 0.2/2) = 0.2 * f(1.100000, 0.1) = 0.2 * (1.200000) = 0.240000",
+                  "- k3 = 0.2 * f(1 - 0.200000 + 2(0.240000), 0 + 0.2) = 0.2 * f(1.280000, 0.2) = 0.2 * (1.480000) = 0.296000",
+                  "- y1 = 1 + (1 / 6) * [ 0.200000 + 4(0.240000) + 0.296000 ]",
+                  "  y1 = 1 + (1 / 6) * (1.456000) = 1.242667"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y2 (t1 = 0.2, y1 = 1.242667 -> t2 = 0.4)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.2 * f(1.242667, 0.2) = 0.2 * (1.442667) = 0.288533",
+                  "- k2 = 0.2 * f(1.242667 + 0.288533/2, 0.2 + 0.1) = 0.2 * f(1.386933, 0.3) = 0.2 * (1.686933) = 0.337387",
+                  "- k3 = 0.2 * f(1.242667 - 0.288533 + 2(0.337387), 0.2 + 0.2) = 0.2 * f(1.628907, 0.4) = 0.2 * (2.028907) = 0.405781",
+                  "- y2 = 1.242667 + (1 / 6) * [ 0.288533 + 4(0.337387) + 0.405781 ]",
+                  "  y2 = 1.242667 + (1 / 6) * (2.043861) = 1.583310"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.2) = 1.242667, y(0.4) = 1.583310"
+      }
     },
     {
       "id": "runge_kutta_4_simpson_1_3",
@@ -358,7 +2846,62 @@
       "condiciones": "1. La ecuación diferencial debe estar despejada en la forma y' = f(y, t).\n2. Se debe proporcionar el valor inicial y(t0) = y0 y el paso h.\n3. Los valores k1, k2, k3 y k4 se calculan en orden estricto debido a su dependencia mutua.",
       "criterios_paro": "Es un método directo paso a paso: en cada paso de tamaño h se evalúan las cuatro pendientes y se calcula el promedio ponderado y(n+1) hasta llegar al tiempo final.",
       "ventajas_limitaciones": "VENTAJAS: Es uno de los métodos más exactos, estables y utilizados en ingeniería; logra precisión de 4° orden con solo 4 evaluaciones por paso.\nLIMITACIONES: Requiere mayor número de cálculos por paso que Euler o RK2 y utiliza un tamaño de paso fijo.",
-      "ejemplo": "Problema: resolver y' + 2ty = 0 con y(0) = 1, h = 0.2 hasta t = 0.4\n\nPaso 1: Despejar y'\n- y' = -2ty  ->  f(y, t) = -2ty\n\nPaso 2: Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.2)\n- k1 = 0.2 * [ -2(0)(1) ] = 0.000000\n- k2 = 0.2 * [ -2(0 + 0.1)(1 + 0/2) ] = 0.2 * [ -0.2(1.000000) ] = -0.040000\n- k3 = 0.2 * [ -2(0 + 0.1)(1 + (-0.040000)/2) ] = 0.2 * [ -0.2(0.980000) ] = -0.039200\n- k4 = 0.2 * [ -2(0 + 0.2)(1 + (-0.039200)) ] = 0.2 * [ -0.4(0.960800) ] = -0.076864\n- y1 = 1 + (1 / 6) * [ 0.000000 + 2(-0.040000) + 2(-0.039200) + (-0.076864) ]\n  y1 = 1 + (1 / 6) * (-0.235264) = 0.960789\n\nPaso 3: Calcular y2 (t1 = 0.2, y1 = 0.960789 -> t2 = 0.4)\n- k1 = 0.2 * [ -2(0.2)(0.960789) ] = -0.076863\n- k2 = 0.2 * [ -2(0.3)(0.960789 - 0.038432) ] = 0.2 * [ -0.6(0.922358) ] = -0.110683\n- k3 = 0.2 * [ -2(0.3)(0.960789 - 0.055341) ] = 0.2 * [ -0.6(0.905448) ] = -0.108654\n- k4 = 0.2 * [ -2(0.4)(0.960789 - 0.108654) ] = 0.2 * [ -0.8(0.852136) ] = -0.136342\n- y2 = 0.960789 + (1 / 6) * [ -0.076863 + 2(-0.110683) + 2(-0.108654) - 0.136342 ]\n  y2 = 0.960789 + (1 / 6) * (-0.651878) = 0.852143\n\nResultado: y(0.2) = 0.960789, y(0.4) = 0.852143"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver y' + 2ty = 0 con y(0) = 1, h = 0.2 hasta t = 0.4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- y' = -2ty  ->  f(y, t) = -2ty"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.2 * [ -2(0)(1) ] = 0.000000",
+                  "- k2 = 0.2 * [ -2(0 + 0.1)(1 + 0/2) ] = 0.2 * [ -0.2(1.000000) ] = -0.040000",
+                  "- k3 = 0.2 * [ -2(0 + 0.1)(1 + (-0.040000)/2) ] = 0.2 * [ -0.2(0.980000) ] = -0.039200",
+                  "- k4 = 0.2 * [ -2(0 + 0.2)(1 + (-0.039200)) ] = 0.2 * [ -0.4(0.960800) ] = -0.076864",
+                  "- y1 = 1 + (1 / 6) * [ 0.000000 + 2(-0.040000) + 2(-0.039200) + (-0.076864) ]",
+                  "  y1 = 1 + (1 / 6) * (-0.235264) = 0.960789"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y2 (t1 = 0.2, y1 = 0.960789 -> t2 = 0.4)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.2 * [ -2(0.2)(0.960789) ] = -0.076863",
+                  "- k2 = 0.2 * [ -2(0.3)(0.960789 - 0.038432) ] = 0.2 * [ -0.6(0.922358) ] = -0.110683",
+                  "- k3 = 0.2 * [ -2(0.3)(0.960789 - 0.055341) ] = 0.2 * [ -0.6(0.905448) ] = -0.108654",
+                  "- k4 = 0.2 * [ -2(0.4)(0.960789 - 0.108654) ] = 0.2 * [ -0.8(0.852136) ] = -0.136342",
+                  "- y2 = 0.960789 + (1 / 6) * [ -0.076863 + 2(-0.110683) + 2(-0.108654) - 0.136342 ]",
+                  "  y2 = 0.960789 + (1 / 6) * (-0.651878) = 0.852143"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.2) = 0.960789, y(0.4) = 0.852143"
+      }
     },
     {
       "id": "runge_kutta_4_simpson_3_8",
@@ -370,7 +2913,62 @@
       "condiciones": "1. La ecuación diferencial debe expresarse como y' = f(y, t).\n2. Se debe conocer la condición inicial y(t0) = y0 y el tamaño de paso h.\n3. Las constantes k1, k2, k3 y k4 se calculan de forma estrictamente secuencial.",
       "criterios_paro": "Es un método directo paso a paso: en cada intervalo se evalúan las cuatro pendientes y se combinan con pesos (1, 3, 3, 1) divididos entre 8 hasta completar el intervalo total.",
       "ventajas_limitaciones": "VENTAJAS: Tiene el mismo orden de exactitud global (O(h^4)) que la versión de 1/3 de Simpson y suele presentar un error de truncamiento ligeramente menor en ciertos problemas.\nLIMITACIONES: Las combinaciones lineales dentro de k3 y k4 requieren ligeramente más operaciones aritméticas que la versión clásica.",
-      "ejemplo": "Problema: resolver y' - 2y + t = 0 con y(0) = 1, h = 0.3 hasta t = 0.6\n\nPaso 1: Despejar y'\n- y' = 2y - t  ->  f(y, t) = 2y - t\n\nPaso 2: Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.3, con h/3 = 0.1 y 2h/3 = 0.2)\n- k1 = 0.3 * [ 2(1) - 0 ] = 0.600000\n- k2 = 0.3 * f(1 + 0.600000/3, 0 + 0.1) = 0.3 * f(1.200000, 0.1) = 0.3 * [ 2(1.2) - 0.1 ] = 0.690000\n- k3 = 0.3 * f(1 + 0.200000 + 0.230000, 0 + 0.2) = 0.3 * f(1.430000, 0.2) = 0.3 * [ 2(1.43) - 0.2 ] = 0.798000\n- k4 = 0.3 * f(1 + 0.600000 - 0.690000 + 0.798000, 0 + 0.3) = 0.3 * f(1.708000, 0.3) = 0.3 * [ 2(1.708) - 0.3 ] = 0.934800\n- y1 = 1 + (1 / 8) * [ 0.600000 + 3(0.690000) + 3(0.798000) + 0.934800 ]\n  y1 = 1 + (1 / 8) * (5.998800) = 1.749850\n\nPaso 3: Calcular y2 (t1 = 0.3, y1 = 1.749850 -> t2 = 0.6)\n- k1 = 0.3 * [ 2(1.749850) - 0.3 ] = 0.959910\n- k2 = 0.3 * f(1.749850 + 0.319970, 0.4) = 0.3 * f(2.069820, 0.4) = 1.121892\n- k3 = 0.3 * f(1.749850 + 0.319970 + 0.373964, 0.5) = 0.3 * f(2.443784, 0.5) = 1.316270\n- k4 = 0.3 * f(1.749850 + 0.959910 - 1.121892 + 1.316270, 0.6) = 0.3 * f(2.904138, 0.6) = 1.562483\n- y2 = 1.749850 + (1 / 8) * [ 0.959910 + 3(1.121892) + 3(1.316270) + 1.562483 ]\n  y2 = 1.749850 + (1 / 8) * (9.835879) = 2.979335\n\nResultado: y(0.3) = 1.749850, y(0.6) = 2.979335"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver y' - 2y + t = 0 con y(0) = 1, h = 0.3 hasta t = 0.6"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- y' = 2y - t  ->  f(y, t) = 2y - t"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y1 (t0 = 0, y0 = 1 -> t1 = 0.3, con h/3 = 0.1 y 2h/3 = 0.2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.3 * [ 2(1) - 0 ] = 0.600000",
+                  "- k2 = 0.3 * f(1 + 0.600000/3, 0 + 0.1) = 0.3 * f(1.200000, 0.1) = 0.3 * [ 2(1.2) - 0.1 ] = 0.690000",
+                  "- k3 = 0.3 * f(1 + 0.200000 + 0.230000, 0 + 0.2) = 0.3 * f(1.430000, 0.2) = 0.3 * [ 2(1.43) - 0.2 ] = 0.798000",
+                  "- k4 = 0.3 * f(1 + 0.600000 - 0.690000 + 0.798000, 0 + 0.3) = 0.3 * f(1.708000, 0.3) = 0.3 * [ 2(1.708) - 0.3 ] = 0.934800",
+                  "- y1 = 1 + (1 / 8) * [ 0.600000 + 3(0.690000) + 3(0.798000) + 0.934800 ]",
+                  "  y1 = 1 + (1 / 8) * (5.998800) = 1.749850"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Calcular y2 (t1 = 0.3, y1 = 1.749850 -> t2 = 0.6)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = 0.3 * [ 2(1.749850) - 0.3 ] = 0.959910",
+                  "- k2 = 0.3 * f(1.749850 + 0.319970, 0.4) = 0.3 * f(2.069820, 0.4) = 1.121892",
+                  "- k3 = 0.3 * f(1.749850 + 0.319970 + 0.373964, 0.5) = 0.3 * f(2.443784, 0.5) = 1.316270",
+                  "- k4 = 0.3 * f(1.749850 + 0.959910 - 1.121892 + 1.316270, 0.6) = 0.3 * f(2.904138, 0.6) = 1.562483",
+                  "- y2 = 1.749850 + (1 / 8) * [ 0.959910 + 3(1.121892) + 3(1.316270) + 1.562483 ]",
+                  "  y2 = 1.749850 + (1 / 8) * (9.835879) = 2.979335"
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.3) = 1.749850, y(0.6) = 2.979335"
+      }
     },
     {
       "id": "runge_kutta_orden_superior",
@@ -382,7 +2980,80 @@
       "condiciones": "1. La ecuación diferencial de segundo orden debe despejarse para y''.\n2. Se deben conocer dos condiciones iniciales en t0: el valor de la función y0 y el valor de su derivada y'0.\n3. En cada paso se calculan primero k1 y m1, luego k2 y m2, y finalmente se actualizan y(n+1) y y'(n+1).",
       "criterios_paro": "Es un método directo paso a paso: avanza en incrementos de tamaño h calculando ambos valores (y y y') en cada nodo hasta alcanzar el tiempo final deseado.",
       "ventajas_limitaciones": "VENTAJAS: Permite resolver ecuaciones diferenciales de segundo orden o sistemas dinámicos reduciéndolos a un esquema sistemático de primer orden.\nLIMITACIONES: Implica el doble de cálculos por paso (se evalúan tanto k como m) y su complejidad algebraica crece rápidamente al aumentar el orden.",
-      "ejemplo": "Problema: resolver y'' + 2y' + 5y = 0 con y(0) = 2, y'(0) = 0, h = 0.2 hasta t = 0.4\n\nPaso 1: Despejar y'' y definir las variables de estado\n- y'' = -2y' - 5y  ->  f(t, U, V) = -2V - 5U\n- Condiciones iniciales en q0 = 0: U0 = y0 = 2, V0 = y'0 = 0, h = 0.2\n\nPaso 2: Primera iteración (t0 = 0 -> t1 = 0.2)\n- k1 = h * V0 = 0.2 * (0) = 0.000000\n- m1 = h * (-2*V0 - 5*U0) = 0.2 * [ -2(0) - 5(2) ] = 0.2 * (-10) = -2.000000\n- k2 = h * (V0 + m1) = 0.2 * (0 + (-2.000000)) = -0.400000\n- m2 = h * [ -2(V0 + m1) - 5(U0 + k1) ]\n  m2 = 0.2 * [ -2(0 - 2.000000) - 5(2 + 0.000000) ] = 0.2 * [ 4 - 10 ] = -1.200000\n- y1  = y0  + 0.5 * (k1 + k2) = 2 + 0.5 * (0.000000 - 0.400000) = 1.800000\n- y'1 = y'0 + 0.5 * (m1 + m2) = 0 + 0.5 * (-2.000000 - 1.200000) = -1.600000\n\nPaso 3: Segunda iteración (t1 = 0.2, U1 = 1.800000, V1 = -1.600000 -> t2 = 0.4)\n- k1 = h * V1 = 0.2 * (-1.600000) = -0.320000\n- m1 = h * (-2*V1 - 5*U1) = 0.2 * [ -2(-1.600000) - 5(1.800000) ] = 0.2 * [ 3.2 - 9.0 ] = -1.160000\n- k2 = h * (V1 + m1) = 0.2 * (-1.600000 - 1.160000) = -0.552000\n- m2 = h * [ -2(V1 + m1) - 5(U1 + k1) ]\n  m2 = 0.2 * [ -2(-2.760000) - 5(1.800000 - 0.320000) ] = 0.2 * [ 5.52 - 7.40 ] = -0.376000\n- y2  = y1  + 0.5 * (k1 + k2) = 1.800000 + 0.5 * (-0.320000 - 0.552000) = 1.364000\n- y'2 = y'1 + 0.5 * (m1 + m2) = -1.600000 + 0.5 * (-1.160000 - 0.376000) = -2.368000\n\nPaso 4: Tabla resumen\n\n Paso (n) |  tn  |    yn    |   y'n    \n----------+------+----------+----------\n    0     | 0.0  | 2.000000 | 0.000000 \n    1     | 0.2  | 1.800000 |-1.600000 \n    2     | 0.4  | 1.364000 |-2.368000 \n\nResultado: y(0.4) = 1.364000, y'(0.4) = -2.368000"
+      "ejemplo": {
+        "enunciado": [
+          {
+            "tipo": "texto",
+            "lineas": [
+              "resolver y'' + 2y' + 5y = 0 con y(0) = 2, y'(0) = 0, h = 0.2 hasta t = 0.4"
+            ]
+          }
+        ],
+        "pasos": [
+          {
+            "titulo": "Despejar y'' y definir las variables de estado",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- y'' = -2y' - 5y  ->  f(t, U, V) = -2V - 5U",
+                  "- Condiciones iniciales en q0 = 0: U0 = y0 = 2, V0 = y'0 = 0, h = 0.2"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Primera iteración (t0 = 0 -> t1 = 0.2)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = h * V0 = 0.2 * (0) = 0.000000",
+                  "- m1 = h * (-2*V0 - 5*U0) = 0.2 * [ -2(0) - 5(2) ] = 0.2 * (-10) = -2.000000",
+                  "- k2 = h * (V0 + m1) = 0.2 * (0 + (-2.000000)) = -0.400000",
+                  "- m2 = h * [ -2(V0 + m1) - 5(U0 + k1) ]",
+                  "  m2 = 0.2 * [ -2(0 - 2.000000) - 5(2 + 0.000000) ] = 0.2 * [ 4 - 10 ] = -1.200000",
+                  "- y1  = y0  + 0.5 * (k1 + k2) = 2 + 0.5 * (0.000000 - 0.400000) = 1.800000",
+                  "- y'1 = y'0 + 0.5 * (m1 + m2) = 0 + 0.5 * (-2.000000 - 1.200000) = -1.600000"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Segunda iteración (t1 = 0.2, U1 = 1.800000, V1 = -1.600000 -> t2 = 0.4)",
+            "bloques": [
+              {
+                "tipo": "texto",
+                "lineas": [
+                  "- k1 = h * V1 = 0.2 * (-1.600000) = -0.320000",
+                  "- m1 = h * (-2*V1 - 5*U1) = 0.2 * [ -2(-1.600000) - 5(1.800000) ] = 0.2 * [ 3.2 - 9.0 ] = -1.160000",
+                  "- k2 = h * (V1 + m1) = 0.2 * (-1.600000 - 1.160000) = -0.552000",
+                  "- m2 = h * [ -2(V1 + m1) - 5(U1 + k1) ]",
+                  "  m2 = 0.2 * [ -2(-2.760000) - 5(1.800000 - 0.320000) ] = 0.2 * [ 5.52 - 7.40 ] = -0.376000",
+                  "- y2  = y1  + 0.5 * (k1 + k2) = 1.800000 + 0.5 * (-0.320000 - 0.552000) = 1.364000",
+                  "- y'2 = y'1 + 0.5 * (m1 + m2) = -1.600000 + 0.5 * (-1.160000 - 0.376000) = -2.368000"
+                ]
+              }
+            ]
+          },
+          {
+            "titulo": "Tabla resumen",
+            "bloques": [
+              {
+                "tipo": "tabla",
+                "lineas": [
+                  " Paso (n) |  tn  |    yn    |   y'n    ",
+                  "----------+------+----------+----------",
+                  "    0     | 0.0  | 2.000000 | 0.000000 ",
+                  "    1     | 0.2  | 1.800000 |-1.600000 ",
+                  "    2     | 0.4  | 1.364000 |-2.368000 "
+                ]
+              }
+            ]
+          }
+        ],
+        "resultado": "y(0.4) = 1.364000, y'(0.4) = -2.368000"
+      }
     }
   ]
 }

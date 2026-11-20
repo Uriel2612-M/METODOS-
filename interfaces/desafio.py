@@ -1,12 +1,14 @@
 import random
 from logica.gestor_problemas import GestorProblemas
 import customtkinter as ctk
+from utilidades.fondo import COLOR_FONDO, aplicar_fondo
 from logica.gestor_desafio import GestorDesafio
 from interfaces.desafio_etapa3 import EtapaTresDesafio
 
 class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
     def __init__(self, parent, controlador):
-        super().__init__(parent, fg_color="transparent")
+        super().__init__(parent, fg_color=COLOR_FONDO)
+        aplicar_fondo(self)
         self.controlador = controlador
         self.gestor = GestorDesafio()
         self.id_timer = None 
@@ -15,7 +17,8 @@ class VistaDesafio(EtapaTresDesafio, ctk.CTkFrame):
 
     def limpiar_frame(self):
         for widget in self.winfo_children():
-            widget.destroy()
+            if not getattr(widget, "es_fondo", False):   # el fondo con diseño no se borra
+                widget.destroy()
 
     def detener_reloj(self):
         if self.id_timer:
